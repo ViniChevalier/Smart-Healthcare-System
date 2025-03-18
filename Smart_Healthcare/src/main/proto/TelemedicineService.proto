@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+// TelemedicineService enables remote consultations and communication.
+service TelemedicineService {
+    // Starts a virtual consultation between a patient and a doctor. (Unary RPC)
+    rpc StartConsultation (ConsultationRequest) returns (ConsultationResponse);
+
+    // Supports real-time chat between a patient and a doctor. (Bidirectional Streaming RPC)
+    rpc Chat (stream MessageRequest) returns (stream MessageResponse);
+}
+
+// Request message for starting a consultation.
+message ConsultationRequest {
+    string patient_id = 1;  // Patient requesting the consultation
+    string doctor_id = 2;   // Assigned doctor for the consultation
+}
+
+// Response message confirming consultation initiation.
+message ConsultationResponse {
+    bool success = 1;       // Status of the consultation request
+    string message = 2;     // Confirmation message or error details
+}
+
+// Request message for chat messages.
+message MessageRequest {
+    string sender_id = 1;   // ID of the message sender (patient or doctor)
+    string message_text = 2; // The chat message content
+}
+
+// Response message for chat messages.
+message MessageResponse {
+    string sender_id = 1;   // ID of the message sender (patient or doctor)
+    string message_text = 2; // The chat message content
+}

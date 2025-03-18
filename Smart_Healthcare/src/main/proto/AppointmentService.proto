@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+// AppointmentService handles scheduling and availability of doctor appointments.
+service AppointmentService {
+    // Schedules an appointment for a patient. (Unary RPC)
+    rpc ScheduleAppointment (AppointmentRequest) returns (AppointmentResponse);
+
+    // Streams available appointment slots for a doctor. (Server Streaming RPC)
+    rpc GetAvailability (AvailabilityRequest) returns (stream AvailabilityResponse);
+}
+
+// Request message for scheduling an appointment.
+message AppointmentRequest {
+    string patient_id = 1;  // Unique identifier for the patient
+    string doctor_id = 2;   // Unique identifier for the doctor
+    string date_time = 3;   // Appointment date and time
+}
+
+// Response message confirming appointment scheduling.
+message AppointmentResponse {
+    bool success = 1;       // Status of the appointment request
+    string message = 2;     // Additional information (e.g., confirmation or error message)
+}
+
+// Request message for checking doctor availability.
+message AvailabilityRequest {
+    string doctor_id = 1;   // Doctor ID whose availability is being checked
+}
+
+// Response message streaming available slots.
+message AvailabilityResponse {
+    string date_time = 1;   // Available date and time for an appointment
+}
