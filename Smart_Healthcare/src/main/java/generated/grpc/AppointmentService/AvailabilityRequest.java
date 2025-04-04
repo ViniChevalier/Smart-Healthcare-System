@@ -96,10 +96,6 @@ private static final long serialVersionUID = 0L;
   public static final int DOCTOR_ID_FIELD_NUMBER = 1;
   private volatile java.lang.Object doctorId_;
   /**
-   * <pre>
-   * Doctor ID whose availability is being checked
-   * </pre>
-   *
    * <code>string doctor_id = 1;</code>
    * @return The doctorId.
    */
@@ -117,10 +113,6 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <pre>
-   * Doctor ID whose availability is being checked
-   * </pre>
-   *
    * <code>string doctor_id = 1;</code>
    * @return The bytes for doctorId.
    */
@@ -447,10 +439,6 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object doctorId_ = "";
     /**
-     * <pre>
-     * Doctor ID whose availability is being checked
-     * </pre>
-     *
      * <code>string doctor_id = 1;</code>
      * @return The doctorId.
      */
@@ -467,10 +455,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Doctor ID whose availability is being checked
-     * </pre>
-     *
      * <code>string doctor_id = 1;</code>
      * @return The bytes for doctorId.
      */
@@ -488,10 +472,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Doctor ID whose availability is being checked
-     * </pre>
-     *
      * <code>string doctor_id = 1;</code>
      * @param value The doctorId to set.
      * @return This builder for chaining.
@@ -507,10 +487,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Doctor ID whose availability is being checked
-     * </pre>
-     *
      * <code>string doctor_id = 1;</code>
      * @return This builder for chaining.
      */
@@ -521,10 +497,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Doctor ID whose availability is being checked
-     * </pre>
-     *
      * <code>string doctor_id = 1;</code>
      * @param value The bytes for doctorId to set.
      * @return This builder for chaining.

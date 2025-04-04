@@ -5,29 +5,29 @@ package generated.grpc.AppointmentService;
 
 /**
  * <pre>
- * Response message streaming available slots.
+ * Request message for getting appointment by ID
  * </pre>
  *
- * Protobuf type {@code AppointmentService.AvailabilityResponse}
+ * Protobuf type {@code AppointmentService.AppointmentIdRequest}
  */
-public final class AvailabilityResponse extends
+public final class AppointmentIdRequest extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:AppointmentService.AvailabilityResponse)
-    AvailabilityResponseOrBuilder {
+    // @@protoc_insertion_point(message_implements:AppointmentService.AppointmentIdRequest)
+    AppointmentIdRequestOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use AvailabilityResponse.newBuilder() to construct.
-  private AvailabilityResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use AppointmentIdRequest.newBuilder() to construct.
+  private AppointmentIdRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private AvailabilityResponse() {
-    dateTime_ = "";
+  private AppointmentIdRequest() {
+    appointmentId_ = "";
   }
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new AvailabilityResponse();
+    return new AppointmentIdRequest();
   }
 
   @java.lang.Override
@@ -35,7 +35,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private AvailabilityResponse(
+  private AppointmentIdRequest(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -56,7 +56,7 @@ private static final long serialVersionUID = 0L;
           case 10: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            dateTime_ = s;
+            appointmentId_ = s;
             break;
           }
           default: {
@@ -82,49 +82,49 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return generated.grpc.AppointmentService.AppointmentServiceImpl.internal_static_AppointmentService_AvailabilityResponse_descriptor;
+    return generated.grpc.AppointmentService.AppointmentServiceImpl.internal_static_AppointmentService_AppointmentIdRequest_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return generated.grpc.AppointmentService.AppointmentServiceImpl.internal_static_AppointmentService_AvailabilityResponse_fieldAccessorTable
+    return generated.grpc.AppointmentService.AppointmentServiceImpl.internal_static_AppointmentService_AppointmentIdRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            generated.grpc.AppointmentService.AvailabilityResponse.class, generated.grpc.AppointmentService.AvailabilityResponse.Builder.class);
+            generated.grpc.AppointmentService.AppointmentIdRequest.class, generated.grpc.AppointmentService.AppointmentIdRequest.Builder.class);
   }
 
-  public static final int DATE_TIME_FIELD_NUMBER = 1;
-  private volatile java.lang.Object dateTime_;
+  public static final int APPOINTMENT_ID_FIELD_NUMBER = 1;
+  private volatile java.lang.Object appointmentId_;
   /**
-   * <code>string date_time = 1;</code>
-   * @return The dateTime.
+   * <code>string appointment_id = 1;</code>
+   * @return The appointmentId.
    */
   @java.lang.Override
-  public java.lang.String getDateTime() {
-    java.lang.Object ref = dateTime_;
+  public java.lang.String getAppointmentId() {
+    java.lang.Object ref = appointmentId_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      dateTime_ = s;
+      appointmentId_ = s;
       return s;
     }
   }
   /**
-   * <code>string date_time = 1;</code>
-   * @return The bytes for dateTime.
+   * <code>string appointment_id = 1;</code>
+   * @return The bytes for appointmentId.
    */
   @java.lang.Override
   public com.google.protobuf.ByteString
-      getDateTimeBytes() {
-    java.lang.Object ref = dateTime_;
+      getAppointmentIdBytes() {
+    java.lang.Object ref = appointmentId_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      dateTime_ = b;
+      appointmentId_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -145,8 +145,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(dateTime_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, dateTime_);
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(appointmentId_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, appointmentId_);
     }
     unknownFields.writeTo(output);
   }
@@ -157,8 +157,8 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(dateTime_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, dateTime_);
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(appointmentId_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, appointmentId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -170,13 +170,13 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof generated.grpc.AppointmentService.AvailabilityResponse)) {
+    if (!(obj instanceof generated.grpc.AppointmentService.AppointmentIdRequest)) {
       return super.equals(obj);
     }
-    generated.grpc.AppointmentService.AvailabilityResponse other = (generated.grpc.AppointmentService.AvailabilityResponse) obj;
+    generated.grpc.AppointmentService.AppointmentIdRequest other = (generated.grpc.AppointmentService.AppointmentIdRequest) obj;
 
-    if (!getDateTime()
-        .equals(other.getDateTime())) return false;
+    if (!getAppointmentId()
+        .equals(other.getAppointmentId())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -188,76 +188,76 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + DATE_TIME_FIELD_NUMBER;
-    hash = (53 * hash) + getDateTime().hashCode();
+    hash = (37 * hash) + APPOINTMENT_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getAppointmentId().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseFrom(
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseFrom(
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseFrom(
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseFrom(
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseFrom(byte[] data)
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseFrom(
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseFrom(java.io.InputStream input)
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseFrom(
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseDelimitedFrom(java.io.InputStream input)
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseDelimitedFrom(
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseFrom(
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static generated.grpc.AppointmentService.AvailabilityResponse parseFrom(
+  public static generated.grpc.AppointmentService.AppointmentIdRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -270,7 +270,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(generated.grpc.AppointmentService.AvailabilityResponse prototype) {
+  public static Builder newBuilder(generated.grpc.AppointmentService.AppointmentIdRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -287,29 +287,29 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * Response message streaming available slots.
+   * Request message for getting appointment by ID
    * </pre>
    *
-   * Protobuf type {@code AppointmentService.AvailabilityResponse}
+   * Protobuf type {@code AppointmentService.AppointmentIdRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:AppointmentService.AvailabilityResponse)
-      generated.grpc.AppointmentService.AvailabilityResponseOrBuilder {
+      // @@protoc_insertion_point(builder_implements:AppointmentService.AppointmentIdRequest)
+      generated.grpc.AppointmentService.AppointmentIdRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return generated.grpc.AppointmentService.AppointmentServiceImpl.internal_static_AppointmentService_AvailabilityResponse_descriptor;
+      return generated.grpc.AppointmentService.AppointmentServiceImpl.internal_static_AppointmentService_AppointmentIdRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return generated.grpc.AppointmentService.AppointmentServiceImpl.internal_static_AppointmentService_AvailabilityResponse_fieldAccessorTable
+      return generated.grpc.AppointmentService.AppointmentServiceImpl.internal_static_AppointmentService_AppointmentIdRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              generated.grpc.AppointmentService.AvailabilityResponse.class, generated.grpc.AppointmentService.AvailabilityResponse.Builder.class);
+              generated.grpc.AppointmentService.AppointmentIdRequest.class, generated.grpc.AppointmentService.AppointmentIdRequest.Builder.class);
     }
 
-    // Construct using generated.grpc.AppointmentService.AvailabilityResponse.newBuilder()
+    // Construct using generated.grpc.AppointmentService.AppointmentIdRequest.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -327,7 +327,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      dateTime_ = "";
+      appointmentId_ = "";
 
       return this;
     }
@@ -335,17 +335,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return generated.grpc.AppointmentService.AppointmentServiceImpl.internal_static_AppointmentService_AvailabilityResponse_descriptor;
+      return generated.grpc.AppointmentService.AppointmentServiceImpl.internal_static_AppointmentService_AppointmentIdRequest_descriptor;
     }
 
     @java.lang.Override
-    public generated.grpc.AppointmentService.AvailabilityResponse getDefaultInstanceForType() {
-      return generated.grpc.AppointmentService.AvailabilityResponse.getDefaultInstance();
+    public generated.grpc.AppointmentService.AppointmentIdRequest getDefaultInstanceForType() {
+      return generated.grpc.AppointmentService.AppointmentIdRequest.getDefaultInstance();
     }
 
     @java.lang.Override
-    public generated.grpc.AppointmentService.AvailabilityResponse build() {
-      generated.grpc.AppointmentService.AvailabilityResponse result = buildPartial();
+    public generated.grpc.AppointmentService.AppointmentIdRequest build() {
+      generated.grpc.AppointmentService.AppointmentIdRequest result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -353,9 +353,9 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public generated.grpc.AppointmentService.AvailabilityResponse buildPartial() {
-      generated.grpc.AppointmentService.AvailabilityResponse result = new generated.grpc.AppointmentService.AvailabilityResponse(this);
-      result.dateTime_ = dateTime_;
+    public generated.grpc.AppointmentService.AppointmentIdRequest buildPartial() {
+      generated.grpc.AppointmentService.AppointmentIdRequest result = new generated.grpc.AppointmentService.AppointmentIdRequest(this);
+      result.appointmentId_ = appointmentId_;
       onBuilt();
       return result;
     }
@@ -394,18 +394,18 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof generated.grpc.AppointmentService.AvailabilityResponse) {
-        return mergeFrom((generated.grpc.AppointmentService.AvailabilityResponse)other);
+      if (other instanceof generated.grpc.AppointmentService.AppointmentIdRequest) {
+        return mergeFrom((generated.grpc.AppointmentService.AppointmentIdRequest)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(generated.grpc.AppointmentService.AvailabilityResponse other) {
-      if (other == generated.grpc.AppointmentService.AvailabilityResponse.getDefaultInstance()) return this;
-      if (!other.getDateTime().isEmpty()) {
-        dateTime_ = other.dateTime_;
+    public Builder mergeFrom(generated.grpc.AppointmentService.AppointmentIdRequest other) {
+      if (other == generated.grpc.AppointmentService.AppointmentIdRequest.getDefaultInstance()) return this;
+      if (!other.getAppointmentId().isEmpty()) {
+        appointmentId_ = other.appointmentId_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -423,11 +423,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      generated.grpc.AppointmentService.AvailabilityResponse parsedMessage = null;
+      generated.grpc.AppointmentService.AppointmentIdRequest parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (generated.grpc.AppointmentService.AvailabilityResponse) e.getUnfinishedMessage();
+        parsedMessage = (generated.grpc.AppointmentService.AppointmentIdRequest) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -437,78 +437,78 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object dateTime_ = "";
+    private java.lang.Object appointmentId_ = "";
     /**
-     * <code>string date_time = 1;</code>
-     * @return The dateTime.
+     * <code>string appointment_id = 1;</code>
+     * @return The appointmentId.
      */
-    public java.lang.String getDateTime() {
-      java.lang.Object ref = dateTime_;
+    public java.lang.String getAppointmentId() {
+      java.lang.Object ref = appointmentId_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        dateTime_ = s;
+        appointmentId_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string date_time = 1;</code>
-     * @return The bytes for dateTime.
+     * <code>string appointment_id = 1;</code>
+     * @return The bytes for appointmentId.
      */
     public com.google.protobuf.ByteString
-        getDateTimeBytes() {
-      java.lang.Object ref = dateTime_;
+        getAppointmentIdBytes() {
+      java.lang.Object ref = appointmentId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        dateTime_ = b;
+        appointmentId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string date_time = 1;</code>
-     * @param value The dateTime to set.
+     * <code>string appointment_id = 1;</code>
+     * @param value The appointmentId to set.
      * @return This builder for chaining.
      */
-    public Builder setDateTime(
+    public Builder setAppointmentId(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      dateTime_ = value;
+      appointmentId_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string date_time = 1;</code>
+     * <code>string appointment_id = 1;</code>
      * @return This builder for chaining.
      */
-    public Builder clearDateTime() {
+    public Builder clearAppointmentId() {
       
-      dateTime_ = getDefaultInstance().getDateTime();
+      appointmentId_ = getDefaultInstance().getAppointmentId();
       onChanged();
       return this;
     }
     /**
-     * <code>string date_time = 1;</code>
-     * @param value The bytes for dateTime to set.
+     * <code>string appointment_id = 1;</code>
+     * @param value The bytes for appointmentId to set.
      * @return This builder for chaining.
      */
-    public Builder setDateTimeBytes(
+    public Builder setAppointmentIdBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      dateTime_ = value;
+      appointmentId_ = value;
       onChanged();
       return this;
     }
@@ -525,41 +525,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:AppointmentService.AvailabilityResponse)
+    // @@protoc_insertion_point(builder_scope:AppointmentService.AppointmentIdRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:AppointmentService.AvailabilityResponse)
-  private static final generated.grpc.AppointmentService.AvailabilityResponse DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:AppointmentService.AppointmentIdRequest)
+  private static final generated.grpc.AppointmentService.AppointmentIdRequest DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new generated.grpc.AppointmentService.AvailabilityResponse();
+    DEFAULT_INSTANCE = new generated.grpc.AppointmentService.AppointmentIdRequest();
   }
 
-  public static generated.grpc.AppointmentService.AvailabilityResponse getDefaultInstance() {
+  public static generated.grpc.AppointmentService.AppointmentIdRequest getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<AvailabilityResponse>
-      PARSER = new com.google.protobuf.AbstractParser<AvailabilityResponse>() {
+  private static final com.google.protobuf.Parser<AppointmentIdRequest>
+      PARSER = new com.google.protobuf.AbstractParser<AppointmentIdRequest>() {
     @java.lang.Override
-    public AvailabilityResponse parsePartialFrom(
+    public AppointmentIdRequest parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new AvailabilityResponse(input, extensionRegistry);
+      return new AppointmentIdRequest(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<AvailabilityResponse> parser() {
+  public static com.google.protobuf.Parser<AppointmentIdRequest> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<AvailabilityResponse> getParserForType() {
+  public com.google.protobuf.Parser<AppointmentIdRequest> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public generated.grpc.AppointmentService.AvailabilityResponse getDefaultInstanceForType() {
+  public generated.grpc.AppointmentService.AppointmentIdRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

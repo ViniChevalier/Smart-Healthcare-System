@@ -34,6 +34,11 @@ public final class AppointmentServiceImpl {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_AppointmentService_AvailabilityResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_AppointmentService_AppointmentIdRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_AppointmentService_AppointmentIdRequest_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -49,15 +54,18 @@ public final class AppointmentServiceImpl {
       "\030\003 \001(\t\"7\n\023AppointmentResponse\022\017\n\007success" +
       "\030\001 \001(\010\022\017\n\007message\030\002 \001(\t\"(\n\023AvailabilityR" +
       "equest\022\021\n\tdoctor_id\030\001 \001(\t\")\n\024Availabilit" +
-      "yResponse\022\021\n\tdate_time\030\001 \001(\t2\344\001\n\022Appoint" +
-      "mentService\022f\n\023ScheduleAppointment\022&.App" +
-      "ointmentService.AppointmentRequest\032\'.App" +
-      "ointmentService.AppointmentResponse\022f\n\017G" +
-      "etAvailability\022\'.AppointmentService.Avai" +
-      "labilityRequest\032(.AppointmentService.Ava" +
-      "ilabilityResponse0\001B=\n!generated.grpc.Ap" +
-      "pointmentServiceB\026AppointmentServiceImpl" +
-      "P\001b\006proto3"
+      "yResponse\022\021\n\tdate_time\030\001 \001(\t\".\n\024Appointm" +
+      "entIdRequest\022\026\n\016appointment_id\030\001 \001(\t2\311\002\n" +
+      "\022AppointmentService\022f\n\023ScheduleAppointme" +
+      "nt\022&.AppointmentService.AppointmentReque" +
+      "st\032\'.AppointmentService.AppointmentRespo" +
+      "nse\022f\n\017GetAvailability\022\'.AppointmentServ" +
+      "ice.AvailabilityRequest\032(.AppointmentSer" +
+      "vice.AvailabilityResponse0\001\022c\n\016GetAppoin" +
+      "tment\022(.AppointmentService.AppointmentId" +
+      "Request\032\'.AppointmentService.Appointment" +
+      "ResponseB=\n!generated.grpc.AppointmentSe" +
+      "rviceB\026AppointmentServiceImplP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -87,6 +95,12 @@ public final class AppointmentServiceImpl {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AppointmentService_AvailabilityResponse_descriptor,
         new java.lang.String[] { "DateTime", });
+    internal_static_AppointmentService_AppointmentIdRequest_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_AppointmentService_AppointmentIdRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_AppointmentService_AppointmentIdRequest_descriptor,
+        new java.lang.String[] { "AppointmentId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

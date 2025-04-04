@@ -8,19 +8,11 @@ public interface AvailabilityRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <pre>
-   * Doctor ID whose availability is being checked
-   * </pre>
-   *
    * <code>string doctor_id = 1;</code>
    * @return The doctorId.
    */
   java.lang.String getDoctorId();
   /**
-   * <pre>
-   * Doctor ID whose availability is being checked
-   * </pre>
-   *
    * <code>string doctor_id = 1;</code>
    * @return The bytes for doctorId.
    */

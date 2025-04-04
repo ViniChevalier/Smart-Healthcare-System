@@ -3,9 +3,6 @@ package generated.grpc.AppointmentService;
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 
 /**
- * <pre>
- * AppointmentService handles scheduling and availability of doctor appointments.
- * </pre>
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.52.1)",
@@ -80,6 +77,37 @@ public final class AppointmentServiceGrpc {
     return getGetAvailabilityMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<generated.grpc.AppointmentService.AppointmentIdRequest,
+      generated.grpc.AppointmentService.AppointmentResponse> getGetAppointmentMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "GetAppointment",
+      requestType = generated.grpc.AppointmentService.AppointmentIdRequest.class,
+      responseType = generated.grpc.AppointmentService.AppointmentResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<generated.grpc.AppointmentService.AppointmentIdRequest,
+      generated.grpc.AppointmentService.AppointmentResponse> getGetAppointmentMethod() {
+    io.grpc.MethodDescriptor<generated.grpc.AppointmentService.AppointmentIdRequest, generated.grpc.AppointmentService.AppointmentResponse> getGetAppointmentMethod;
+    if ((getGetAppointmentMethod = AppointmentServiceGrpc.getGetAppointmentMethod) == null) {
+      synchronized (AppointmentServiceGrpc.class) {
+        if ((getGetAppointmentMethod = AppointmentServiceGrpc.getGetAppointmentMethod) == null) {
+          AppointmentServiceGrpc.getGetAppointmentMethod = getGetAppointmentMethod =
+              io.grpc.MethodDescriptor.<generated.grpc.AppointmentService.AppointmentIdRequest, generated.grpc.AppointmentService.AppointmentResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetAppointment"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.grpc.AppointmentService.AppointmentIdRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.grpc.AppointmentService.AppointmentResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new AppointmentServiceMethodDescriptorSupplier("GetAppointment"))
+              .build();
+        }
+      }
+    }
+    return getGetAppointmentMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -125,9 +153,6 @@ public final class AppointmentServiceGrpc {
   }
 
   /**
-   * <pre>
-   * AppointmentService handles scheduling and availability of doctor appointments.
-   * </pre>
    */
   public static abstract class AppointmentServiceImplBase implements io.grpc.BindableService {
 
@@ -151,6 +176,16 @@ public final class AppointmentServiceGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetAvailabilityMethod(), responseObserver);
     }
 
+    /**
+     * <pre>
+     * Retrieves a scheduled appointment by its ID. (Unary RPC)
+     * </pre>
+     */
+    public void getAppointment(generated.grpc.AppointmentService.AppointmentIdRequest request,
+        io.grpc.stub.StreamObserver<generated.grpc.AppointmentService.AppointmentResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetAppointmentMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -167,14 +202,18 @@ public final class AppointmentServiceGrpc {
                 generated.grpc.AppointmentService.AvailabilityRequest,
                 generated.grpc.AppointmentService.AvailabilityResponse>(
                   this, METHODID_GET_AVAILABILITY)))
+          .addMethod(
+            getGetAppointmentMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                generated.grpc.AppointmentService.AppointmentIdRequest,
+                generated.grpc.AppointmentService.AppointmentResponse>(
+                  this, METHODID_GET_APPOINTMENT)))
           .build();
     }
   }
 
   /**
-   * <pre>
-   * AppointmentService handles scheduling and availability of doctor appointments.
-   * </pre>
    */
   public static final class AppointmentServiceStub extends io.grpc.stub.AbstractAsyncStub<AppointmentServiceStub> {
     private AppointmentServiceStub(
@@ -209,12 +248,20 @@ public final class AppointmentServiceGrpc {
       io.grpc.stub.ClientCalls.asyncServerStreamingCall(
           getChannel().newCall(getGetAvailabilityMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     * <pre>
+     * Retrieves a scheduled appointment by its ID. (Unary RPC)
+     * </pre>
+     */
+    public void getAppointment(generated.grpc.AppointmentService.AppointmentIdRequest request,
+        io.grpc.stub.StreamObserver<generated.grpc.AppointmentService.AppointmentResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetAppointmentMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
-   * <pre>
-   * AppointmentService handles scheduling and availability of doctor appointments.
-   * </pre>
    */
   public static final class AppointmentServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<AppointmentServiceBlockingStub> {
     private AppointmentServiceBlockingStub(
@@ -248,12 +295,19 @@ public final class AppointmentServiceGrpc {
       return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
           getChannel(), getGetAvailabilityMethod(), getCallOptions(), request);
     }
+
+    /**
+     * <pre>
+     * Retrieves a scheduled appointment by its ID. (Unary RPC)
+     * </pre>
+     */
+    public generated.grpc.AppointmentService.AppointmentResponse getAppointment(generated.grpc.AppointmentService.AppointmentIdRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetAppointmentMethod(), getCallOptions(), request);
+    }
   }
 
   /**
-   * <pre>
-   * AppointmentService handles scheduling and availability of doctor appointments.
-   * </pre>
    */
   public static final class AppointmentServiceFutureStub extends io.grpc.stub.AbstractFutureStub<AppointmentServiceFutureStub> {
     private AppointmentServiceFutureStub(
@@ -277,10 +331,22 @@ public final class AppointmentServiceGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getScheduleAppointmentMethod(), getCallOptions()), request);
     }
+
+    /**
+     * <pre>
+     * Retrieves a scheduled appointment by its ID. (Unary RPC)
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<generated.grpc.AppointmentService.AppointmentResponse> getAppointment(
+        generated.grpc.AppointmentService.AppointmentIdRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetAppointmentMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_SCHEDULE_APPOINTMENT = 0;
   private static final int METHODID_GET_AVAILABILITY = 1;
+  private static final int METHODID_GET_APPOINTMENT = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -306,6 +372,10 @@ public final class AppointmentServiceGrpc {
         case METHODID_GET_AVAILABILITY:
           serviceImpl.getAvailability((generated.grpc.AppointmentService.AvailabilityRequest) request,
               (io.grpc.stub.StreamObserver<generated.grpc.AppointmentService.AvailabilityResponse>) responseObserver);
+          break;
+        case METHODID_GET_APPOINTMENT:
+          serviceImpl.getAppointment((generated.grpc.AppointmentService.AppointmentIdRequest) request,
+              (io.grpc.stub.StreamObserver<generated.grpc.AppointmentService.AppointmentResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -370,6 +440,7 @@ public final class AppointmentServiceGrpc {
               .setSchemaDescriptor(new AppointmentServiceFileDescriptorSupplier())
               .addMethod(getScheduleAppointmentMethod())
               .addMethod(getGetAvailabilityMethod())
+              .addMethod(getGetAppointmentMethod())
               .build();
         }
       }

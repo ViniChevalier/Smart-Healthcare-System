@@ -5,7 +5,7 @@ package generated.grpc.AppointmentService;
 
 /**
  * <pre>
- * Response message confirming appointment scheduling.
+ * Response message confirming appointment scheduling or retrieval.
  * </pre>
  *
  * Protobuf type {@code AppointmentService.AppointmentResponse}
@@ -101,10 +101,6 @@ private static final long serialVersionUID = 0L;
   public static final int SUCCESS_FIELD_NUMBER = 1;
   private boolean success_;
   /**
-   * <pre>
-   * Status of the appointment request
-   * </pre>
-   *
    * <code>bool success = 1;</code>
    * @return The success.
    */
@@ -116,10 +112,6 @@ private static final long serialVersionUID = 0L;
   public static final int MESSAGE_FIELD_NUMBER = 2;
   private volatile java.lang.Object message_;
   /**
-   * <pre>
-   * Additional information (e.g., confirmation or error message)
-   * </pre>
-   *
    * <code>string message = 2;</code>
    * @return The message.
    */
@@ -137,10 +129,6 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <pre>
-   * Additional information (e.g., confirmation or error message)
-   * </pre>
-   *
    * <code>string message = 2;</code>
    * @return The bytes for message.
    */
@@ -327,7 +315,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * Response message confirming appointment scheduling.
+   * Response message confirming appointment scheduling or retrieval.
    * </pre>
    *
    * Protobuf type {@code AppointmentService.AppointmentResponse}
@@ -485,10 +473,6 @@ private static final long serialVersionUID = 0L;
 
     private boolean success_ ;
     /**
-     * <pre>
-     * Status of the appointment request
-     * </pre>
-     *
      * <code>bool success = 1;</code>
      * @return The success.
      */
@@ -497,10 +481,6 @@ private static final long serialVersionUID = 0L;
       return success_;
     }
     /**
-     * <pre>
-     * Status of the appointment request
-     * </pre>
-     *
      * <code>bool success = 1;</code>
      * @param value The success to set.
      * @return This builder for chaining.
@@ -512,10 +492,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Status of the appointment request
-     * </pre>
-     *
      * <code>bool success = 1;</code>
      * @return This builder for chaining.
      */
@@ -528,10 +504,6 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object message_ = "";
     /**
-     * <pre>
-     * Additional information (e.g., confirmation or error message)
-     * </pre>
-     *
      * <code>string message = 2;</code>
      * @return The message.
      */
@@ -548,10 +520,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Additional information (e.g., confirmation or error message)
-     * </pre>
-     *
      * <code>string message = 2;</code>
      * @return The bytes for message.
      */
@@ -569,10 +537,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Additional information (e.g., confirmation or error message)
-     * </pre>
-     *
      * <code>string message = 2;</code>
      * @param value The message to set.
      * @return This builder for chaining.
@@ -588,10 +552,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Additional information (e.g., confirmation or error message)
-     * </pre>
-     *
      * <code>string message = 2;</code>
      * @return This builder for chaining.
      */
@@ -602,10 +562,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Additional information (e.g., confirmation or error message)
-     * </pre>
-     *
      * <code>string message = 2;</code>
      * @param value The bytes for message to set.
      * @return This builder for chaining.

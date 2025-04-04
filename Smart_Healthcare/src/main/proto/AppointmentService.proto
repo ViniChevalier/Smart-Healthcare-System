@@ -6,34 +6,41 @@ option java_outer_classname = "AppointmentServiceImpl";
 
 package AppointmentService;
 
-// AppointmentService handles scheduling and availability of doctor appointments.
 service AppointmentService {
     // Schedules an appointment for a patient. (Unary RPC)
     rpc ScheduleAppointment (AppointmentRequest) returns (AppointmentResponse);
 
     // Streams available appointment slots for a doctor. (Server Streaming RPC)
     rpc GetAvailability (AvailabilityRequest) returns (stream AvailabilityResponse);
+
+    // Retrieves a scheduled appointment by its ID. (Unary RPC)
+    rpc GetAppointment (AppointmentIdRequest) returns (AppointmentResponse);
 }
 
 // Request message for scheduling an appointment.
 message AppointmentRequest {
-    string patient_id = 1;  // Unique identifier for the patient
-    string doctor_id = 2;   // Unique identifier for the doctor
-    string date_time = 3;   // Appointment date and time
+    string patient_id = 1;
+    string doctor_id = 2;
+    string date_time = 3;
 }
 
-// Response message confirming appointment scheduling.
+// Response message confirming appointment scheduling or retrieval.
 message AppointmentResponse {
-    bool success = 1;       // Status of the appointment request
-    string message = 2;     // Additional information (e.g., confirmation or error message)
+    bool success = 1;
+    string message = 2;
 }
 
 // Request message for checking doctor availability.
 message AvailabilityRequest {
-    string doctor_id = 1;   // Doctor ID whose availability is being checked
+    string doctor_id = 1;
 }
 
 // Response message streaming available slots.
 message AvailabilityResponse {
-    string date_time = 1;   // Available date and time for an appointment
+    string date_time = 1;
+}
+
+// Request message for getting appointment by ID
+message AppointmentIdRequest {
+    string appointment_id = 1;
 }
