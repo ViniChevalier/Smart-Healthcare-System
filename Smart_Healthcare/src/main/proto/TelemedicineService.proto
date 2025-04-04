@@ -1,5 +1,11 @@
 syntax = "proto3";
 
+option java_multiple_files = true;
+option java_package = "generated.grpc.TelemedicineService";
+option java_outer_classname = "TelemedicineServiceImpl";
+
+package TelemedicineService;
+
 // TelemedicineService enables remote consultations and communication.
 service TelemedicineService {
     // Starts a virtual consultation between a patient and a doctor. (Unary RPC)

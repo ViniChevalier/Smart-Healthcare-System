@@ -1,5 +1,11 @@
 syntax = "proto3";
 
+option java_multiple_files = true;
+option java_package = "generated.grpc.HealthMonitoringService";
+option java_outer_classname = "HealthMonitoringServiceImpl";
+
+package HealthMonitoringService;
+
 // HealthMonitoringService collects and analyzes patient health data.
 service HealthMonitoringService {
     // Streams real-time health data from IoT devices. (Client Streaming RPC)
