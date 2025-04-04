@@ -33,10 +33,12 @@ generated/grpc/TelemedicineService/MessageRequestOrBuilder.class
 generated/grpc/TelemedicineService/MessageResponse.class
 generated/grpc/TelemedicineService/ConsultationRequest$1.class
 generated/grpc/HealthMonitoringService/EmergencyAlertRequestOrBuilder.class
+distsys/smart_healthcare/AppointmentClientGUI$1.class
 generated/grpc/AppointmentService/AppointmentRequest$1.class
 generated/grpc/HealthMonitoringService/HealthDataRequest.class
 generated/grpc/TelemedicineService/MessageRequest$1.class
 generated/grpc/TelemedicineService/TelemedicineServiceImpl.class
+distsys/smart_healthcare/AppointmentClientGUI.class
 generated/grpc/AppointmentService/AppointmentRequest.class
 generated/grpc/HealthMonitoringService/HealthDataResponse.class
 distsys/smart_healthcare/AppointmentServiceImpl.class
