@@ -43,7 +43,8 @@ public class AppointmentServiceImpl extends AppointmentServiceImplBase {
     // Use an ArrayList to store appointments
     ArrayList<Appointment> appointments = new ArrayList<>();
 
-public void bookAppointment(AppointmentRequest request, StreamObserver<AppointmentResponse> responseObserver) {
+ 
+    public void scheduleAppointment (AppointmentRequest request, StreamObserver<AppointmentResponse> responseObserver) {
     String appointmentId = "APT-" + System.currentTimeMillis();
 
     // Create new Appointment object and add it to the list
