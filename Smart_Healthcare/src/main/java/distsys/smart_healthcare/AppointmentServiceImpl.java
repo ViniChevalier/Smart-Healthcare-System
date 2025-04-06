@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import generated.grpc.AppointmentService.AppointmentServiceGrpc.AppointmentServiceImplBase;
 import generated.grpc.AppointmentService.*;
 
-// Define Appointment model
+// Appointment Class
 class Appointment {
     private final String appointmentId;
     private final String patientId;
@@ -40,14 +40,14 @@ class Appointment {
 
 public class AppointmentServiceImpl extends AppointmentServiceImplBase {
 
-    // Use an ArrayList to store appointments
+    // ArrayList to store appointments
     ArrayList<Appointment> appointments = new ArrayList<>();
 
- 
+    private static int appointmentCounter = 1;
     public void scheduleAppointment (AppointmentRequest request, StreamObserver<AppointmentResponse> responseObserver) {
-    String appointmentId = "APT-" + System.currentTimeMillis();
+    String appointmentId = "APPT-" + appointmentCounter++;
 
-    // Create new Appointment object and add it to the list
+    // Create new Appointment object and add it
     Appointment appointment = new Appointment(
             appointmentId, 
             request.getPatientId(),   
@@ -70,7 +70,8 @@ public class AppointmentServiceImpl extends AppointmentServiceImplBase {
 
 @Override
 public void getAppointment(AppointmentIdRequest request, StreamObserver<AppointmentResponse> responseObserver) {
-    // Search for the appointment in the list
+    
+    // Search for the appointment
     for (Appointment appointment : appointments) {
         if (appointment.getAppointmentId().equals(request.getAppointmentId())) {
             AppointmentResponse response = AppointmentResponse.newBuilder()
@@ -88,7 +89,7 @@ public void getAppointment(AppointmentIdRequest request, StreamObserver<Appointm
         }
     }
 
-    // If not found, return an error message
+    // If not found
     AppointmentResponse response = AppointmentResponse.newBuilder()
             .setMessage("Appointment not found!" +
                     "\nID: " + request.getAppointmentId())

@@ -96,7 +96,7 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
 
         lblTime.setText("Appointment Time");
 
-        txtTime.setText("e.g., 2025-04-04 14:00");
+        txtTime.setText("2025-04-04 14:00");
 
         btnBook.setText("Book Appointment");
 
@@ -206,9 +206,9 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
         AppointmentResponse response = blockingStub.scheduleAppointment(request);
 
         if (response.getSuccess()) {
-            txtResult.setText("✅ Appointment booked successfully!\nMessage: " + response.getMessage());
+            txtResult.setText("Appointment booked successfully!\nMessage: " + response.getMessage());
         } else {
-            txtResult.setText("❌ Failed to book appointment.\nMessage: " + response.getMessage());
+            txtResult.setText("Failed to book appointment.\nMessage: " + response.getMessage());
         }
     }
     
@@ -223,9 +223,9 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
         AppointmentResponse response = blockingStub.getAppointment(request);
 
         if (response.getSuccess()) {
-            txtResult.setText("📄 Appointment details:\n" + response.getMessage());
+            txtResult.setText("Appointment details:\n" + response.getMessage());
         } else {
-            txtResult.setText("❌ Failed to retrieve appointment.\nMessage: " + response.getMessage());
+            txtResult.setText("Failed to get the appointment..\nMessage: " + response.getMessage());
         }
     }
 
