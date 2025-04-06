@@ -102,6 +102,7 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
 
         lblAppointmentId.setText("Appointment ID");
 
+        txtAppointmentId.setText("APPT-");
         txtAppointmentId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtAppointmentIdActionPerformed(evt);
