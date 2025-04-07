@@ -108,6 +108,68 @@ public final class AppointmentServiceGrpc {
     return getGetAppointmentMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<generated.grpc.AppointmentService.AddDoctorRequest,
+      generated.grpc.AppointmentService.AddDoctorResponse> getAddDoctorMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "AddDoctor",
+      requestType = generated.grpc.AppointmentService.AddDoctorRequest.class,
+      responseType = generated.grpc.AppointmentService.AddDoctorResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<generated.grpc.AppointmentService.AddDoctorRequest,
+      generated.grpc.AppointmentService.AddDoctorResponse> getAddDoctorMethod() {
+    io.grpc.MethodDescriptor<generated.grpc.AppointmentService.AddDoctorRequest, generated.grpc.AppointmentService.AddDoctorResponse> getAddDoctorMethod;
+    if ((getAddDoctorMethod = AppointmentServiceGrpc.getAddDoctorMethod) == null) {
+      synchronized (AppointmentServiceGrpc.class) {
+        if ((getAddDoctorMethod = AppointmentServiceGrpc.getAddDoctorMethod) == null) {
+          AppointmentServiceGrpc.getAddDoctorMethod = getAddDoctorMethod =
+              io.grpc.MethodDescriptor.<generated.grpc.AppointmentService.AddDoctorRequest, generated.grpc.AppointmentService.AddDoctorResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "AddDoctor"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.grpc.AppointmentService.AddDoctorRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.grpc.AppointmentService.AddDoctorResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new AppointmentServiceMethodDescriptorSupplier("AddDoctor"))
+              .build();
+        }
+      }
+    }
+    return getAddDoctorMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<generated.grpc.AppointmentService.AddAvailabilityRequest,
+      generated.grpc.AppointmentService.AddAvailabilityResponse> getAddAvailabilityMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "AddAvailability",
+      requestType = generated.grpc.AppointmentService.AddAvailabilityRequest.class,
+      responseType = generated.grpc.AppointmentService.AddAvailabilityResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<generated.grpc.AppointmentService.AddAvailabilityRequest,
+      generated.grpc.AppointmentService.AddAvailabilityResponse> getAddAvailabilityMethod() {
+    io.grpc.MethodDescriptor<generated.grpc.AppointmentService.AddAvailabilityRequest, generated.grpc.AppointmentService.AddAvailabilityResponse> getAddAvailabilityMethod;
+    if ((getAddAvailabilityMethod = AppointmentServiceGrpc.getAddAvailabilityMethod) == null) {
+      synchronized (AppointmentServiceGrpc.class) {
+        if ((getAddAvailabilityMethod = AppointmentServiceGrpc.getAddAvailabilityMethod) == null) {
+          AppointmentServiceGrpc.getAddAvailabilityMethod = getAddAvailabilityMethod =
+              io.grpc.MethodDescriptor.<generated.grpc.AppointmentService.AddAvailabilityRequest, generated.grpc.AppointmentService.AddAvailabilityResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "AddAvailability"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.grpc.AppointmentService.AddAvailabilityRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.grpc.AppointmentService.AddAvailabilityResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new AppointmentServiceMethodDescriptorSupplier("AddAvailability"))
+              .build();
+        }
+      }
+    }
+    return getAddAvailabilityMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -186,6 +248,26 @@ public final class AppointmentServiceGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetAppointmentMethod(), responseObserver);
     }
 
+    /**
+     * <pre>
+     * Adds a new doctor to the system. (Unary RPC)
+     * </pre>
+     */
+    public void addDoctor(generated.grpc.AppointmentService.AddDoctorRequest request,
+        io.grpc.stub.StreamObserver<generated.grpc.AppointmentService.AddDoctorResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getAddDoctorMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
+     * Adds availability for a doctor. (Unary RPC)
+     * </pre>
+     */
+    public void addAvailability(generated.grpc.AppointmentService.AddAvailabilityRequest request,
+        io.grpc.stub.StreamObserver<generated.grpc.AppointmentService.AddAvailabilityResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getAddAvailabilityMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -209,6 +291,20 @@ public final class AppointmentServiceGrpc {
                 generated.grpc.AppointmentService.AppointmentIdRequest,
                 generated.grpc.AppointmentService.AppointmentResponse>(
                   this, METHODID_GET_APPOINTMENT)))
+          .addMethod(
+            getAddDoctorMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                generated.grpc.AppointmentService.AddDoctorRequest,
+                generated.grpc.AppointmentService.AddDoctorResponse>(
+                  this, METHODID_ADD_DOCTOR)))
+          .addMethod(
+            getAddAvailabilityMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                generated.grpc.AppointmentService.AddAvailabilityRequest,
+                generated.grpc.AppointmentService.AddAvailabilityResponse>(
+                  this, METHODID_ADD_AVAILABILITY)))
           .build();
     }
   }
@@ -259,6 +355,28 @@ public final class AppointmentServiceGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetAppointmentMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     * <pre>
+     * Adds a new doctor to the system. (Unary RPC)
+     * </pre>
+     */
+    public void addDoctor(generated.grpc.AppointmentService.AddDoctorRequest request,
+        io.grpc.stub.StreamObserver<generated.grpc.AppointmentService.AddDoctorResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getAddDoctorMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
+     * Adds availability for a doctor. (Unary RPC)
+     * </pre>
+     */
+    public void addAvailability(generated.grpc.AppointmentService.AddAvailabilityRequest request,
+        io.grpc.stub.StreamObserver<generated.grpc.AppointmentService.AddAvailabilityResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getAddAvailabilityMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -305,6 +423,26 @@ public final class AppointmentServiceGrpc {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetAppointmentMethod(), getCallOptions(), request);
     }
+
+    /**
+     * <pre>
+     * Adds a new doctor to the system. (Unary RPC)
+     * </pre>
+     */
+    public generated.grpc.AppointmentService.AddDoctorResponse addDoctor(generated.grpc.AppointmentService.AddDoctorRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getAddDoctorMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * Adds availability for a doctor. (Unary RPC)
+     * </pre>
+     */
+    public generated.grpc.AppointmentService.AddAvailabilityResponse addAvailability(generated.grpc.AppointmentService.AddAvailabilityRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getAddAvailabilityMethod(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -342,11 +480,35 @@ public final class AppointmentServiceGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetAppointmentMethod(), getCallOptions()), request);
     }
+
+    /**
+     * <pre>
+     * Adds a new doctor to the system. (Unary RPC)
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<generated.grpc.AppointmentService.AddDoctorResponse> addDoctor(
+        generated.grpc.AppointmentService.AddDoctorRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getAddDoctorMethod(), getCallOptions()), request);
+    }
+
+    /**
+     * <pre>
+     * Adds availability for a doctor. (Unary RPC)
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<generated.grpc.AppointmentService.AddAvailabilityResponse> addAvailability(
+        generated.grpc.AppointmentService.AddAvailabilityRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getAddAvailabilityMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_SCHEDULE_APPOINTMENT = 0;
   private static final int METHODID_GET_AVAILABILITY = 1;
   private static final int METHODID_GET_APPOINTMENT = 2;
+  private static final int METHODID_ADD_DOCTOR = 3;
+  private static final int METHODID_ADD_AVAILABILITY = 4;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -376,6 +538,14 @@ public final class AppointmentServiceGrpc {
         case METHODID_GET_APPOINTMENT:
           serviceImpl.getAppointment((generated.grpc.AppointmentService.AppointmentIdRequest) request,
               (io.grpc.stub.StreamObserver<generated.grpc.AppointmentService.AppointmentResponse>) responseObserver);
+          break;
+        case METHODID_ADD_DOCTOR:
+          serviceImpl.addDoctor((generated.grpc.AppointmentService.AddDoctorRequest) request,
+              (io.grpc.stub.StreamObserver<generated.grpc.AppointmentService.AddDoctorResponse>) responseObserver);
+          break;
+        case METHODID_ADD_AVAILABILITY:
+          serviceImpl.addAvailability((generated.grpc.AppointmentService.AddAvailabilityRequest) request,
+              (io.grpc.stub.StreamObserver<generated.grpc.AppointmentService.AddAvailabilityResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -441,6 +611,8 @@ public final class AppointmentServiceGrpc {
               .addMethod(getScheduleAppointmentMethod())
               .addMethod(getGetAvailabilityMethod())
               .addMethod(getGetAppointmentMethod())
+              .addMethod(getAddDoctorMethod())
+              .addMethod(getAddAvailabilityMethod())
               .build();
         }
       }

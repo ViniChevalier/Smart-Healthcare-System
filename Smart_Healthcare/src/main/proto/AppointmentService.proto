@@ -15,6 +15,12 @@ service AppointmentService {
 
     // Retrieves a scheduled appointment by its ID. (Unary RPC)
     rpc GetAppointment (AppointmentIdRequest) returns (AppointmentResponse);
+
+    // Adds a new doctor to the system. (Unary RPC)
+    rpc AddDoctor (AddDoctorRequest) returns (AddDoctorResponse);
+
+    // Adds availability for a doctor. (Unary RPC)
+    rpc AddAvailability (AddAvailabilityRequest) returns (AddAvailabilityResponse);
 }
 
 // Request message for scheduling an appointment.
@@ -43,4 +49,30 @@ message AvailabilityResponse {
 // Request message for getting appointment by ID
 message AppointmentIdRequest {
     string appointment_id = 1;
+}
+
+// Request message to add a new doctor.
+message AddDoctorRequest {
+    string doctor_id = 1;
+}
+
+// Response message confirming the doctor has been added.
+message AddDoctorResponse {
+    bool success = 1;
+    string message = 2;
+    string doctor_id = 3;
+}
+
+// Request message to add availability for a doctor.
+message AddAvailabilityRequest {
+    string doctor_id = 1;
+    string time_slot = 2;
+}
+
+// Response message confirming the availability has been added.
+message AddAvailabilityResponse {
+    bool success = 1;
+    string message = 2;
+    string doctor_id = 3;
+    string time_slot = 4;
 }
