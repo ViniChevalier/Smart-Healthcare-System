@@ -8,14 +8,18 @@ package distsys.smart_healthcare;
  *
  * @author vinicius
  */
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
 
 import generated.grpc.AppointmentService.AppointmentServiceGrpc;
 import generated.grpc.AppointmentService.AppointmentRequest;
 import generated.grpc.AppointmentService.AppointmentResponse;
 import generated.grpc.AppointmentService.AppointmentIdRequest;
+import generated.grpc.AppointmentService.AvailabilityRequest;
+import generated.grpc.AppointmentService.AvailabilityResponse;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -51,6 +55,13 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
                 getAppointment();
             }
         });
+        
+        // Event handler: Load availability
+               btnLoadAvailability.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updateAvailableSlots();
+            }
+        });
 
     }
 
@@ -68,9 +79,7 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
         lblPatient = new javax.swing.JLabel();
         txtPatient = new javax.swing.JTextField();
         lblDoctor = new javax.swing.JLabel();
-        txtDoctor = new javax.swing.JTextField();
         lblTime = new javax.swing.JLabel();
-        txtTime = new javax.swing.JTextField();
         btnBook = new javax.swing.JButton();
         lblAppointmentId = new javax.swing.JLabel();
         txtAppointmentId = new javax.swing.JTextField();
@@ -80,8 +89,9 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboTime = new javax.swing.JComboBox<>();
+        txtDoctor = new javax.swing.JTextField();
+        btnLoadAvailability = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -98,8 +108,6 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
         lblDoctor.setText("Doctor ID");
 
         lblTime.setText("Appointment Time");
-
-        txtTime.setText("2025-04-04 14:00");
 
         btnBook.setText("Book Appointment");
 
@@ -124,9 +132,9 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Check Appointments");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboTime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enter a Doctor ID first" }));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btnLoadAvailability.setText("Load Availability");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,23 +153,20 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
                             .addComponent(lblPatient)
                             .addComponent(lblDoctor)
                             .addComponent(lblTime))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtTime, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
-                            .addComponent(txtDoctor)
-                            .addComponent(txtPatient)))
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPatient)
+                            .addComponent(jComboTime, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtDoctor, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnLoadAvailability, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(lblAppointmentId)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtAppointmentId, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator1))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(107, 107, 107))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,11 +180,12 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDoctor)
-                    .addComponent(txtDoctor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDoctor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLoadAvailability))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTime)
-                    .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnBook)
                 .addGap(18, 18, 18)
@@ -194,11 +200,7 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
                 .addComponent(btnRetrieve)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -212,11 +214,43 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAppointmentIdActionPerformed
 
-   // Handles booking an appointment
+ private void updateAvailableSlots() {
+        String doctorId = txtDoctor.getText().trim();
+        jComboTime.removeAllItems();
+
+        if (doctorId.isEmpty()) {
+            jComboTime.addItem("Enter a Doctor ID first");
+            return;
+        }
+
+        AvailabilityRequest request = AvailabilityRequest.newBuilder()
+                .setDoctorId(doctorId)
+                .build();
+
+        try {
+            Iterator<AvailabilityResponse> responses = blockingStub.getAvailability(request);
+            boolean hasSlots = false;
+
+            while (responses.hasNext()) {
+                hasSlots = true;
+                String slot = responses.next().getDateTime();
+                jComboTime.addItem(slot);
+            }
+
+            if (!hasSlots) {
+                jComboTime.addItem("No available slots");
+            }
+        } catch (Exception e) {
+            jComboTime.addItem("Error fetching slots");
+            e.printStackTrace();
+        }
+    }
+
+    // Handles booking an appointment
     private void bookAppointment() {
         String patientId = txtPatient.getText().trim();
         String doctorId = txtDoctor.getText().trim();
-        String dateTime = txtTime.getText().trim();
+        String dateTime = (String) jComboTime.getSelectedItem();
 
         AppointmentRequest request = AppointmentRequest.newBuilder()
                 .setPatientId(patientId)
@@ -232,8 +266,8 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
             txtResult.setText("Failed to book appointment.\nMessage: " + response.getMessage());
         }
     }
-    
-        // Handles retrieving an appointment by ID
+
+    // Handles retrieving an appointment by ID
     private void getAppointment() {
         String appointmentId = txtAppointmentId.getText().trim();
 
@@ -246,14 +280,7 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
         if (response.getSuccess()) {
             txtResult.setText("Appointment details:\n" + response.getMessage());
         } else {
-            txtResult.setText("Failed to get the appointment..\nMessage: " + response.getMessage());
-        }
-    }
-
-    // Shutdown the gRPC connection
-    public void shutdown() {
-        if (channel != null && !channel.isShutdown()) {
-            channel.shutdown();
+            txtResult.setText("Failed to get the appointment.\nMessage: " + response.getMessage());
         }
     }
 
@@ -294,9 +321,9 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBook;
+    private javax.swing.JButton btnLoadAvailability;
     private javax.swing.JButton btnRetrieve;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboTime;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -310,6 +337,5 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtDoctor;
     private javax.swing.JTextField txtPatient;
     private javax.swing.JTextArea txtResult;
-    private javax.swing.JTextField txtTime;
     // End of variables declaration//GEN-END:variables
 }

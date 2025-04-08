@@ -18,7 +18,7 @@ import generated.grpc.AppointmentService.AppointmentServiceGrpc.AppointmentServi
 import generated.grpc.AppointmentService.*;
 import java.util.List;
 
-public class AppointmentServiceImpl extends AppointmentServiceImplBase {
+public class AppointmentServer extends AppointmentServiceImplBase {
 
     // ArrayList to store appointments
     ArrayList<Appointment> appointments = new ArrayList<>();
@@ -165,7 +165,7 @@ public class AppointmentServiceImpl extends AppointmentServiceImplBase {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Server server = ServerBuilder.forPort(50051)
-                .addService(new AppointmentServiceImpl())
+                .addService(new AppointmentServer())
                 .build()
                 .start();
 

@@ -44,28 +44,25 @@
                           <Component id="lblDoctor" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="lblTime" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtTime" pref="421" max="32767" attributes="0"/>
-                          <Component id="txtDoctor" alignment="0" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txtPatient" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jComboTime" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="txtDoctor" min="-2" pref="289" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnLoadAvailability" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="lblAppointmentId" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="37" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="txtAppointmentId" min="-2" pref="421" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-              <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="jComboBox2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -83,11 +80,12 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblDoctor" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtDoctor" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnLoadAvailability" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblTime" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtTime" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jComboTime" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnBook" min="-2" max="-2" attributes="0"/>
@@ -104,12 +102,7 @@
               <Component id="btnRetrieve" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="163" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jComboBox2" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="38" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -130,16 +123,9 @@
         <Property name="text" type="java.lang.String" value="Doctor ID"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtDoctor">
-    </Component>
     <Component class="javax.swing.JLabel" name="lblTime">
       <Properties>
         <Property name="text" type="java.lang.String" value="Appointment Time"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtTime">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="2025-04-04 14:00"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnBook">
@@ -194,14 +180,11 @@
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBox1">
+    <Component class="javax.swing.JComboBox" name="jComboTime">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
+          <StringArray count="1">
+            <StringItem index="0" value="Enter a Doctor ID first"/>
           </StringArray>
         </Property>
       </Properties>
@@ -209,20 +192,12 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBox2">
+    <Component class="javax.swing.JTextField" name="txtDoctor">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnLoadAvailability">
       <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
-        </Property>
+        <Property name="text" type="java.lang.String" value="Load Availability"/>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
