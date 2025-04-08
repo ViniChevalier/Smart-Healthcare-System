@@ -13,7 +13,6 @@ distsys/smart_healthcare/DoctorManagementGUI$10.class
 generated/grpc/HealthMonitoringService/HealthDataResponseOrBuilder.class
 generated/grpc/AppointmentService/AppointmentRequest$Builder.class
 generated/grpc/HealthMonitoringService/HealthMonitoringServiceGrpc$1.class
-distsys/smart_healthcare/AppointmentServer.class
 generated/grpc/TelemedicineService/MessageRequestOrBuilder.class
 generated/grpc/TelemedicineService/MessageResponse.class
 generated/grpc/TelemedicineService/ConsultationRequest$1.class
@@ -50,7 +49,9 @@ generated/grpc/TelemedicineService/TelemedicineServiceGrpc$TelemedicineServiceSt
 distsys/smart_healthcare/AppointmentClientGUI$3.class
 generated/grpc/AppointmentService/AppointmentServiceGrpc$1.class
 generated/grpc/HealthMonitoringService/HealthMonitoringServiceGrpc$HealthMonitoringServiceStub.class
+distsys/smart_healthcare/SmartHealthcareServer$TelemedicineServiceImpl.class
 distsys/smart_healthcare/DoctorManagementGUI$7.class
+distsys/smart_healthcare/SmartHealthcareServer$AppointmentServiceImpl.class
 generated/grpc/AppointmentService/AppointmentServiceGrpc$AppointmentServiceBlockingStub.class
 generated/grpc/AppointmentService/AvailabilityRequest.class
 generated/grpc/AppointmentService/AppointmentResponse$Builder.class
@@ -61,9 +62,11 @@ distsys/smart_healthcare/DoctorManagementGUI.class
 generated/grpc/HealthMonitoringService/HealthMonitoringServiceGrpc.class
 generated/grpc/AppointmentService/AvailabilityResponse.class
 generated/grpc/HealthMonitoringService/EmergencyAlertResponseOrBuilder.class
+distsys/smart_healthcare/SmartHealthcareServer.class
 generated/grpc/HealthMonitoringService/HealthMonitoringServiceGrpc$HealthMonitoringServiceFutureStub.class
 generated/grpc/AppointmentService/AvailabilityRequest$Builder.class
 generated/grpc/AppointmentService/AppointmentRequestOrBuilder.class
+distsys/smart_healthcare/SmartHealthcareServer$TelemedicineServiceImpl$1.class
 generated/grpc/AppointmentService/AppointmentServiceGrpc.class
 distsys/smart_healthcare/DoctorManagementGUI$4.class
 generated/grpc/AppointmentService/AppointmentIdRequest$1.class
