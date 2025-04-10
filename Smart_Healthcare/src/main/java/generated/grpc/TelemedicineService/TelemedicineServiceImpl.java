@@ -47,17 +47,17 @@ public final class TelemedicineServiceImpl {
       "eService\"<\n\023ConsultationRequest\022\022\n\npatie" +
       "nt_id\030\001 \001(\t\022\021\n\tdoctor_id\030\002 \001(\t\"8\n\024Consul" +
       "tationResponse\022\017\n\007success\030\001 \001(\010\022\017\n\007messa" +
-      "ge\030\002 \001(\t\"9\n\016MessageRequest\022\021\n\tsender_id\030" +
-      "\001 \001(\t\022\024\n\014message_text\030\002 \001(\t\":\n\017MessageRe" +
-      "sponse\022\021\n\tsender_id\030\001 \001(\t\022\024\n\014message_tex" +
-      "t\030\002 \001(\t2\326\001\n\023TelemedicineService\022h\n\021Start" +
-      "Consultation\022(.TelemedicineService.Consu" +
-      "ltationRequest\032).TelemedicineService.Con" +
-      "sultationResponse\022U\n\004Chat\022#.Telemedicine" +
-      "Service.MessageRequest\032$.TelemedicineSer" +
-      "vice.MessageResponse(\0010\001B?\n\"generated.gr" +
-      "pc.TelemedicineServiceB\027TelemedicineServ" +
-      "iceImplP\001b\006proto3"
+      "ge\030\002 \001(\t\"6\n\016MessageRequest\022\016\n\006sender\030\001 \001" +
+      "(\t\022\024\n\014message_text\030\002 \001(\t\"7\n\017MessageRespo" +
+      "nse\022\016\n\006sender\030\001 \001(\t\022\024\n\014message_text\030\002 \001(" +
+      "\t2\326\001\n\023TelemedicineService\022h\n\021StartConsul" +
+      "tation\022(.TelemedicineService.Consultatio" +
+      "nRequest\032).TelemedicineService.Consultat" +
+      "ionResponse\022U\n\004Chat\022#.TelemedicineServic" +
+      "e.MessageRequest\032$.TelemedicineService.M" +
+      "essageResponse(\0010\001B?\n\"generated.grpc.Tel" +
+      "emedicineServiceB\027TelemedicineServiceImp" +
+      "lP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -80,13 +80,13 @@ public final class TelemedicineServiceImpl {
     internal_static_TelemedicineService_MessageRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TelemedicineService_MessageRequest_descriptor,
-        new java.lang.String[] { "SenderId", "MessageText", });
+        new java.lang.String[] { "Sender", "MessageText", });
     internal_static_TelemedicineService_MessageResponse_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_TelemedicineService_MessageResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TelemedicineService_MessageResponse_descriptor,
-        new java.lang.String[] { "SenderId", "MessageText", });
+        new java.lang.String[] { "Sender", "MessageText", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

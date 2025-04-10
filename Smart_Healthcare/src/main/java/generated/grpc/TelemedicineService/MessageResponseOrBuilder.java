@@ -12,20 +12,20 @@ public interface MessageResponseOrBuilder extends
    * ID of the message sender (patient or doctor)
    * </pre>
    *
-   * <code>string sender_id = 1;</code>
-   * @return The senderId.
+   * <code>string sender = 1;</code>
+   * @return The sender.
    */
-  java.lang.String getSenderId();
+  java.lang.String getSender();
   /**
    * <pre>
    * ID of the message sender (patient or doctor)
    * </pre>
    *
-   * <code>string sender_id = 1;</code>
-   * @return The bytes for senderId.
+   * <code>string sender = 1;</code>
+   * @return The bytes for sender.
    */
   com.google.protobuf.ByteString
-      getSenderIdBytes();
+      getSenderBytes();
 
   /**
    * <pre>

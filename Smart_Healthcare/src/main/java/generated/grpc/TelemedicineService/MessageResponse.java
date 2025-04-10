@@ -20,7 +20,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private MessageResponse() {
-    senderId_ = "";
+    sender_ = "";
     messageText_ = "";
   }
 
@@ -57,7 +57,7 @@ private static final long serialVersionUID = 0L;
           case 10: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            senderId_ = s;
+            sender_ = s;
             break;
           }
           case 18: {
@@ -100,26 +100,26 @@ private static final long serialVersionUID = 0L;
             generated.grpc.TelemedicineService.MessageResponse.class, generated.grpc.TelemedicineService.MessageResponse.Builder.class);
   }
 
-  public static final int SENDER_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object senderId_;
+  public static final int SENDER_FIELD_NUMBER = 1;
+  private volatile java.lang.Object sender_;
   /**
    * <pre>
    * ID of the message sender (patient or doctor)
    * </pre>
    *
-   * <code>string sender_id = 1;</code>
-   * @return The senderId.
+   * <code>string sender = 1;</code>
+   * @return The sender.
    */
   @java.lang.Override
-  public java.lang.String getSenderId() {
-    java.lang.Object ref = senderId_;
+  public java.lang.String getSender() {
+    java.lang.Object ref = sender_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      senderId_ = s;
+      sender_ = s;
       return s;
     }
   }
@@ -128,18 +128,18 @@ private static final long serialVersionUID = 0L;
    * ID of the message sender (patient or doctor)
    * </pre>
    *
-   * <code>string sender_id = 1;</code>
-   * @return The bytes for senderId.
+   * <code>string sender = 1;</code>
+   * @return The bytes for sender.
    */
   @java.lang.Override
   public com.google.protobuf.ByteString
-      getSenderIdBytes() {
-    java.lang.Object ref = senderId_;
+      getSenderBytes() {
+    java.lang.Object ref = sender_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      senderId_ = b;
+      sender_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -206,8 +206,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(senderId_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, senderId_);
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sender_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, sender_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(messageText_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, messageText_);
@@ -221,8 +221,8 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(senderId_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, senderId_);
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sender_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, sender_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(messageText_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, messageText_);
@@ -242,8 +242,8 @@ private static final long serialVersionUID = 0L;
     }
     generated.grpc.TelemedicineService.MessageResponse other = (generated.grpc.TelemedicineService.MessageResponse) obj;
 
-    if (!getSenderId()
-        .equals(other.getSenderId())) return false;
+    if (!getSender()
+        .equals(other.getSender())) return false;
     if (!getMessageText()
         .equals(other.getMessageText())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
@@ -257,8 +257,8 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + SENDER_ID_FIELD_NUMBER;
-    hash = (53 * hash) + getSenderId().hashCode();
+    hash = (37 * hash) + SENDER_FIELD_NUMBER;
+    hash = (53 * hash) + getSender().hashCode();
     hash = (37 * hash) + MESSAGE_TEXT_FIELD_NUMBER;
     hash = (53 * hash) + getMessageText().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
@@ -398,7 +398,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      senderId_ = "";
+      sender_ = "";
 
       messageText_ = "";
 
@@ -428,7 +428,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public generated.grpc.TelemedicineService.MessageResponse buildPartial() {
       generated.grpc.TelemedicineService.MessageResponse result = new generated.grpc.TelemedicineService.MessageResponse(this);
-      result.senderId_ = senderId_;
+      result.sender_ = sender_;
       result.messageText_ = messageText_;
       onBuilt();
       return result;
@@ -478,8 +478,8 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(generated.grpc.TelemedicineService.MessageResponse other) {
       if (other == generated.grpc.TelemedicineService.MessageResponse.getDefaultInstance()) return this;
-      if (!other.getSenderId().isEmpty()) {
-        senderId_ = other.senderId_;
+      if (!other.getSender().isEmpty()) {
+        sender_ = other.sender_;
         onChanged();
       }
       if (!other.getMessageText().isEmpty()) {
@@ -515,22 +515,22 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object senderId_ = "";
+    private java.lang.Object sender_ = "";
     /**
      * <pre>
      * ID of the message sender (patient or doctor)
      * </pre>
      *
-     * <code>string sender_id = 1;</code>
-     * @return The senderId.
+     * <code>string sender = 1;</code>
+     * @return The sender.
      */
-    public java.lang.String getSenderId() {
-      java.lang.Object ref = senderId_;
+    public java.lang.String getSender() {
+      java.lang.Object ref = sender_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        senderId_ = s;
+        sender_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
@@ -541,17 +541,17 @@ private static final long serialVersionUID = 0L;
      * ID of the message sender (patient or doctor)
      * </pre>
      *
-     * <code>string sender_id = 1;</code>
-     * @return The bytes for senderId.
+     * <code>string sender = 1;</code>
+     * @return The bytes for sender.
      */
     public com.google.protobuf.ByteString
-        getSenderIdBytes() {
-      java.lang.Object ref = senderId_;
+        getSenderBytes() {
+      java.lang.Object ref = sender_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        senderId_ = b;
+        sender_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -562,17 +562,17 @@ private static final long serialVersionUID = 0L;
      * ID of the message sender (patient or doctor)
      * </pre>
      *
-     * <code>string sender_id = 1;</code>
-     * @param value The senderId to set.
+     * <code>string sender = 1;</code>
+     * @param value The sender to set.
      * @return This builder for chaining.
      */
-    public Builder setSenderId(
+    public Builder setSender(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      senderId_ = value;
+      sender_ = value;
       onChanged();
       return this;
     }
@@ -581,12 +581,12 @@ private static final long serialVersionUID = 0L;
      * ID of the message sender (patient or doctor)
      * </pre>
      *
-     * <code>string sender_id = 1;</code>
+     * <code>string sender = 1;</code>
      * @return This builder for chaining.
      */
-    public Builder clearSenderId() {
+    public Builder clearSender() {
       
-      senderId_ = getDefaultInstance().getSenderId();
+      sender_ = getDefaultInstance().getSender();
       onChanged();
       return this;
     }
@@ -595,18 +595,18 @@ private static final long serialVersionUID = 0L;
      * ID of the message sender (patient or doctor)
      * </pre>
      *
-     * <code>string sender_id = 1;</code>
-     * @param value The bytes for senderId to set.
+     * <code>string sender = 1;</code>
+     * @param value The bytes for sender to set.
      * @return This builder for chaining.
      */
-    public Builder setSenderIdBytes(
+    public Builder setSenderBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      senderId_ = value;
+      sender_ = value;
       onChanged();
       return this;
     }

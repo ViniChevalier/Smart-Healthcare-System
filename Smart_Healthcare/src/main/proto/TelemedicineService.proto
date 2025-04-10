@@ -29,12 +29,12 @@ message ConsultationResponse {
 
 // Request message for chat messages.
 message MessageRequest {
-    string sender_id = 1;   // ID of the message sender (patient or doctor)
+    string sender = 1;   // ID of the message sender (patient or doctor)
     string message_text = 2; // The chat message content
 }
 
 // Response message for chat messages.
 message MessageResponse {
-    string sender_id = 1;   // ID of the message sender (patient or doctor)
+    string sender = 1;   // ID of the message sender (patient or doctor)
     string message_text = 2; // The chat message content
 }

@@ -187,6 +187,16 @@ public class SmartHealthcareServer {
                     .build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
+
+            String systemMessage = "Consultation started between Patient " + request.getPatientId()
+                    + " and Doctor " + request.getDoctorId();
+
+            for (StreamObserver<MessageResponse> client : connectedClients) {
+                client.onNext(MessageResponse.newBuilder()
+                        .setSender("System")
+                        .setMessageText(systemMessage)
+                        .build());
+            }
         }
 
         @Override
@@ -199,6 +209,7 @@ public class SmartHealthcareServer {
                     // Broadcast the message to all connected clients
                     for (StreamObserver<MessageResponse> client : connectedClients) {
                         client.onNext(MessageResponse.newBuilder()
+                                .setSender(value.getSender())
                                 .setMessageText(value.getMessageText())
                                 .build());
                     }
@@ -214,6 +225,7 @@ public class SmartHealthcareServer {
                     connectedClients.remove(responseObserver);
                     responseObserver.onCompleted();
                 }
+
             };
         }
     }

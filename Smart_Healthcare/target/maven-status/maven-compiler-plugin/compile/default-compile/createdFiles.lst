@@ -40,6 +40,7 @@ distsys/smart_healthcare/AppointmentClientGUI$2.class
 generated/grpc/HealthMonitoringService/EmergencyAlertRequest.class
 generated/grpc/AppointmentService/AppointmentIdRequest$Builder.class
 distsys/smart_healthcare/TeleDoctorGUI.class
+distsys/smart_healthcare/TeleClientGUI$4.class
 generated/grpc/AppointmentService/AddAvailabilityResponseOrBuilder.class
 distsys/smart_healthcare/TeleClientGUI.class
 generated/grpc/AppointmentService/AvailabilityResponseOrBuilder.class
@@ -124,6 +125,7 @@ generated/grpc/HealthMonitoringService/HealthMonitoringServiceGrpc$HealthMonitor
 generated/grpc/HealthMonitoringService/HealthMonitoringServiceGrpc$HealthMonitoringServiceFileDescriptorSupplier.class
 generated/grpc/AppointmentService/AddDoctorRequest.class
 generated/grpc/AppointmentService/AppointmentServiceGrpc$AppointmentServiceStub.class
+distsys/smart_healthcare/TeleDoctorGUI$4.class
 generated/grpc/AppointmentService/AddDoctorResponse$Builder.class
 generated/grpc/HealthMonitoringService/HealthMonitoringServiceGrpc$3.class
 generated/grpc/HealthMonitoringService/EmergencyAlertResponse$1.class
