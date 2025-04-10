@@ -19,6 +19,7 @@ import generated.grpc.AppointmentService.*;
 import generated.grpc.TelemedicineService.TelemedicineServiceGrpc.TelemedicineServiceImplBase;
 import generated.grpc.TelemedicineService.*;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SmartHealthcareServer {
 
@@ -176,6 +177,8 @@ public class SmartHealthcareServer {
 
     static class TelemedicineServiceImpl extends TelemedicineServiceImplBase {
 
+        private final List<StreamObserver<MessageResponse>> connectedClients = new CopyOnWriteArrayList<>();
+
         @Override
         public void startConsultation(ConsultationRequest request, StreamObserver<ConsultationResponse> responseObserver) {
             System.out.println("Starting consultation between patient " + request.getPatientId() + " and doctor " + request.getDoctorId());
@@ -188,24 +191,27 @@ public class SmartHealthcareServer {
 
         @Override
         public StreamObserver<MessageRequest> chat(StreamObserver<MessageResponse> responseObserver) {
+            connectedClients.add(responseObserver);
+
             return new StreamObserver<MessageRequest>() {
                 @Override
-                public void onNext(MessageRequest message) {
-                    System.out.println("Chat message received: " + message.getMessageText());
-                    responseObserver.onNext(
-                            MessageResponse.newBuilder()
-                                    .setMessageText("Doctor reply: " + message.getMessageText())
-                                    .build()
-                    );
+                public void onNext(MessageRequest value) {
+                    // Broadcast the message to all connected clients
+                    for (StreamObserver<MessageResponse> client : connectedClients) {
+                        client.onNext(MessageResponse.newBuilder()
+                                .setMessageText(value.getMessageText())
+                                .build());
+                    }
                 }
 
                 @Override
                 public void onError(Throwable t) {
-                    System.err.println("Chat error: " + t.getMessage());
+                    connectedClients.remove(responseObserver);
                 }
 
                 @Override
                 public void onCompleted() {
+                    connectedClients.remove(responseObserver);
                     responseObserver.onCompleted();
                 }
             };
