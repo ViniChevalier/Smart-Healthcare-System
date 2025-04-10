@@ -13,6 +13,8 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 
+import javax.swing.*;
+
 public class TeleDoctorGUI extends javax.swing.JFrame {
 
     private ManagedChannel channel;
@@ -24,22 +26,15 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
      * Creates new form TeleDoctorGUI
      */
     public TeleDoctorGUI() {
-        initComponents();
+       initComponents();
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
         asyncStub = TelemedicineServiceGrpc.newStub(channel);
         blockingStub = TelemedicineServiceGrpc.newBlockingStub(channel);
         startChatStream();
-
-        // Attach ActionListener to the Start Consultation button
-        btnStartConsultation.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStartConsultationActionPerformed(evt);
-            }
-        });
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,11 +73,16 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Doctor Telemedicine");
 
-        jLabel2.setText("Client ID");
+        jLabel2.setText("Doctor ID");
 
         btnStartConsultation.setText("Start Consultation");
+        btnStartConsultation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartConsultationActionPerformed(evt);
+            }
+        });
 
-        jLabel3.setText("Doctor ID");
+        jLabel3.setText("Patient ID");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,37 +100,36 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtDoctorId, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPatientId, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(11, 11, 11)
-                                .addComponent(txtPatientId, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDoctorId, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnStartConsultation, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)))
+                        .addComponent(btnStartConsultation, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDoctorId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel2)
+                            .addComponent(txtDoctorId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtPatientId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btnStartConsultation)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel3)))
+                    .addComponent(btnStartConsultation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chatInput, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sendButton)
@@ -142,24 +141,36 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         // TODO add your handling code here:
-        String message = chatInput.getText().trim();
+        // Handle sending a message
+    String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
             MessageRequest request = MessageRequest.newBuilder()
                     .setSender("Doctor")
                     .setMessageText(message)
                     .build();
 
-            chatRequestStream.onNext(request);
-            chatArea.append("You: " + message + "\n");
-            chatInput.setText("");
+            if (chatRequestStream != null) {
+                chatRequestStream.onNext(request);
+                chatArea.append("You: " + message + "\n");
+                chatInput.setText("");
+            } else {
+                chatArea.append("Error: Chat stream not available.\n");
+            }
         }
     }//GEN-LAST:event_sendButtonActionPerformed
 
-    private void btnStartConsultationActionPerformed(java.awt.event.ActionEvent evt) {
-        String patientId = txtPatientId.getText();
-        String doctorId = txtDoctorId.getText();
+    private void btnStartConsultationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartConsultationActionPerformed
+        // TODO add your handling code here:
+        String doctorId = txtDoctorId.getText().trim();
+        String patientId = txtPatientId.getText().trim();
+
+        if (patientId.isEmpty() || doctorId.isEmpty()) {
+            chatArea.append("Please enter both Patient ID and Doctor ID.\n");
+            return;
+        }
+
         initiateConsultation(patientId, doctorId);
-    }
+    }//GEN-LAST:event_btnStartConsultationActionPerformed
 
     private void initiateConsultation(String patientId, String doctorId) {
         ConsultationRequest request = ConsultationRequest.newBuilder()
@@ -167,12 +178,15 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
                 .setDoctorId(doctorId)
                 .build();
 
-        ConsultationResponse response = blockingStub.startConsultation(request);
-
-        if (response.getSuccess()) {
-            chatArea.append("Consultation started with patient " + patientId + "\n");
-        } else {
-            chatArea.append("Failed to start consultation.\n");
+        try {
+            ConsultationResponse response = blockingStub.startConsultation(request);
+            if (response.getSuccess()) {
+                chatArea.append("Consultation started with Patient " + patientId + "\n");
+            } else {
+                chatArea.append("Failed to start consultation.\n");
+            }
+        } catch (Exception e) {
+            chatArea.append("Error starting consultation: " + e.getMessage() + "\n");
         }
     }
 
@@ -181,20 +195,37 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
             @Override
             public void onNext(MessageResponse value) {
                 if (!value.getSender().equals("Doctor")) {
-                    chatArea.append(value.getSender() + ": " + value.getMessageText() + "\n");
+                    SwingUtilities.invokeLater(() -> {
+                        chatArea.append(value.getSender() + ": " + value.getMessageText() + "\n");
+                    });
                 }
             }
 
             @Override
             public void onError(Throwable t) {
-                chatArea.append("Chat error: " + t.getMessage() + "\n");
+                SwingUtilities.invokeLater(() -> {
+                    chatArea.append("Chat error: " + t.getMessage() + "\n");
+                });
             }
 
             @Override
             public void onCompleted() {
-                chatArea.append("Chat session ended.\n");
+                SwingUtilities.invokeLater(() -> {
+                    chatArea.append("Chat session ended.\n");
+                });
             }
         });
+    }
+
+    @Override
+    public void dispose() {
+        if (chatRequestStream != null) {
+            chatRequestStream.onCompleted();
+        }
+        if (channel != null && !channel.isShutdown()) {
+            channel.shutdown();
+        }
+        super.dispose();
     }
 
     public static void main(String args[]) {
@@ -219,6 +250,10 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TeleDoctorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

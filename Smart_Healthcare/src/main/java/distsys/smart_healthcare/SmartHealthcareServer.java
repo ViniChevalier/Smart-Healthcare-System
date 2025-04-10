@@ -181,22 +181,18 @@ public class SmartHealthcareServer {
 
         @Override
         public void startConsultation(ConsultationRequest request, StreamObserver<ConsultationResponse> responseObserver) {
-            System.out.println("Starting consultation between patient " + request.getPatientId() + " and doctor " + request.getDoctorId());
+            String patientId = request.getPatientId();
+            String doctorId = request.getDoctorId();
+
+            System.out.println("Starting consultation between Patient " + patientId + " and Doctor " + doctorId);
+
             ConsultationResponse response = ConsultationResponse.newBuilder()
                     .setSuccess(true)
+                    .setMessage("Consultation started")
                     .build();
+
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-
-            String systemMessage = "Consultation started between Patient " + request.getPatientId()
-                    + " and Doctor " + request.getDoctorId();
-
-            for (StreamObserver<MessageResponse> client : connectedClients) {
-                client.onNext(MessageResponse.newBuilder()
-                        .setSender("System")
-                        .setMessageText(systemMessage)
-                        .build());
-            }
         }
 
         @Override
