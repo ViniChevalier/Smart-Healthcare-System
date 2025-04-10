@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
   }
   private EmergencyAlertResponse() {
     responseMessage_ = "";
+    confirmation_ = "";
   }
 
   @java.lang.Override
@@ -62,6 +63,12 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             responseMessage_ = s;
+            break;
+          }
+          case 26: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            confirmation_ = s;
             break;
           }
           default: {
@@ -159,6 +166,44 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int CONFIRMATION_FIELD_NUMBER = 3;
+  private volatile java.lang.Object confirmation_;
+  /**
+   * <code>string confirmation = 3;</code>
+   * @return The confirmation.
+   */
+  @java.lang.Override
+  public java.lang.String getConfirmation() {
+    java.lang.Object ref = confirmation_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      confirmation_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string confirmation = 3;</code>
+   * @return The bytes for confirmation.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getConfirmationBytes() {
+    java.lang.Object ref = confirmation_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      confirmation_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -179,6 +224,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(responseMessage_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, responseMessage_);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(confirmation_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, confirmation_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -194,6 +242,9 @@ private static final long serialVersionUID = 0L;
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(responseMessage_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, responseMessage_);
+    }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(confirmation_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, confirmation_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -214,6 +265,8 @@ private static final long serialVersionUID = 0L;
         != other.getAcknowledged()) return false;
     if (!getResponseMessage()
         .equals(other.getResponseMessage())) return false;
+    if (!getConfirmation()
+        .equals(other.getConfirmation())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -230,6 +283,8 @@ private static final long serialVersionUID = 0L;
         getAcknowledged());
     hash = (37 * hash) + RESPONSE_MESSAGE_FIELD_NUMBER;
     hash = (53 * hash) + getResponseMessage().hashCode();
+    hash = (37 * hash) + CONFIRMATION_FIELD_NUMBER;
+    hash = (53 * hash) + getConfirmation().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -371,6 +426,8 @@ private static final long serialVersionUID = 0L;
 
       responseMessage_ = "";
 
+      confirmation_ = "";
+
       return this;
     }
 
@@ -399,6 +456,7 @@ private static final long serialVersionUID = 0L;
       generated.grpc.HealthMonitoringService.EmergencyAlertResponse result = new generated.grpc.HealthMonitoringService.EmergencyAlertResponse(this);
       result.acknowledged_ = acknowledged_;
       result.responseMessage_ = responseMessage_;
+      result.confirmation_ = confirmation_;
       onBuilt();
       return result;
     }
@@ -452,6 +510,10 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getResponseMessage().isEmpty()) {
         responseMessage_ = other.responseMessage_;
+        onChanged();
+      }
+      if (!other.getConfirmation().isEmpty()) {
+        confirmation_ = other.confirmation_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -618,6 +680,82 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       responseMessage_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object confirmation_ = "";
+    /**
+     * <code>string confirmation = 3;</code>
+     * @return The confirmation.
+     */
+    public java.lang.String getConfirmation() {
+      java.lang.Object ref = confirmation_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        confirmation_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string confirmation = 3;</code>
+     * @return The bytes for confirmation.
+     */
+    public com.google.protobuf.ByteString
+        getConfirmationBytes() {
+      java.lang.Object ref = confirmation_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        confirmation_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string confirmation = 3;</code>
+     * @param value The confirmation to set.
+     * @return This builder for chaining.
+     */
+    public Builder setConfirmation(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      confirmation_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string confirmation = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearConfirmation() {
+      
+      confirmation_ = getDefaultInstance().getConfirmation();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string confirmation = 3;</code>
+     * @param value The bytes for confirmation to set.
+     * @return This builder for chaining.
+     */
+    public Builder setConfirmationBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      confirmation_ = value;
       onChanged();
       return this;
     }

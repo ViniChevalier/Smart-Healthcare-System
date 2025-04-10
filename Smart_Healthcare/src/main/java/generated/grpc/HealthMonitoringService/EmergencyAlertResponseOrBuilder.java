@@ -36,4 +36,16 @@ public interface EmergencyAlertResponseOrBuilder extends
    */
   com.google.protobuf.ByteString
       getResponseMessageBytes();
+
+  /**
+   * <code>string confirmation = 3;</code>
+   * @return The confirmation.
+   */
+  java.lang.String getConfirmation();
+  /**
+   * <code>string confirmation = 3;</code>
+   * @return The bytes for confirmation.
+   */
+  com.google.protobuf.ByteString
+      getConfirmationBytes();
 }

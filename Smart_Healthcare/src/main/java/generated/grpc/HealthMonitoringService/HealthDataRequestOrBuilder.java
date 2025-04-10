@@ -46,4 +46,24 @@ public interface HealthDataRequestOrBuilder extends
    * @return The temperature.
    */
   float getTemperature();
+
+  /**
+   * <pre>
+   * Device's ID
+   * </pre>
+   *
+   * <code>string deviceId = 4;</code>
+   * @return The deviceId.
+   */
+  java.lang.String getDeviceId();
+  /**
+   * <pre>
+   * Device's ID
+   * </pre>
+   *
+   * <code>string deviceId = 4;</code>
+   * @return The bytes for deviceId.
+   */
+  com.google.protobuf.ByteString
+      getDeviceIdBytes();
 }

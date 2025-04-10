@@ -20,6 +20,7 @@ message HealthDataRequest {
     string patient_id = 1;  // Patient's unique identifier
     float heart_rate = 2;   // Heart rate measurement
     float temperature = 3;  // Body temperature measurement
+    string deviceId = 4;    // Device's ID
 }
 
 // Response message for health data processing.
@@ -32,10 +33,12 @@ message HealthDataResponse {
 message EmergencyAlertRequest {
     string patient_id = 1;  // Patient's unique identifier
     string alert_type = 2;  // Example: "Heart Rate Spike", "High Temperature"
+    string alertMessage = 3;
 }
 
 // Response message for emergency alerts.
 message EmergencyAlertResponse {
     bool acknowledged = 1;  // Indicates if the alert was received
     string response_message = 2; // Details about the response or next steps
+    string confirmation = 3;
 }
