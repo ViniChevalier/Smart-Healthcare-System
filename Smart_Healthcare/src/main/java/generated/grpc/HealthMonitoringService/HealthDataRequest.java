@@ -60,9 +60,9 @@ private static final long serialVersionUID = 0L;
             patientId_ = s;
             break;
           }
-          case 21: {
+          case 16: {
 
-            heartRate_ = input.readFloat();
+            heartRate_ = input.readInt32();
             break;
           }
           case 29: {
@@ -157,17 +157,17 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HEART_RATE_FIELD_NUMBER = 2;
-  private float heartRate_;
+  private int heartRate_;
   /**
    * <pre>
    * Heart rate measurement
    * </pre>
    *
-   * <code>float heart_rate = 2;</code>
+   * <code>int32 heart_rate = 2;</code>
    * @return The heartRate.
    */
   @java.lang.Override
-  public float getHeartRate() {
+  public int getHeartRate() {
     return heartRate_;
   }
 
@@ -249,8 +249,8 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(patientId_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, patientId_);
     }
-    if (java.lang.Float.floatToRawIntBits(heartRate_) != 0) {
-      output.writeFloat(2, heartRate_);
+    if (heartRate_ != 0) {
+      output.writeInt32(2, heartRate_);
     }
     if (java.lang.Float.floatToRawIntBits(temperature_) != 0) {
       output.writeFloat(3, temperature_);
@@ -270,9 +270,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(patientId_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, patientId_);
     }
-    if (java.lang.Float.floatToRawIntBits(heartRate_) != 0) {
+    if (heartRate_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeFloatSize(2, heartRate_);
+        .computeInt32Size(2, heartRate_);
     }
     if (java.lang.Float.floatToRawIntBits(temperature_) != 0) {
       size += com.google.protobuf.CodedOutputStream
@@ -298,9 +298,8 @@ private static final long serialVersionUID = 0L;
 
     if (!getPatientId()
         .equals(other.getPatientId())) return false;
-    if (java.lang.Float.floatToIntBits(getHeartRate())
-        != java.lang.Float.floatToIntBits(
-            other.getHeartRate())) return false;
+    if (getHeartRate()
+        != other.getHeartRate()) return false;
     if (java.lang.Float.floatToIntBits(getTemperature())
         != java.lang.Float.floatToIntBits(
             other.getTemperature())) return false;
@@ -320,8 +319,7 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + PATIENT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getPatientId().hashCode();
     hash = (37 * hash) + HEART_RATE_FIELD_NUMBER;
-    hash = (53 * hash) + java.lang.Float.floatToIntBits(
-        getHeartRate());
+    hash = (53 * hash) + getHeartRate();
     hash = (37 * hash) + TEMPERATURE_FIELD_NUMBER;
     hash = (53 * hash) + java.lang.Float.floatToIntBits(
         getTemperature());
@@ -466,7 +464,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       patientId_ = "";
 
-      heartRate_ = 0F;
+      heartRate_ = 0;
 
       temperature_ = 0F;
 
@@ -554,7 +552,7 @@ private static final long serialVersionUID = 0L;
         patientId_ = other.patientId_;
         onChanged();
       }
-      if (other.getHeartRate() != 0F) {
+      if (other.getHeartRate() != 0) {
         setHeartRate(other.getHeartRate());
       }
       if (other.getTemperature() != 0F) {
@@ -689,17 +687,17 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private float heartRate_ ;
+    private int heartRate_ ;
     /**
      * <pre>
      * Heart rate measurement
      * </pre>
      *
-     * <code>float heart_rate = 2;</code>
+     * <code>int32 heart_rate = 2;</code>
      * @return The heartRate.
      */
     @java.lang.Override
-    public float getHeartRate() {
+    public int getHeartRate() {
       return heartRate_;
     }
     /**
@@ -707,11 +705,11 @@ private static final long serialVersionUID = 0L;
      * Heart rate measurement
      * </pre>
      *
-     * <code>float heart_rate = 2;</code>
+     * <code>int32 heart_rate = 2;</code>
      * @param value The heartRate to set.
      * @return This builder for chaining.
      */
-    public Builder setHeartRate(float value) {
+    public Builder setHeartRate(int value) {
       
       heartRate_ = value;
       onChanged();
@@ -722,12 +720,12 @@ private static final long serialVersionUID = 0L;
      * Heart rate measurement
      * </pre>
      *
-     * <code>float heart_rate = 2;</code>
+     * <code>int32 heart_rate = 2;</code>
      * @return This builder for chaining.
      */
     public Builder clearHeartRate() {
       
-      heartRate_ = 0F;
+      heartRate_ = 0;
       onChanged();
       return this;
     }

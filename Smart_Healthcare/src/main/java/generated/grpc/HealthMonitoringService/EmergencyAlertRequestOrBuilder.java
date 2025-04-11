@@ -46,16 +46,4 @@ public interface EmergencyAlertRequestOrBuilder extends
    */
   com.google.protobuf.ByteString
       getAlertTypeBytes();
-
-  /**
-   * <code>string alertMessage = 3;</code>
-   * @return The alertMessage.
-   */
-  java.lang.String getAlertMessage();
-  /**
-   * <code>string alertMessage = 3;</code>
-   * @return The bytes for alertMessage.
-   */
-  com.google.protobuf.ByteString
-      getAlertMessageBytes();
 }

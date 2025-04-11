@@ -18,7 +18,7 @@ service HealthMonitoringService {
 // Message for streaming health data from IoT devices.
 message HealthDataRequest {
     string patient_id = 1;  // Patient's unique identifier
-    float heart_rate = 2;   // Heart rate measurement
+    int32 heart_rate = 2;   // Heart rate measurement
     float temperature = 3;  // Body temperature measurement
     string deviceId = 4;    // Device's ID
 }
@@ -33,7 +33,6 @@ message HealthDataResponse {
 message EmergencyAlertRequest {
     string patient_id = 1;  // Patient's unique identifier
     string alert_type = 2;  // Example: "Heart Rate Spike", "High Temperature"
-    string alertMessage = 3;
 }
 
 // Response message for emergency alerts.

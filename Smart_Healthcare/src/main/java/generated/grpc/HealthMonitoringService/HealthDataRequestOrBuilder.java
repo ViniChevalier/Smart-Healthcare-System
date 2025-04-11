@@ -32,10 +32,10 @@ public interface HealthDataRequestOrBuilder extends
    * Heart rate measurement
    * </pre>
    *
-   * <code>float heart_rate = 2;</code>
+   * <code>int32 heart_rate = 2;</code>
    * @return The heartRate.
    */
-  float getHeartRate();
+  int getHeartRate();
 
   /**
    * <pre>
