@@ -31,9 +31,71 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
      * Creates new form HealthMonitoringClient
      */
     public HealthMonitoringGUI() {
-        initComponents();
-        initGrpcConnection();
+        initComponents(); // Initialize the GUI components
+
+        // Initialize the gRPC connection
+        channel = ManagedChannelBuilder.forAddress("localhost", 50051)
+                .usePlaintext() // Avoid SSL for local dev
+                .build();
+        asyncStub = HealthMonitoringServiceGrpc.newStub(channel); // You may have different stubs based on client-streaming or bidi-streaming
+
+        // Setup gRPC listeners for health data and emergency alert
         setupListeners();
+
+        // Event handler: Start health data streaming
+        btnSendHealthData.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendHealthData();
+            }
+        });
+
+        // Event handler: Start emergency alert streaming
+        btnSendAlert.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendEmergencyAlert();
+            }
+        });
+
+   
+    }
+
+// Example of your setupListeners method
+    private void setupListeners() {
+        healthDataStream = asyncStub.sendHealthData(new StreamObserver<HealthDataResponse>() {
+            @Override
+            public void onNext(HealthDataResponse value) {
+                txtHealthData.append("Server Response: " + value.getMessage() + "\n");
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                txtHealthData.append("Error: " + t.getMessage() + "\n");
+            }
+
+            @Override
+            public void onCompleted() {
+                System.out.println("Health data stream completed.");
+            }
+        });
+
+        emergencyStream = asyncStub.alertEmergency(new StreamObserver<EmergencyAlertResponse>() {
+            @Override
+            public void onNext(EmergencyAlertResponse response) {
+                txtEmergencyResponse.append(response.getConfirmation() + "\n");
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                txtEmergencyResponse.append("Error: " + t.getMessage() + "\n");
+            }
+
+            @Override
+            public void onCompleted() {
+                txtEmergencyResponse.append("Emergency stream closed by server.\n");
+            }
+        });
     }
 
     /**
@@ -233,65 +295,6 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSendHealthDataActionPerformed
 
-    private void initGrpcConnection() {
-        channel = ManagedChannelBuilder.forAddress("localhost", 50051)
-                .usePlaintext()
-                .build();
-        asyncStub = HealthMonitoringServiceGrpc.newStub(channel);
-
-        // Start health data stream
-        healthDataStream = asyncStub.sendHealthData(new StreamObserver<HealthDataResponse>() {
-            @Override
-            public void onNext(HealthDataResponse value) {
-                txtHealthData.append("Server Response: " + value.getMessage() + "\n");
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                txtHealthData.append("Error: " + t.getMessage() + "\n");
-            }
-
-            @Override
-            public void onCompleted() {
-                System.out.println("Health data stream completed.");
-            }
-        });
-
-        // Start emergency alert stream
-        emergencyStream = asyncStub.alertEmergency(new StreamObserver<EmergencyAlertResponse>() {
-            @Override
-            public void onNext(EmergencyAlertResponse response) {
-                txtEmergencyResponse.append(response.getConfirmation() + "\n");
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                txtEmergencyResponse.append("Error: " + t.getMessage() + "\n");
-            }
-
-            @Override
-            public void onCompleted() {
-                txtEmergencyResponse.append("Emergency stream closed by server.\n");
-            }
-        });
-
-    }
-
-    private void setupListeners() {
-        btnSendHealthData.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sendHealthData();
-            }
-        });
-
-        btnSendAlert.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sendEmergencyAlert();
-            }
-        });
-    }
 // Counter to track the number of streams
     private int streamCount = 0;
 
