@@ -234,62 +234,86 @@ public class SmartHealthcareServer {
 
     static class HealthMonitoringServiceImpl extends HealthMonitoringServiceImplBase {
 
-    @Override
-    public StreamObserver<HealthDataRequest> sendHealthData(StreamObserver<HealthDataResponse> responseObserver) {
-        return new StreamObserver<>() {
-            List<HealthDataRequest> receivedData = new ArrayList<>();
+        @Override
+        public StreamObserver<HealthDataRequest> sendHealthData(StreamObserver<HealthDataResponse> responseObserver) {
+            return new StreamObserver<>() {
+                List<HealthDataRequest> receivedData = new ArrayList<>();
 
-            @Override
-            public void onNext(HealthDataRequest value) {
-                System.out.println("Received health data from: " + value.getDeviceId());
-                receivedData.add(value);
-            }
+                @Override
+                public void onNext(HealthDataRequest value) {
+                    System.out.println("Received health data from: " + value.getDeviceId());
+                    receivedData.add(value);
 
-            @Override
-            public void onError(Throwable t) {
-                System.err.println("Health data stream error: " + t.getMessage());
-            }
+                    // Threshold logic
+                    int heartRate = value.getHeartRate();
+                    float temperature = value.getTemperature();
+                    boolean isHeartRateAbnormal = heartRate < 50 || heartRate > 120;
+                    boolean isTempAbnormal = temperature < 35.0 || temperature > 38.5;
 
-            @Override
-            public void onCompleted() {
-                // Example: build a summary response
-                HealthDataResponse response = HealthDataResponse.newBuilder()
-                        .setMessage("Received " + receivedData.size() + " health data entries.")
-                        .build();
+                    if (isHeartRateAbnormal || isTempAbnormal) {
+                        StringBuilder alertMessage = new StringBuilder();
+                        alertMessage.append("Abnormal values detected for patient ")
+                                .append(value.getPatientId())
+                                .append(" - ");
 
-                responseObserver.onNext(response);
-                responseObserver.onCompleted();
-            }
-        };
+                        if (isHeartRateAbnormal) {
+                            alertMessage.append("Heart Rate: ").append(heartRate).append(" bpm. ");
+                        }
+                        if (isTempAbnormal) {
+                            alertMessage.append("Temperature: ").append(temperature).append("°C. ");
+                        }
+
+                        System.out.println("[ALERT] " + alertMessage);
+
+                        // Optional: call another service here, save to DB, or push to client
+                    }
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    System.err.println("Health data stream error: " + t.getMessage());
+                }
+
+                @Override
+                public void onCompleted() {
+                    // Example: build a summary response
+                    HealthDataResponse response = HealthDataResponse.newBuilder()
+                            .setMessage("Received " + receivedData.size() + " health data entries.")
+                            .build();
+
+                    responseObserver.onNext(response);
+                    responseObserver.onCompleted();
+                }
+            };
+        }
+
+        @Override
+        public StreamObserver<EmergencyAlertRequest> alertEmergency(StreamObserver<EmergencyAlertResponse> responseObserver) {
+            return new StreamObserver<>() {
+                @Override
+                public void onNext(EmergencyAlertRequest alert) {
+                    System.out.println("Emergency alert: " + alert.getAlertMessage());
+
+                    EmergencyAlertResponse response = EmergencyAlertResponse.newBuilder()
+                            .setConfirmation("Alert for patient " + alert.getPatientId() + " acknowledged.")
+                            .build();
+
+                    responseObserver.onNext(response);
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    System.err.println("Emergency alert stream error: " + t.getMessage());
+                }
+
+                @Override
+                public void onCompleted() {
+                    responseObserver.onCompleted();
+                }
+            };
+        }
     }
 
-    @Override
-    public StreamObserver<EmergencyAlertRequest> alertEmergency(StreamObserver<EmergencyAlertResponse> responseObserver) {
-        return new StreamObserver<>() {
-            @Override
-            public void onNext(EmergencyAlertRequest alert) {
-                System.out.println("Emergency alert: " + alert.getAlertMessage());
-
-                EmergencyAlertResponse response = EmergencyAlertResponse.newBuilder()
-                        .setConfirmation("Alert for patient " + alert.getPatientId() + " acknowledged.")
-                        .build();
-
-                responseObserver.onNext(response);
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                System.err.println("Emergency alert stream error: " + t.getMessage());
-            }
-
-            @Override
-            public void onCompleted() {
-                responseObserver.onCompleted();
-            }
-        };
-    }
-}
-    
     public static void main(String[] args) throws IOException, InterruptedException {
         Server server = ServerBuilder.forPort(50051)
                 .addService(new AppointmentServiceImpl())
