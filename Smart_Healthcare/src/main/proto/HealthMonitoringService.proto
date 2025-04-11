@@ -33,6 +33,7 @@ message HealthDataResponse {
 message EmergencyAlertRequest {
     string patient_id = 1;  // Patient's unique identifier
     string alert_type = 2;  // Example: "Heart Rate Spike", "High Temperature"
+    string alertMessage = 3;
 }
 
 // Response message for emergency alerts.

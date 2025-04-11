@@ -48,19 +48,20 @@ public final class HealthMonitoringServiceImpl {
       "\npatient_id\030\001 \001(\t\022\022\n\nheart_rate\030\002 \001(\005\022\023\n" +
       "\013temperature\030\003 \001(\002\022\020\n\010deviceId\030\004 \001(\t\"6\n\022" +
       "HealthDataResponse\022\017\n\007success\030\001 \001(\010\022\017\n\007m" +
-      "essage\030\002 \001(\t\"?\n\025EmergencyAlertRequest\022\022\n" +
-      "\npatient_id\030\001 \001(\t\022\022\n\nalert_type\030\002 \001(\t\"^\n" +
-      "\026EmergencyAlertResponse\022\024\n\014acknowledged\030" +
-      "\001 \001(\010\022\030\n\020response_message\030\002 \001(\t\022\024\n\014confi" +
-      "rmation\030\003 \001(\t2\375\001\n\027HealthMonitoringServic" +
-      "e\022k\n\016SendHealthData\022*.HealthMonitoringSe" +
-      "rvice.HealthDataRequest\032+.HealthMonitori" +
-      "ngService.HealthDataResponse(\001\022u\n\016AlertE" +
-      "mergency\022..HealthMonitoringService.Emerg" +
-      "encyAlertRequest\032/.HealthMonitoringServi" +
-      "ce.EmergencyAlertResponse(\0010\001BG\n&generat" +
-      "ed.grpc.HealthMonitoringServiceB\033HealthM" +
-      "onitoringServiceImplP\001b\006proto3"
+      "essage\030\002 \001(\t\"U\n\025EmergencyAlertRequest\022\022\n" +
+      "\npatient_id\030\001 \001(\t\022\022\n\nalert_type\030\002 \001(\t\022\024\n" +
+      "\014alertMessage\030\003 \001(\t\"^\n\026EmergencyAlertRes" +
+      "ponse\022\024\n\014acknowledged\030\001 \001(\010\022\030\n\020response_" +
+      "message\030\002 \001(\t\022\024\n\014confirmation\030\003 \001(\t2\375\001\n\027" +
+      "HealthMonitoringService\022k\n\016SendHealthDat" +
+      "a\022*.HealthMonitoringService.HealthDataRe" +
+      "quest\032+.HealthMonitoringService.HealthDa" +
+      "taResponse(\001\022u\n\016AlertEmergency\022..HealthM" +
+      "onitoringService.EmergencyAlertRequest\032/" +
+      ".HealthMonitoringService.EmergencyAlertR" +
+      "esponse(\0010\001BG\n&generated.grpc.HealthMoni" +
+      "toringServiceB\033HealthMonitoringServiceIm" +
+      "plP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -83,7 +84,7 @@ public final class HealthMonitoringServiceImpl {
     internal_static_HealthMonitoringService_EmergencyAlertRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_HealthMonitoringService_EmergencyAlertRequest_descriptor,
-        new java.lang.String[] { "PatientId", "AlertType", });
+        new java.lang.String[] { "PatientId", "AlertType", "AlertMessage", });
     internal_static_HealthMonitoringService_EmergencyAlertResponse_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_HealthMonitoringService_EmergencyAlertResponse_fieldAccessorTable = new

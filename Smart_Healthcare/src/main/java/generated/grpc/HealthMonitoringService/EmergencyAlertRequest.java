@@ -22,6 +22,7 @@ private static final long serialVersionUID = 0L;
   private EmergencyAlertRequest() {
     patientId_ = "";
     alertType_ = "";
+    alertMessage_ = "";
   }
 
   @java.lang.Override
@@ -64,6 +65,12 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             alertType_ = s;
+            break;
+          }
+          case 26: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            alertMessage_ = s;
             break;
           }
           default: {
@@ -192,6 +199,44 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int ALERTMESSAGE_FIELD_NUMBER = 3;
+  private volatile java.lang.Object alertMessage_;
+  /**
+   * <code>string alertMessage = 3;</code>
+   * @return The alertMessage.
+   */
+  @java.lang.Override
+  public java.lang.String getAlertMessage() {
+    java.lang.Object ref = alertMessage_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      alertMessage_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string alertMessage = 3;</code>
+   * @return The bytes for alertMessage.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getAlertMessageBytes() {
+    java.lang.Object ref = alertMessage_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      alertMessage_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -212,6 +257,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(alertType_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, alertType_);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(alertMessage_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, alertMessage_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -226,6 +274,9 @@ private static final long serialVersionUID = 0L;
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(alertType_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, alertType_);
+    }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(alertMessage_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, alertMessage_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -246,6 +297,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getPatientId())) return false;
     if (!getAlertType()
         .equals(other.getAlertType())) return false;
+    if (!getAlertMessage()
+        .equals(other.getAlertMessage())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -261,6 +314,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getPatientId().hashCode();
     hash = (37 * hash) + ALERT_TYPE_FIELD_NUMBER;
     hash = (53 * hash) + getAlertType().hashCode();
+    hash = (37 * hash) + ALERTMESSAGE_FIELD_NUMBER;
+    hash = (53 * hash) + getAlertMessage().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -402,6 +457,8 @@ private static final long serialVersionUID = 0L;
 
       alertType_ = "";
 
+      alertMessage_ = "";
+
       return this;
     }
 
@@ -430,6 +487,7 @@ private static final long serialVersionUID = 0L;
       generated.grpc.HealthMonitoringService.EmergencyAlertRequest result = new generated.grpc.HealthMonitoringService.EmergencyAlertRequest(this);
       result.patientId_ = patientId_;
       result.alertType_ = alertType_;
+      result.alertMessage_ = alertMessage_;
       onBuilt();
       return result;
     }
@@ -484,6 +542,10 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getAlertType().isEmpty()) {
         alertType_ = other.alertType_;
+        onChanged();
+      }
+      if (!other.getAlertMessage().isEmpty()) {
+        alertMessage_ = other.alertMessage_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -703,6 +765,82 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       alertType_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object alertMessage_ = "";
+    /**
+     * <code>string alertMessage = 3;</code>
+     * @return The alertMessage.
+     */
+    public java.lang.String getAlertMessage() {
+      java.lang.Object ref = alertMessage_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        alertMessage_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string alertMessage = 3;</code>
+     * @return The bytes for alertMessage.
+     */
+    public com.google.protobuf.ByteString
+        getAlertMessageBytes() {
+      java.lang.Object ref = alertMessage_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        alertMessage_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string alertMessage = 3;</code>
+     * @param value The alertMessage to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAlertMessage(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      alertMessage_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string alertMessage = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAlertMessage() {
+      
+      alertMessage_ = getDefaultInstance().getAlertMessage();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string alertMessage = 3;</code>
+     * @param value The bytes for alertMessage to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAlertMessageBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      alertMessage_ = value;
       onChanged();
       return this;
     }

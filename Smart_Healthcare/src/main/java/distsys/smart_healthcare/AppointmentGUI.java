@@ -24,7 +24,7 @@ import generated.grpc.AppointmentService.AvailabilityResponse;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
-public class AppointmentClientGUI extends javax.swing.JFrame {
+public class AppointmentGUI extends javax.swing.JFrame {
 
     private ManagedChannel channel;
     private AppointmentServiceGrpc.AppointmentServiceBlockingStub blockingStub;
@@ -33,7 +33,7 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
      * Creates new form AppointmentClientGUI
      */
     // Constructor
-    public AppointmentClientGUI() {
+    public AppointmentGUI() {
         initComponents();
 
         // Initialize the gRPC connection
@@ -301,20 +301,21 @@ public class AppointmentClientGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AppointmentClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AppointmentGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AppointmentClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AppointmentGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AppointmentClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AppointmentGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AppointmentClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AppointmentGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AppointmentClientGUI().setVisible(true);
+                new AppointmentGUI().setVisible(true);
             }
         });
     }

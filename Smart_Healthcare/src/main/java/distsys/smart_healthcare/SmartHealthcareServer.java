@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import generated.grpc.AppointmentService.AppointmentServiceGrpc.AppointmentServiceImplBase;
 import generated.grpc.AppointmentService.*;
@@ -229,15 +232,132 @@ public class SmartHealthcareServer {
         }
     }
 
+    static class HealthMonitoringServiceImpl extends HealthMonitoringServiceImplBase {
+
+        @Override
+        public StreamObserver<HealthDataRequest> sendHealthData(StreamObserver<HealthDataResponse> responseObserver) {
+            return new StreamObserver<>() {
+                List<HealthDataRequest> receivedData = new ArrayList<>();
+
+                @Override
+                public void onNext(HealthDataRequest value) {
+                    System.out.println("Received health data from: " + value.getDeviceId());
+                    receivedData.add(value);
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    System.err.println("Health data stream error: " + t.getMessage());
+                }
+
+                @Override
+                public void onCompleted() {
+                    // Calculate the average heart rate and temperature
+                    if (receivedData.isEmpty()) {
+                        responseObserver.onNext(HealthDataResponse.newBuilder()
+                                .setMessage("No data received.")
+                                .build());
+                    } else {
+                        int totalHeartRate = 0;
+                        float totalTemperature = 0.0f;
+
+                        for (HealthDataRequest data : receivedData) {
+                            totalHeartRate += data.getHeartRate();
+                            totalTemperature += data.getTemperature();
+                        }
+
+                        // Calculate the averages
+                        float avgHeartRate = (float) totalHeartRate / receivedData.size();
+                        float avgTemperature = totalTemperature / receivedData.size();
+
+                        // Prepare the response message
+                        String message = "Received health data entries. Average Heart Rate: " + avgHeartRate + " Average Temperature: " + avgTemperature;
+
+                        HealthDataResponse response = HealthDataResponse.newBuilder()
+                                .setMessage(message)
+                                .build();
+
+                        responseObserver.onNext(response);
+                    }
+
+                    // Complete the stream
+                    responseObserver.onCompleted();
+                }
+            };
+        }
+
+        @Override
+        public StreamObserver<EmergencyAlertRequest> alertEmergency(StreamObserver<EmergencyAlertResponse> responseObserver) {
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+            return new StreamObserver<>() {
+
+                @Override
+                public void onNext(EmergencyAlertRequest alert) {
+                    // Log the incoming alert
+                    System.out.println("Received Emergency Alert:");
+                    System.out.println("- Patient ID: " + alert.getPatientId());
+                    System.out.println("- Type: " + alert.getAlertType());
+                    System.out.println("- Message: " + alert.getAlertMessage());
+
+                    // Immediate response acknowledging receipt
+                    EmergencyAlertResponse ack = EmergencyAlertResponse.newBuilder()
+                            .setConfirmation("Alert received and acknowledged for patient: " + alert.getPatientId())
+                            .build();
+                    responseObserver.onNext(ack);
+
+                    // Schedule a delayed instruction after 30 seconds
+                    scheduler.schedule(() -> {
+                        String instructions = generateInstructions(alert.getAlertType());
+                        EmergencyAlertResponse followUp = EmergencyAlertResponse.newBuilder()
+                                .setConfirmation("Follow-up for patient " + alert.getPatientId() + ": " + instructions)
+                                .build();
+                        responseObserver.onNext(followUp);
+                    }, 30, TimeUnit.SECONDS);
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    System.err.println("Emergency alert stream error: " + t.getMessage());
+                    t.printStackTrace();
+                }
+
+                @Override
+                public void onCompleted() {
+                    System.out.println("Emergency alert stream completed.");
+                    responseObserver.onCompleted();
+                    scheduler.shutdown(); // Optional: shut down when done
+                }
+
+                // Generate custom instruction message based on alert type
+                private String generateInstructions(String alertType) {
+                    switch (alertType.toLowerCase()) {
+                        case "heart":
+                            return "Please monitor the patient's heart rate closely and prepare for possible ECG.";
+                        case "temperature":
+                            return "Ensure the patient is hydrated and adjust room temperature. Contact a doctor if condition worsens.";
+                        case "fall":
+                            return "Check for physical injuries and avoid moving the patient until help arrives.";
+                        case "all":
+                            return "Full medical assessment is recommended. Notify emergency medical services immediately.";
+                        default:
+                            return "Follow standard emergency procedures and notify healthcare staff.";
+                    }
+                }
+            };
+        }
+    }
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Server server = ServerBuilder.forPort(50051)
                 .addService(new AppointmentServiceImpl())
                 .addService(new TelemedicineServiceImpl())
+                .addService(new HealthMonitoringServiceImpl())
                 .build()
                 .start();
 
         System.out.println("Healthcare Service started on port 50051...");
         server.awaitTermination();
     }
+
 }
