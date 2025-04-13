@@ -22,24 +22,26 @@ import java.util.Random;
  */
 public class HealthMonitoringGUI extends javax.swing.JFrame {
 
+    // gRPC channel and stubs for communication
     private ManagedChannel channel;
     private HealthMonitoringServiceGrpc.HealthMonitoringServiceStub asyncStub;
+
     private StreamObserver<HealthDataRequest> healthDataStream;
     private StreamObserver<EmergencyAlertRequest> emergencyStream;
 
     /**
      * Creates new form HealthMonitoringClient
      */
+    //Constructor
     public HealthMonitoringGUI() {
-        initComponents(); // Initialize the GUI components
+        initComponents();
 
         // Initialize the gRPC connection
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
-                .usePlaintext() // Avoid SSL for local dev
+                .usePlaintext()
                 .build();
-        asyncStub = HealthMonitoringServiceGrpc.newStub(channel); // You may have different stubs based on client-streaming or bidi-streaming
+        asyncStub = HealthMonitoringServiceGrpc.newStub(channel);
 
-        // Setup gRPC listeners for health data and emergency alert
         setupListeners();
 
         // Event handler: Start health data streaming
@@ -58,7 +60,6 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
             }
         });
 
-   
     }
 
 // Example of your setupListeners method
@@ -66,16 +67,19 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
         healthDataStream = asyncStub.sendHealthData(new StreamObserver<HealthDataResponse>() {
             @Override
             public void onNext(HealthDataResponse value) {
+                // Handle the server's response for the stream
                 txtHealthData.append("Server Response: " + value.getMessage() + "\n");
             }
 
             @Override
             public void onError(Throwable t) {
+                // Handle error in response
                 txtHealthData.append("Error: " + t.getMessage() + "\n");
             }
 
             @Override
             public void onCompleted() {
+                // Log completion of the health data stream
                 System.out.println("Health data stream completed.");
             }
         });
@@ -300,7 +304,7 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
 
     private void sendHealthData() {
         try {
-
+            // Check if any required fields are empty, and show an error message if so
             if (txtPatientId.getText().trim().isEmpty()
                     || txtHeartRate.getText().trim().isEmpty()
                     || txtTemperature.getText().trim().isEmpty()
@@ -310,12 +314,12 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
                 return;
             }
 
+            // User input
             String patientId = txtPatientId.getText().trim();
             int heartRate = Integer.parseInt(txtHeartRate.getText().trim());
             float temperature = Float.parseFloat(txtTemperature.getText().trim());
             String deviceId = txtDeviceId.getText().trim();
 
-            // Build and send the request
             HealthDataRequest data = HealthDataRequest.newBuilder()
                     .setPatientId(patientId)
                     .setHeartRate(heartRate)
@@ -323,29 +327,34 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
                     .setDeviceId(deviceId)
                     .build();
 
+            // Send the health data through the stream
             healthDataStream.onNext(data);
             streamCount++;
             txtHealthData.append("Data streamed. " + (5 - streamCount) + " more streams remaining.\n");
 
+            // If 5 streams are completed, finish the stream and re-enable streaming
             if (streamCount >= 5) {
                 healthDataStream.onCompleted();
                 txtHealthData.append("Streaming completed.\n");
 
-                // Re-enable streaming
+                // Re-enable streaming: reset the stream count and create a new stream
                 streamCount = 0;
                 healthDataStream = asyncStub.sendHealthData(new StreamObserver<HealthDataResponse>() {
                     @Override
                     public void onNext(HealthDataResponse value) {
+                        // Handle the server's response for the stream
                         txtHealthData.append("Server Response: " + value.getMessage() + "\n");
                     }
 
                     @Override
                     public void onError(Throwable t) {
+                        // Handle error in response
                         txtHealthData.append("Error: " + t.getMessage() + "\n");
                     }
 
                     @Override
                     public void onCompleted() {
+                        // Log completion of the health data stream
                         System.out.println("Health data stream completed.");
                     }
                 });
@@ -354,47 +363,55 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
             }
 
         } catch (NumberFormatException ex) {
+            // Handle invalid number format
             txtHealthData.append("Error: Heart Rate and Temperature must be valid numbers!\n");
         } catch (Exception ex) {
+            // Catch any other unexpected errors
             txtHealthData.append("Unexpected Error: " + ex.getMessage() + "\n");
         }
     }
 
     private void sendEmergencyAlert() {
-        try {
-            String patientId = txtAlertPatientId.getText();
-            String alertType = comboAlertType.getSelectedItem().toString();
+    try {
+        // Retrieve patient ID and alert type from the user input
+        String patientId = txtAlertPatientId.getText();
+        String alertType = comboAlertType.getSelectedItem().toString();
 
-            // Generate random values
-            Random rand = new Random();
-            int heartRate = rand.nextInt(61) + 60;
-            double temperature = 35.0 + (rand.nextDouble() * 4);
-            boolean fallDetected = rand.nextBoolean();
+        // Generate random values for heart rate, temperature, and fall detection
+        Random rand = new Random();
+        int heartRate = rand.nextInt(61) + 60;
+        double temperature = 35.0 + (rand.nextDouble() * 4);
+        boolean fallDetected = rand.nextBoolean();
 
-            String fallStatus = fallDetected ? "Yes (Possible injury)" : "No";
+        // Set the fall status message based on fall detection result
+        String fallStatus = fallDetected ? "Yes (Possible injury)" : "No";
 
-            String alertMessage
-                    = "Emergency Alert: " + alertType + "\n"
-                    + "- Heart Rate: " + heartRate + " bpm \n"
-                    + "- Temperature: " + temperature + "°C \n"
-                    + "- Fall Detected: " + fallStatus;
+        // Create Alert message
+        String alertMessage
+                = "Emergency Alert: " + alertType + "\n"
+                + "- Heart Rate: " + heartRate + " bpm \n"
+                + "- Temperature: " + temperature + "°C \n"
+                + "- Fall Detected: " + fallStatus;
 
-            EmergencyAlertRequest alert = EmergencyAlertRequest.newBuilder()
-                    .setPatientId(patientId)
-                    .setAlertType(alertType)
-                    .setAlertMessage(alertMessage)
-                    .build();
+        EmergencyAlertRequest alert = EmergencyAlertRequest.newBuilder()
+                .setPatientId(patientId)
+                .setAlertType(alertType)
+                .setAlertMessage(alertMessage)
+                .build();
 
-            emergencyStream.onNext(alert);
+        // Send the emergency alert
+        emergencyStream.onNext(alert);
 
-            txtEmergencyResponse.append("Alert sent for patient ID: " + patientId + "\n");
-            txtEmergencyResponse.append("Message streamed:\n" + alertMessage + "\n\n");
+        // Display the alert
+        txtEmergencyResponse.append("Alert sent for patient ID: " + patientId + "\n");
+        txtEmergencyResponse.append("Message streamed:\n" + alertMessage + "\n\n");
 
-        } catch (Exception ex) {
-            txtEmergencyResponse.append("Failed to send alert: " + ex.getMessage() + "\n");
-        }
+    } catch (Exception ex) {
+        // Handle any errors that occur during alert sending
+        txtEmergencyResponse.append("Failed to send alert: " + ex.getMessage() + "\n");
     }
-
+}
+    
     /**
      * @param args the command line arguments
      */

@@ -9,11 +9,15 @@ import java.util.List;
 
 /**
  *
- * @author vinicius
+ *
+ * Author: vinicius
  */
 class Doctor {
 
+    // Unique identifier for the doctor
     private String doctorId;
+
+    // List of available time slots for appointments
     private List<String> availableSlots;
 
     // Constructor
@@ -22,7 +26,7 @@ class Doctor {
         this.availableSlots = new ArrayList<>();
     }
 
-    // Getters
+    // Getters and Setters
     public String getDoctorId() {
         return doctorId;
     }

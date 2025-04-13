@@ -8,13 +8,6 @@ package distsys.smart_healthcare;
  *
  * @author vinicius
  */
-<<<<<<< HEAD
-import auth.AuthServiceGrpc;
-import auth.AuthServiceOuterClass.LoginRequest;
-import auth.AuthServiceOuterClass.LoginResponse;
-=======
-
->>>>>>> parent of fe9b6ec (Improvement on server)
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -29,139 +22,48 @@ import generated.grpc.AppointmentService.AvailabilityResponse;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.Metadata;
-import io.grpc.stub.MetadataUtils;
 
 public class AppointmentGUI extends javax.swing.JFrame {
 
-<<<<<<< HEAD
     // gRPC channel and stub to connect to the AppointmentService
-    private AppointmentServiceGrpc.AppointmentServiceBlockingStub appointmentStub;
-=======
     private ManagedChannel channel;
     private AppointmentServiceGrpc.AppointmentServiceBlockingStub blockingStub;
->>>>>>> parent of fe9b6ec (Improvement on server)
 
     /**
      * Creates new form AppointmentClientGUI
      */
     // Constructor
-// Constructor
-    // Constructor
     public AppointmentGUI() {
         initComponents();
 
-<<<<<<< HEAD
-        // Start a background thread to handle the gRPC setup
-        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-                // Build gRPC channel and stub for synchronous/blocking calls
-                ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051)
-                        .usePlaintext()
-                        .build();
-
-                try {
-                    // Call AuthService to get token
-                    AuthServiceGrpc.AuthServiceBlockingStub authStub = AuthServiceGrpc.newBlockingStub(channel);
-
-                    LoginResponse response = authStub.login(LoginRequest.newBuilder()
-                            .setUsername("doctor123")
-                            .setPassword("mypassword")
-                            .build());
-
-                    String jwtToken = response.getToken();
-
-                    // Metadata
-                    Metadata headers = new Metadata();
-                    Metadata.Key<String> AUTHORIZATION_KEY = Metadata.Key.of("Authorization", Metadata.ASCII_STRING_MARSHALLER);
-                    headers.put(AUTHORIZATION_KEY, "Bearer " + jwtToken);
-
-                    // Attach headers to AppointmentService stub
-                    appointmentStub = MetadataUtils.attachHeaders(AppointmentServiceGrpc.newBlockingStub(channel), headers);
-
-                } catch (Exception e) {
-                    e.printStackTrace(); // Handle or log exception here
-                } finally {
-                    // Clean up the channel after the operation is done
-                    channel.shutdown();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                // This will run after the background task finishes on the EDT
-                try {
-                    // Ensure the stub is initialized before enabling buttons
-                    if (appointmentStub != null) {
-                        btnBook.setEnabled(true);
-                        btnRetrieve.setEnabled(true);
-                        btnLoadAvailability.setEnabled(true);
-                    } else {
-                        System.out.println("Error: appointmentStub not initialized.");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        worker.execute();
-
-        // Add action listeners to buttons
-=======
-        // Initialize the gRPC connection
+        // Build gRPC channel and stub for synchronous/blocking calls
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
         blockingStub = AppointmentServiceGrpc.newBlockingStub(channel);
 
-        // Event handler: Book Appointment
->>>>>>> parent of fe9b6ec (Improvement on server)
+        // Add action listeners to buttons
+        // Book appointment button
         btnBook.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Ensure appointmentStub is initialized before using it
-                if (appointmentStub != null) {
-                    bookAppointment();
-                } else {
-                    System.out.println("Error: appointmentStub not initialized.");
-                }
+                bookAppointment();
             }
         });
 
-<<<<<<< HEAD
-=======
-        // Event handler: Get Appointment by ID
->>>>>>> parent of fe9b6ec (Improvement on server)
+        // Retrieve appointment details by ID
         btnRetrieve.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Ensure appointmentStub is initialized before using it
-                if (appointmentStub != null) {
-                    getAppointment();
-                } else {
-                    System.out.println("Error: appointmentStub not initialized.");
-                }
+                getAppointment();
             }
         });
-<<<<<<< HEAD
 
+        // Load availability for a doctor
         btnLoadAvailability.addActionListener(new ActionListener() {
-=======
-        
-        // Event handler: Load availability
-               btnLoadAvailability.addActionListener(new ActionListener() {
->>>>>>> parent of fe9b6ec (Improvement on server)
             public void actionPerformed(ActionEvent e) {
-                // Ensure appointmentStub is initialized before using it
-                if (appointmentStub != null) {
-                    updateAvailableSlots();
-                } else {
-                    System.out.println("Error: appointmentStub not initialized.");
-                }
+                updateAvailableSlots();
             }
         });
+
     }
 
     /**
@@ -313,7 +215,8 @@ public class AppointmentGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAppointmentIdActionPerformed
 
- private void updateAvailableSlots() {
+    // Load and display available slots for a doctor
+    private void updateAvailableSlots() {
         String doctorId = txtDoctor.getText().trim();
         jComboTime.removeAllItems();
 
@@ -327,7 +230,7 @@ public class AppointmentGUI extends javax.swing.JFrame {
                 .build();
 
         try {
-            Iterator<AvailabilityResponse> responses = appointmentStub.getAvailability(request);
+            Iterator<AvailabilityResponse> responses = blockingStub.getAvailability(request);
             boolean hasSlots = false;
 
             while (responses.hasNext()) {
@@ -357,7 +260,7 @@ public class AppointmentGUI extends javax.swing.JFrame {
                 .setDateTime(dateTime)
                 .build();
 
-        AppointmentResponse response = appointmentStub.scheduleAppointment(request);
+        AppointmentResponse response = blockingStub.scheduleAppointment(request);
 
         if (response.getSuccess()) {
             txtResult.setText("Appointment booked successfully!\nMessage: " + response.getMessage());
@@ -374,7 +277,7 @@ public class AppointmentGUI extends javax.swing.JFrame {
                 .setAppointmentId(appointmentId)
                 .build();
 
-        AppointmentResponse response = appointmentStub.getAppointment(request);
+        AppointmentResponse response = blockingStub.getAppointment(request);
 
         if (response.getSuccess()) {
             txtResult.setText("Appointment details:\n" + response.getMessage());
