@@ -4,14 +4,11 @@
  */
 package distsys.smart_healthcare;
 
-/**
- *
- * @author vinicius
- */
-
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import io.grpc.ServerInterceptors;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -28,6 +25,11 @@ import generated.grpc.TelemedicineService.*;
 import generated.grpc.HealthMonitoringService.HealthMonitoringServiceGrpc.HealthMonitoringServiceImplBase;
 import generated.grpc.HealthMonitoringService.*;
 
+/**
+ *
+ * @author vinicius
+ */
+
 public class SmartHealthcareServer {
 
     // Appointment service implementation
@@ -35,7 +37,7 @@ public class SmartHealthcareServer {
 
         // List to store appointment data
         ArrayList<Appointment> appointments = new ArrayList<>();
-        
+
         // List to store doctor information
         ArrayList<Doctor> doctors = new ArrayList<>();
 
@@ -368,13 +370,14 @@ public class SmartHealthcareServer {
     public static void main(String[] args) throws IOException, InterruptedException {
         // Set up the gRPC server to listen on port 50051 and add services
         Server server = ServerBuilder.forPort(50051)
-                .addService(new AppointmentServiceImpl())  // Add Appointment Service
-                .addService(new TelemedicineServiceImpl()) // Add Telemedicine Service
-                .addService(new HealthMonitoringServiceImpl())  // Add Health Monitoring Service
+                .addService(new AuthServiceImpl())
+                .addService(ServerInterceptors.intercept(new AppointmentServiceImpl(), new AuthInterceptor())) // Add Appointment Service
+                .addService(ServerInterceptors.intercept(new TelemedicineServiceImpl(), new AuthInterceptor())) // Add Telemedicine Service
+                .addService(ServerInterceptors.intercept(new HealthMonitoringServiceImpl(), new AuthInterceptor())) // Add Health Monitoring Service
                 .build()
-                .start();  // Start the server
+                .start();
 
         System.out.println("Healthcare Service started on port 50051...");
-        server.awaitTermination();  // Wait for the server to terminate
+        server.awaitTermination();
     }
 }
