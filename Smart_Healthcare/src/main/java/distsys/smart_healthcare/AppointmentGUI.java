@@ -8,7 +8,6 @@ package distsys.smart_healthcare;
  *
  * @author vinicius
  */
-
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -26,6 +25,7 @@ import io.grpc.ManagedChannelBuilder;
 
 public class AppointmentGUI extends javax.swing.JFrame {
 
+    // gRPC channel and stub to connect to the AppointmentService
     private ManagedChannel channel;
     private AppointmentServiceGrpc.AppointmentServiceBlockingStub blockingStub;
 
@@ -36,28 +36,29 @@ public class AppointmentGUI extends javax.swing.JFrame {
     public AppointmentGUI() {
         initComponents();
 
-        // Initialize the gRPC connection
+        // Build gRPC channel and stub for synchronous/blocking calls
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
         blockingStub = AppointmentServiceGrpc.newBlockingStub(channel);
 
-        // Event handler: Book Appointment
+        // Add action listeners to buttons
+        // Book appointment button
         btnBook.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 bookAppointment();
             }
         });
 
-        // Event handler: Get Appointment by ID
+        // Retrieve appointment details by ID
         btnRetrieve.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 getAppointment();
             }
         });
-        
-        // Event handler: Load availability
-               btnLoadAvailability.addActionListener(new ActionListener() {
+
+        // Load availability for a doctor
+        btnLoadAvailability.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 updateAvailableSlots();
             }
@@ -214,7 +215,8 @@ public class AppointmentGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAppointmentIdActionPerformed
 
- private void updateAvailableSlots() {
+    // Load and display available slots for a doctor
+    private void updateAvailableSlots() {
         String doctorId = txtDoctor.getText().trim();
         jComboTime.removeAllItems();
 

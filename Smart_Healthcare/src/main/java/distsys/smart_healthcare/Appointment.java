@@ -7,16 +7,23 @@ package distsys.smart_healthcare;
 /**
  *
  *
- * @author vinicius
+ * Author: vinicius
  */
 class Appointment {
 
+    // Unique identifier for the appointment
     private final String appointmentId;
+
+    // Identifier of the patient associated with the appointment
     private final String patientId;
+
+    // Identifier of the doctor associated with the appointment
     private final String doctorId;
+
+    // Time at which the appointment is scheduled
     private final String appointmentTime;
 
-// constructor
+    // Constructor
     public Appointment(String appointmentId, String patientId, String doctorId, String appointmentTime) {
         this.appointmentId = appointmentId;
         this.patientId = patientId;
@@ -24,7 +31,7 @@ class Appointment {
         this.appointmentTime = appointmentTime;
     }
 
-    //Getters
+    // Getters and Setters
     public String getAppointmentId() {
         return appointmentId;
     }

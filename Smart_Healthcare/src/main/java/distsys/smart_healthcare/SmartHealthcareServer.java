@@ -8,6 +8,7 @@ package distsys.smart_healthcare;
  *
  * @author vinicius
  */
+
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
@@ -29,50 +30,51 @@ import generated.grpc.HealthMonitoringService.*;
 
 public class SmartHealthcareServer {
 
+    // Appointment service implementation
     static class AppointmentServiceImpl extends AppointmentServiceImplBase {
 
-        // ArrayList to store appointments
+        // List to store appointment data
         ArrayList<Appointment> appointments = new ArrayList<>();
-
-        // ArrayList to store doctors
+        
+        // List to store doctor information
         ArrayList<Doctor> doctors = new ArrayList<>();
 
-        // Counter for the appointments
+        // Counter to generate unique appointment IDs
         private static int appointmentCounter = 1;
 
-        // Method to create appointment
+        // Method to schedule a new appointment
         @Override
         public void scheduleAppointment(AppointmentRequest request, StreamObserver<AppointmentResponse> responseObserver) {
-            String appointmentId = "APPT-" + appointmentCounter++;
+            String appointmentId = "APPT-" + appointmentCounter++;  // Create unique ID
 
-            // Create new Appointment object and add it
+            // Create and store the appointment object
             Appointment appointment = new Appointment(
                     appointmentId,
                     request.getPatientId(),
                     request.getDoctorId(),
                     request.getDateTime()
             );
-            appointments.add(appointment);
+            appointments.add(appointment);  // Add to the appointment list
 
-            // Build response with the fields defined in the proto file
+            // Create a response message indicating success
             AppointmentResponse response = AppointmentResponse.newBuilder()
                     .setSuccess(true)
                     .setMessage("Appointment booked successfully!"
                             + "\nAppointment ID: " + appointmentId)
                     .build();
 
-            // Send response
+            // Send the response to the client
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         }
 
-        // Method to obtain the appointment 
+        // Method to get an appointment based on ID
         @Override
         public void getAppointment(AppointmentIdRequest request, StreamObserver<AppointmentResponse> responseObserver) {
-
-            // Search for the appointment
+            // Search for the appointment with the requested ID
             for (Appointment appointment : appointments) {
                 if (appointment.getAppointmentId().equals(request.getAppointmentId())) {
+                    // If found, build and send a success response
                     AppointmentResponse response = AppointmentResponse.newBuilder()
                             .setMessage("Appointment found:"
                                     + "\nAppointment ID: " + appointment.getAppointmentId()
@@ -88,7 +90,7 @@ public class SmartHealthcareServer {
                 }
             }
 
-            // If not found
+            // If appointment is not found, send failure response
             AppointmentResponse response = AppointmentResponse.newBuilder()
                     .setMessage("Appointment not found!"
                             + "\nID: " + request.getAppointmentId())
@@ -99,41 +101,43 @@ public class SmartHealthcareServer {
             responseObserver.onCompleted();
         }
 
-        // Method to add a doctor
+        // Method to add a new doctor
         @Override
         public void addDoctor(AddDoctorRequest request, StreamObserver<AddDoctorResponse> responseObserver) {
             String doctorId = request.getDoctorId();
 
-            // Add the doctor
+            // Add the doctor to the list
             doctors.add(new Doctor(doctorId));
 
-            // Build the response
+            // Create a response indicating success
             AddDoctorResponse response = AddDoctorResponse.newBuilder()
                     .setSuccess(true)
                     .setMessage("Doctor added successfully.")
                     .setDoctorId(doctorId)
                     .build();
 
-            // Return the response
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         }
 
-        // Method to add availability for a doctor
+        // Method to add availability for a specific doctor
         @Override
         public void addAvailability(AddAvailabilityRequest request, StreamObserver<AddAvailabilityResponse> responseObserver) {
             String doctorId = request.getDoctorId();
             String timeSlot = request.getTimeSlot();
 
             boolean doctorFound = false;
+            // Check if the doctor exists in the list
             for (Doctor doctor : doctors) {
                 if (doctor.getDoctorId().equals(doctorId)) {
+                    // Add the availability if doctor is found
                     doctor.addAvailability(timeSlot);
                     doctorFound = true;
                     break;
                 }
             }
 
+            // Build response based on whether doctor was found
             AddAvailabilityResponse response = AddAvailabilityResponse.newBuilder()
                     .setSuccess(doctorFound)
                     .setMessage(doctorFound ? "Availability added." : "Doctor not found.")
@@ -141,6 +145,7 @@ public class SmartHealthcareServer {
                     .setTimeSlot(timeSlot)
                     .build();
 
+            // Log if doctor was not found
             if (!doctorFound) {
                 System.out.println("Doctor not found: " + doctorId);
             }
@@ -149,17 +154,19 @@ public class SmartHealthcareServer {
             responseObserver.onCompleted();
         }
 
-        // Method to obtain availability of the doctor
+        // Method to get the availability of a specific doctor
         @Override
         public void getAvailability(AvailabilityRequest request, StreamObserver<AvailabilityResponse> responseObserver) {
             String doctorId = request.getDoctorId();
             boolean doctorFound = false;
 
+            // Search for the doctor and get available time slots
             for (Doctor doctor : doctors) {
                 if (doctor.getDoctorId().equals(doctorId)) {
                     doctorFound = true;
                     List<String> availableSlots = doctor.getAvailableSlots();
 
+                    // Send available time slots as response
                     for (String slot : availableSlots) {
                         if (slot != null && !slot.isEmpty()) {
                             AvailabilityResponse response = AvailabilityResponse.newBuilder()
@@ -172,19 +179,22 @@ public class SmartHealthcareServer {
                 }
             }
 
+            // Log if doctor was not found
             if (!doctorFound) {
                 System.out.println("Doctor not found: " + doctorId);
             }
 
             responseObserver.onCompleted();
         }
-
     }
 
+    // Telemedicine service implementation
     static class TelemedicineServiceImpl extends TelemedicineServiceImplBase {
 
+        // List of connected clients for broadcasting chat messages
         private final List<StreamObserver<MessageResponse>> connectedClients = new CopyOnWriteArrayList<>();
 
+        // Method to start a telemedicine consultation
         @Override
         public void startConsultation(ConsultationRequest request, StreamObserver<ConsultationResponse> responseObserver) {
             String patientId = request.getPatientId();
@@ -201,8 +211,10 @@ public class SmartHealthcareServer {
             responseObserver.onCompleted();
         }
 
+        // Method to handle chat between patients and doctors
         @Override
         public StreamObserver<MessageRequest> chat(StreamObserver<MessageResponse> responseObserver) {
+            // Add the client to the list of connected clients
             connectedClients.add(responseObserver);
 
             return new StreamObserver<MessageRequest>() {
@@ -219,21 +231,24 @@ public class SmartHealthcareServer {
 
                 @Override
                 public void onError(Throwable t) {
+                    // Remove the client if there is an error
                     connectedClients.remove(responseObserver);
                 }
 
                 @Override
                 public void onCompleted() {
+                    // Remove the client when the stream is completed
                     connectedClients.remove(responseObserver);
                     responseObserver.onCompleted();
                 }
-
             };
         }
     }
 
+    // Health monitoring service implementation
     static class HealthMonitoringServiceImpl extends HealthMonitoringServiceImplBase {
 
+        // Method to handle incoming health data
         @Override
         public StreamObserver<HealthDataRequest> sendHealthData(StreamObserver<HealthDataResponse> responseObserver) {
             return new StreamObserver<>() {
@@ -241,18 +256,20 @@ public class SmartHealthcareServer {
 
                 @Override
                 public void onNext(HealthDataRequest value) {
+                    // Log the received health data
                     System.out.println("Received health data from: " + value.getDeviceId());
                     receivedData.add(value);
                 }
 
                 @Override
                 public void onError(Throwable t) {
+                    // Log error if health data stream has an issue
                     System.err.println("Health data stream error: " + t.getMessage());
                 }
 
                 @Override
                 public void onCompleted() {
-                    // Calculate the average heart rate and temperature
+                    // Process the health data and calculate averages
                     if (receivedData.isEmpty()) {
                         responseObserver.onNext(HealthDataResponse.newBuilder()
                                 .setMessage("No data received.")
@@ -266,7 +283,7 @@ public class SmartHealthcareServer {
                             totalTemperature += data.getTemperature();
                         }
 
-                        // Calculate the averages
+                        // Calculate the averages for heart rate and temperature
                         float avgHeartRate = (float) totalHeartRate / receivedData.size();
                         float avgTemperature = totalTemperature / receivedData.size();
 
@@ -280,33 +297,33 @@ public class SmartHealthcareServer {
                         responseObserver.onNext(response);
                     }
 
-                    // Complete the stream
-                    responseObserver.onCompleted();
+                    responseObserver.onCompleted();  // End the stream
                 }
             };
         }
 
+        // Method to handle emergency alert stream
         @Override
         public StreamObserver<EmergencyAlertRequest> alertEmergency(StreamObserver<EmergencyAlertResponse> responseObserver) {
+            // Executor for scheduling follow-up tasks
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
             return new StreamObserver<>() {
-
                 @Override
                 public void onNext(EmergencyAlertRequest alert) {
-                    // Log the incoming alert
+                    // Log incoming alert details
                     System.out.println("Received Emergency Alert:");
                     System.out.println("- Patient ID: " + alert.getPatientId());
                     System.out.println("- Type: " + alert.getAlertType());
                     System.out.println("- Message: " + alert.getAlertMessage());
 
-                    // Immediate response acknowledging receipt
+                    // Send immediate acknowledgement
                     EmergencyAlertResponse ack = EmergencyAlertResponse.newBuilder()
                             .setConfirmation("Alert received and acknowledged for patient: " + alert.getPatientId())
                             .build();
                     responseObserver.onNext(ack);
 
-                    // Schedule a delayed instruction after 30 seconds
+                    // Schedule follow-up instructions after 30 seconds
                     scheduler.schedule(() -> {
                         String instructions = generateInstructions(alert.getAlertType());
                         EmergencyAlertResponse followUp = EmergencyAlertResponse.newBuilder()
@@ -318,18 +335,19 @@ public class SmartHealthcareServer {
 
                 @Override
                 public void onError(Throwable t) {
+                    // Log error if the emergency alert stream fails
                     System.err.println("Emergency alert stream error: " + t.getMessage());
-                    t.printStackTrace();
                 }
 
                 @Override
                 public void onCompleted() {
+                    // Log when the stream is completed
                     System.out.println("Emergency alert stream completed.");
                     responseObserver.onCompleted();
-                    scheduler.shutdown(); // Optional: shut down when done
+                    scheduler.shutdown();  // Shut down the scheduler
                 }
 
-                // Generate custom instruction message based on alert type
+                // Helper method to generate instructions based on alert type
                 private String generateInstructions(String alertType) {
                     switch (alertType.toLowerCase()) {
                         case "heart":
@@ -338,8 +356,6 @@ public class SmartHealthcareServer {
                             return "Ensure the patient is hydrated and adjust room temperature. Contact a doctor if condition worsens.";
                         case "fall":
                             return "Check for physical injuries and avoid moving the patient until help arrives.";
-                        case "all":
-                            return "Full medical assessment is recommended. Notify emergency medical services immediately.";
                         default:
                             return "Follow standard emergency procedures and notify healthcare staff.";
                     }
@@ -348,16 +364,17 @@ public class SmartHealthcareServer {
         }
     }
 
+    // Main method to start the healthcare server
     public static void main(String[] args) throws IOException, InterruptedException {
+        // Set up the gRPC server to listen on port 50051 and add services
         Server server = ServerBuilder.forPort(50051)
-                .addService(new AppointmentServiceImpl())
-                .addService(new TelemedicineServiceImpl())
-                .addService(new HealthMonitoringServiceImpl())
+                .addService(new AppointmentServiceImpl())  // Add Appointment Service
+                .addService(new TelemedicineServiceImpl()) // Add Telemedicine Service
+                .addService(new HealthMonitoringServiceImpl())  // Add Health Monitoring Service
                 .build()
-                .start();
+                .start();  // Start the server
 
         System.out.println("Healthcare Service started on port 50051...");
-        server.awaitTermination();
+        server.awaitTermination();  // Wait for the server to terminate
     }
-
 }
