@@ -8,24 +8,20 @@ package distsys.smart_healthcare;
  *
  * @author vinicius
  */
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.util.Iterator;
-
-import generated.grpc.AppointmentService.AppointmentServiceGrpc;
-import generated.grpc.AppointmentService.AppointmentRequest;
-import generated.grpc.AppointmentService.AppointmentResponse;
-import generated.grpc.AppointmentService.AppointmentIdRequest;
-import generated.grpc.AppointmentService.AvailabilityRequest;
-import generated.grpc.AppointmentService.AvailabilityResponse;
+import distsys.smart_healthcare.Auth.Constants;
+import generated.grpc.AppointmentService.*;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+import java.util.Iterator;
 
 public class AppointmentGUI extends javax.swing.JFrame {
 
-    // gRPC channel and stub to connect to the AppointmentService
     private ManagedChannel channel;
     private AppointmentServiceGrpc.AppointmentServiceBlockingStub blockingStub;
 
@@ -35,35 +31,36 @@ public class AppointmentGUI extends javax.swing.JFrame {
     // Constructor
     public AppointmentGUI() {
         initComponents();
+        setupGrpcClient();
+        setupActionListeners();
+    }
 
-        // Build gRPC channel and stub for synchronous/blocking calls
+    // Setup GRPC
+    private void setupGrpcClient() {
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
-        blockingStub = AppointmentServiceGrpc.newBlockingStub(channel);
 
-        // Add action listeners to buttons
-        // Book appointment button
-        btnBook.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                bookAppointment();
-            }
-        });
+        String jwt = getJwt();
+        Metadata headers = new Metadata();
+        Metadata.Key<String> jwtKey = Metadata.Key.of("authorization", Metadata.ASCII_STRING_MARSHALLER);
+        headers.put(jwtKey, "Bearer " + jwt);
 
-        // Retrieve appointment details by ID
-        btnRetrieve.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                getAppointment();
-            }
-        });
+        blockingStub = MetadataUtils.attachHeaders(AppointmentServiceGrpc.newBlockingStub(channel), headers);
+    }
 
-        // Load availability for a doctor
-        btnLoadAvailability.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                updateAvailableSlots();
-            }
-        });
+    // Generate a valid token
+    private static String getJwt() {
+        return Jwts.builder()
+                .setSubject("Appointment GUI (Client)") // client's identifier
+                .signWith(SignatureAlgorithm.HS256, Constants.JWT_SIGNING_KEY)
+                .compact();
+    }
 
+    private void setupActionListeners() {
+        btnBook.addActionListener(e -> bookAppointment());
+        btnRetrieve.addActionListener(e -> getAppointment());
+        btnLoadAvailability.addActionListener(e -> updateAvailableSlots());
     }
 
     /**
@@ -244,15 +241,20 @@ public class AppointmentGUI extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             jComboTime.addItem("Error fetching slots");
-            e.printStackTrace();
+            txtResult.setText("Error loading availability: " + e.getMessage());
         }
     }
 
-    // Handles booking an appointment
+    // Book an appointment
     private void bookAppointment() {
         String patientId = txtPatient.getText().trim();
         String doctorId = txtDoctor.getText().trim();
         String dateTime = (String) jComboTime.getSelectedItem();
+
+        if (patientId.isEmpty() || doctorId.isEmpty() || dateTime == null) {
+            txtResult.setText("Please fill all fields before booking.");
+            return;
+        }
 
         AppointmentRequest request = AppointmentRequest.newBuilder()
                 .setPatientId(patientId)
@@ -264,6 +266,9 @@ public class AppointmentGUI extends javax.swing.JFrame {
 
         if (response.getSuccess()) {
             txtResult.setText("Appointment booked successfully!\nMessage: " + response.getMessage());
+            txtPatient.setText("");
+            txtDoctor.setText("");
+            jComboTime.setSelectedIndex(-1);
         } else {
             txtResult.setText("Failed to book appointment.\nMessage: " + response.getMessage());
         }
@@ -272,6 +277,11 @@ public class AppointmentGUI extends javax.swing.JFrame {
     // Handles retrieving an appointment by ID
     private void getAppointment() {
         String appointmentId = txtAppointmentId.getText().trim();
+
+        if (appointmentId.isEmpty()) {
+            txtResult.setText("Enter a valid Appointment ID.");
+            return;
+        }
 
         AppointmentIdRequest request = AppointmentIdRequest.newBuilder()
                 .setAppointmentId(appointmentId)

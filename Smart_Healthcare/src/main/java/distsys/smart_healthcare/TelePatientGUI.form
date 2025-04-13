@@ -103,6 +103,10 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JTextField" name="chatInput">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="2"/>
+        <Property name="actionCommand" type="java.lang.String" value="&lt;Not Set&gt;"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="sendButton">
       <Properties>
@@ -134,6 +138,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtDoctorId">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDoctorIdActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>

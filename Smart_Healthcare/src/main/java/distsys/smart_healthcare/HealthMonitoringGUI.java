@@ -4,13 +4,15 @@
  */
 package distsys.smart_healthcare;
 
+import distsys.smart_healthcare.Auth.Constants;
 import generated.grpc.HealthMonitoringService.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
-
-import javax.swing.*;
-import java.awt.*;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,61 +31,44 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
     private StreamObserver<HealthDataRequest> healthDataStream;
     private StreamObserver<EmergencyAlertRequest> emergencyStream;
 
+    // Counter to track the number of streams
+    private int streamCount = 0;
+
     /**
      * Creates new form HealthMonitoringClient
      */
     //Constructor
     public HealthMonitoringGUI() {
         initComponents();
+        setupGrpcClient();
+        setupStreams();
+        setupActionListeners();
+    }
 
-        // Initialize the gRPC connection
+    // Setup GRPC
+    private void setupGrpcClient() {
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
-        asyncStub = HealthMonitoringServiceGrpc.newStub(channel);
 
-        setupListeners();
+        String jwt = getJwt();
+        Metadata headers = new Metadata();
+        Metadata.Key<String> jwtKey = Metadata.Key.of("authorization", Metadata.ASCII_STRING_MARSHALLER);
+        headers.put(jwtKey, "Bearer " + jwt);
 
-        // Event handler: Start health data streaming
-        btnSendHealthData.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sendHealthData();
-            }
-        });
-
-        // Event handler: Start emergency alert streaming
-        btnSendAlert.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sendEmergencyAlert();
-            }
-        });
-
+        asyncStub = MetadataUtils.attachHeaders(HealthMonitoringServiceGrpc.newStub(channel), headers);
     }
 
-// Example of your setupListeners method
-    private void setupListeners() {
-        healthDataStream = asyncStub.sendHealthData(new StreamObserver<HealthDataResponse>() {
-            @Override
-            public void onNext(HealthDataResponse value) {
-                // Handle the server's response for the stream
-                txtHealthData.append("Server Response: " + value.getMessage() + "\n");
-            }
+    // Generate a valid token
+    private static String getJwt() {
+        return Jwts.builder()
+                .setSubject("Health Monitoring GUI (Client)") // client's identifier
+                .signWith(SignatureAlgorithm.HS256, Constants.JWT_SIGNING_KEY)
+                .compact();
+    }
 
-            @Override
-            public void onError(Throwable t) {
-                // Handle error in response
-                txtHealthData.append("Error: " + t.getMessage() + "\n");
-            }
-
-            @Override
-            public void onCompleted() {
-                // Log completion of the health data stream
-                System.out.println("Health data stream completed.");
-            }
-        });
-
+    private void setupStreams() {
+        healthDataStream = createHealthDataStream();
         emergencyStream = asyncStub.alertEmergency(new StreamObserver<EmergencyAlertResponse>() {
             @Override
             public void onNext(EmergencyAlertResponse response) {
@@ -98,6 +83,41 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
             @Override
             public void onCompleted() {
                 txtEmergencyResponse.append("Emergency stream closed by server.\n");
+            }
+        });
+    }
+
+    private StreamObserver<HealthDataRequest> createHealthDataStream() {
+        return asyncStub.sendHealthData(new StreamObserver<HealthDataResponse>() {
+            @Override
+            public void onNext(HealthDataResponse value) {
+                txtHealthData.append("Server Response: " + value.getMessage() + "\n");
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                txtHealthData.append("Error: " + t.getMessage() + "\n");
+            }
+
+            @Override
+            public void onCompleted() {
+                txtHealthData.append("Health data stream completed.\n");
+            }
+        });
+    }
+
+    private void setupActionListeners() {
+        btnSendHealthData.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendHealthData();
+            }
+        });
+
+        btnSendAlert.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendEmergencyAlert();
             }
         });
     }
@@ -299,9 +319,6 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSendHealthDataActionPerformed
 
-// Counter to track the number of streams
-    private int streamCount = 0;
-
     private void sendHealthData() {
         try {
             // Check if any required fields are empty, and show an error message if so
@@ -372,46 +389,43 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
     }
 
     private void sendEmergencyAlert() {
-    try {
-        // Retrieve patient ID and alert type from the user input
-        String patientId = txtAlertPatientId.getText();
-        String alertType = comboAlertType.getSelectedItem().toString();
+        try {
+            // Retrieve patient ID and alert type from the user input
+            String patientId = txtAlertPatientId.getText();
+            String alertType = comboAlertType.getSelectedItem().toString();
 
-        // Generate random values for heart rate, temperature, and fall detection
-        Random rand = new Random();
-        int heartRate = rand.nextInt(61) + 60;
-        double temperature = 35.0 + (rand.nextDouble() * 4);
-        boolean fallDetected = rand.nextBoolean();
+            // Generate random values for heart rate, temperature, and fall detection
+            Random rand = new Random();
+            int heartRate = rand.nextInt(61) + 60;
+            double temperature = 35.0 + (rand.nextDouble() * 4);
+            boolean fallDetected = alertType.equalsIgnoreCase("Fall");
 
-        // Set the fall status message based on fall detection result
-        String fallStatus = fallDetected ? "Yes (Possible injury)" : "No";
+            // Create Alert message
+            String alertMessage
+                    = "Emergency Alert: " + alertType + "\n"
+                    + "- Heart Rate: " + heartRate + " bpm \n"
+                    + "- Temperature: " + temperature + "°C \n"
+                    + "- Fall Detected: " + fallDetected;
 
-        // Create Alert message
-        String alertMessage
-                = "Emergency Alert: " + alertType + "\n"
-                + "- Heart Rate: " + heartRate + " bpm \n"
-                + "- Temperature: " + temperature + "°C \n"
-                + "- Fall Detected: " + fallStatus;
+            EmergencyAlertRequest alert = EmergencyAlertRequest.newBuilder()
+                    .setPatientId(patientId)
+                    .setAlertType(alertType)
+                    .setAlertMessage(alertMessage)
+                    .build();
 
-        EmergencyAlertRequest alert = EmergencyAlertRequest.newBuilder()
-                .setPatientId(patientId)
-                .setAlertType(alertType)
-                .setAlertMessage(alertMessage)
-                .build();
+            // Send the emergency alert
+            emergencyStream.onNext(alert);
 
-        // Send the emergency alert
-        emergencyStream.onNext(alert);
+            // Display the alert
+            txtEmergencyResponse.append("Alert sent for patient ID: " + patientId + "\n");
+            txtEmergencyResponse.append("Message streamed:\n" + alertMessage + "\n\n");
 
-        // Display the alert
-        txtEmergencyResponse.append("Alert sent for patient ID: " + patientId + "\n");
-        txtEmergencyResponse.append("Message streamed:\n" + alertMessage + "\n\n");
-
-    } catch (Exception ex) {
-        // Handle any errors that occur during alert sending
-        txtEmergencyResponse.append("Failed to send alert: " + ex.getMessage() + "\n");
+        } catch (Exception ex) {
+            // Handle any errors that occur during alert sending
+            txtEmergencyResponse.append("Failed to send alert: " + ex.getMessage() + "\n");
+        }
     }
-}
-    
+
     /**
      * @param args the command line arguments
      */

@@ -33,7 +33,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
-                      <Component id="txtDoctorName1" max="32767" attributes="0"/>
+                      <Component id="txtDoctorID1" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -43,12 +43,12 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
-                      <Component id="txtDoctorName" max="32767" attributes="0"/>
+                      <Component id="txtDoctorID" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                      <Component id="txtDoctorName2" max="32767" attributes="0"/>
+                      <Component id="txtDoctorID2" max="32767" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane2" pref="411" max="32767" attributes="0"/>
                   <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
@@ -66,7 +66,7 @@
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtDoctorName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtDoctorID" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="btnAddDoctor" min="-2" max="-2" attributes="0"/>
@@ -75,7 +75,7 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtDoctorName1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtDoctorID1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -89,7 +89,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtDoctorName2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtDoctorID2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnGetAvailability" min="-2" max="-2" attributes="0"/>
@@ -106,9 +106,9 @@
         <Property name="text" type="java.lang.String" value="Doctor ID"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtDoctorName">
+    <Component class="javax.swing.JTextField" name="txtDoctorID">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDoctorNameActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDoctorIDActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -121,9 +121,9 @@
         <Property name="text" type="java.lang.String" value="Doctor ID"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtDoctorName1">
+    <Component class="javax.swing.JTextField" name="txtDoctorID1">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDoctorName1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDoctorID1ActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtAvailabilityTime">
@@ -146,9 +146,9 @@
         <Property name="text" type="java.lang.String" value="Doctor ID"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtDoctorName2">
+    <Component class="javax.swing.JTextField" name="txtDoctorID2">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDoctorName2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDoctorID2ActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">

@@ -9,12 +9,10 @@ generated/grpc/TelemedicineService/TelemedicineServiceGrpc$TelemedicineServiceIm
 generated/grpc/HealthMonitoringService/HealthMonitoringServiceImpl.class
 generated/grpc/AppointmentService/AppointmentServiceGrpc$AppointmentServiceFileDescriptorSupplier.class
 distsys/smart_healthcare/HealthMonitoringGUI$2.class
-distsys/smart_healthcare/DoctorManagementGUI$8.class
 generated/grpc/AppointmentService/AppointmentIdRequestOrBuilder.class
 generated/grpc/TelemedicineService/TelemedicineServiceGrpc$TelemedicineServiceMethodDescriptorSupplier.class
 generated/grpc/AppointmentService/AppointmentServiceGrpc$AppointmentServiceFutureStub.class
 distsys/smart_healthcare/TeleDoctorGUI$2.class
-distsys/smart_healthcare/DoctorManagementGUI$10.class
 generated/grpc/HealthMonitoringService/HealthDataResponseOrBuilder.class
 distsys/smart_healthcare/AppointmentGUI$1.class
 generated/grpc/AppointmentService/AppointmentRequest$Builder.class
@@ -27,11 +25,13 @@ generated/grpc/HealthMonitoringService/EmergencyAlertRequestOrBuilder.class
 generated/grpc/TelemedicineService/MessageRequest$1.class
 generated/grpc/TelemedicineService/TelemedicineServiceImpl.class
 generated/grpc/AppointmentService/AddAvailabilityResponse$Builder.class
+distsys/smart_healthcare/Auth/BearerToken.class
 distsys/smart_healthcare/DoctorManagementGUI$5.class
 generated/grpc/AppointmentService/AppointmentServiceGrpc$AppointmentServiceImplBase.class
 generated/grpc/TelemedicineService/MessageResponse$1.class
 generated/grpc/HealthMonitoringService/HealthDataRequest$1.class
 distsys/smart_healthcare/DoctorManagementGUI$2.class
+distsys/smart_healthcare/Auth/AuthorizationServerInterceptor.class
 generated/grpc/AppointmentService/AddDoctorRequest$1.class
 generated/grpc/AppointmentService/AddAvailabilityRequestOrBuilder.class
 generated/grpc/AppointmentService/AvailabilityResponse$Builder.class
@@ -43,7 +43,6 @@ generated/grpc/AppointmentService/AppointmentIdRequest$Builder.class
 distsys/smart_healthcare/TeleDoctorGUI.class
 generated/grpc/AppointmentService/AddAvailabilityResponseOrBuilder.class
 distsys/smart_healthcare/TelePatientGUI$1.class
-distsys/smart_healthcare/AppointmentGUI$6.class
 generated/grpc/AppointmentService/AvailabilityResponseOrBuilder.class
 generated/grpc/AppointmentService/AppointmentResponseOrBuilder.class
 generated/grpc/AppointmentService/AddAvailabilityRequest$1.class
@@ -90,10 +89,12 @@ generated/grpc/AppointmentService/AddAvailabilityRequest$Builder.class
 generated/grpc/AppointmentService/AddDoctorRequestOrBuilder.class
 distsys/smart_healthcare/DoctorManagementGUI$1.class
 generated/grpc/AppointmentService/AppointmentResponse$1.class
+distsys/smart_healthcare/Auth/AuthorizationServerInterceptor$1.class
 distsys/smart_healthcare/HealthMonitoringGUI$3.class
 generated/grpc/TelemedicineService/MessageResponseOrBuilder.class
 generated/grpc/TelemedicineService/ConsultationRequest$Builder.class
 generated/grpc/HealthMonitoringService/EmergencyAlertRequest$1.class
+distsys/smart_healthcare/Auth/Constants.class
 generated/grpc/TelemedicineService/ConsultationRequest.class
 generated/grpc/AppointmentService/AvailabilityRequestOrBuilder.class
 generated/grpc/TelemedicineService/TelemedicineServiceGrpc$TelemedicineServiceBaseDescriptorSupplier.class
@@ -105,11 +106,11 @@ generated/grpc/AppointmentService/AppointmentRequest$1.class
 generated/grpc/HealthMonitoringService/HealthDataRequest.class
 generated/grpc/AppointmentService/AppointmentRequest.class
 generated/grpc/HealthMonitoringService/HealthDataResponse.class
-distsys/smart_healthcare/AppointmentGUI$5.class
 generated/grpc/AppointmentService/AppointmentServiceGrpc$MethodHandlers.class
 generated/grpc/AppointmentService/AddAvailabilityRequest.class
 generated/grpc/TelemedicineService/TelemedicineServiceGrpc$TelemedicineServiceFutureStub.class
 distsys/smart_healthcare/Appointment.class
+distsys/smart_healthcare/TelePatientGUI$5.class
 generated/grpc/TelemedicineService/ConsultationResponse.class
 distsys/smart_healthcare/TeleDoctorGUI$3.class
 generated/grpc/AppointmentService/AddAvailabilityResponse.class
@@ -126,7 +127,6 @@ distsys/smart_healthcare/DoctorManagementGUI$3.class
 generated/grpc/TelemedicineService/MessageResponse$Builder.class
 distsys/smart_healthcare/HealthMonitoringGUI$1.class
 distsys/smart_healthcare/HealthMonitoringGUI$7.class
-distsys/smart_healthcare/DoctorManagementGUI$9.class
 generated/grpc/AppointmentService/AppointmentServiceImpl.class
 generated/grpc/TelemedicineService/MessageRequest$Builder.class
 generated/grpc/HealthMonitoringService/HealthMonitoringServiceGrpc$MethodHandlers.class
@@ -139,7 +139,6 @@ generated/grpc/AppointmentService/AddDoctorResponse$Builder.class
 generated/grpc/HealthMonitoringService/HealthMonitoringServiceGrpc$3.class
 distsys/smart_healthcare/TelePatientGUI$4.class
 generated/grpc/HealthMonitoringService/EmergencyAlertResponse$1.class
-distsys/smart_healthcare/AppointmentGUI$4.class
 generated/grpc/TelemedicineService/MessageRequest.class
 generated/grpc/TelemedicineService/ConsultationRequestOrBuilder.class
 generated/grpc/TelemedicineService/TelemedicineServiceGrpc.class

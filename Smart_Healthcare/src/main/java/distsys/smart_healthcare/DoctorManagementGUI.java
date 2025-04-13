@@ -4,6 +4,8 @@
  */
 package distsys.smart_healthcare;
 
+import distsys.smart_healthcare.Auth.BearerToken;
+import distsys.smart_healthcare.Auth.Constants;
 import generated.grpc.AppointmentService.AppointmentServiceGrpc;
 import generated.grpc.AppointmentService.*;
 
@@ -11,6 +13,8 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,36 +35,30 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
     // Constructor
     public DoctorManagementGUI() {
         initComponents();
+        setupGrpcClient();
 
-        // Build gRPC channel and stub for synchronous/blocking calls
+        btnAddDoctor.addActionListener(e -> addDoctor());
+        btnAddAvailability.addActionListener(e -> addAvailability());
+        btnGetAvailability.addActionListener(e -> getAvailability());
+    }
+
+    // Setup GRPC
+    private void setupGrpcClient() {
+        String jwt = getJwt();
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
-        appointmentServiceClient = AppointmentServiceGrpc.newStub(channel);
+        BearerToken token = new BearerToken(jwt);
+        appointmentServiceClient = AppointmentServiceGrpc.newStub(channel)
+                .withCallCredentials(token);
+    }
 
-        // Action listener for Add Doctor button
-        btnAddDoctor.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addDoctor();
-            }
-        });
-
-        // Action listener for Add Availability button
-        btnAddAvailability.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addAvailability();
-            }
-        });
-
-        // Action listener for Get Availability button
-        btnGetAvailability.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                getAvailability();
-            }
-        });
+    // Generate a valid token
+    private static String getJwt() {
+        return Jwts.builder()
+                .setSubject("Doctor Management GUI (Client)") // client's identifier
+                .signWith(SignatureAlgorithm.HS256, Constants.JWT_SIGNING_KEY)
+                .compact();
     }
 
     /**
@@ -73,15 +71,15 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtDoctorName = new javax.swing.JTextField();
+        txtDoctorID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtDoctorName1 = new javax.swing.JTextField();
+        txtDoctorID1 = new javax.swing.JTextField();
         txtAvailabilityTime = new javax.swing.JTextField();
         btnAddDoctor = new javax.swing.JButton();
         btnAddAvailability = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        txtDoctorName2 = new javax.swing.JTextField();
+        txtDoctorID2 = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtAreaStatus = new javax.swing.JTextArea();
         btnGetAvailability = new javax.swing.JButton();
@@ -93,9 +91,9 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
 
         jLabel1.setText("Doctor ID");
 
-        txtDoctorName.addActionListener(new java.awt.event.ActionListener() {
+        txtDoctorID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDoctorNameActionPerformed(evt);
+                txtDoctorIDActionPerformed(evt);
             }
         });
 
@@ -103,9 +101,9 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
 
         jLabel3.setText("Doctor ID");
 
-        txtDoctorName1.addActionListener(new java.awt.event.ActionListener() {
+        txtDoctorID1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDoctorName1ActionPerformed(evt);
+                txtDoctorID1ActionPerformed(evt);
             }
         });
 
@@ -117,9 +115,9 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
 
         jLabel4.setText("Doctor ID");
 
-        txtDoctorName2.addActionListener(new java.awt.event.ActionListener() {
+        txtDoctorID2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDoctorName2ActionPerformed(evt);
+                txtDoctorID2ActionPerformed(evt);
             }
         });
 
@@ -152,7 +150,7 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(53, 53, 53)
-                        .addComponent(txtDoctorName1))
+                        .addComponent(txtDoctorID1))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
@@ -160,11 +158,11 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(53, 53, 53)
-                        .addComponent(txtDoctorName))
+                        .addComponent(txtDoctorID))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(54, 54, 54)
-                        .addComponent(txtDoctorName2))
+                        .addComponent(txtDoctorID2))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -178,7 +176,7 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtDoctorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDoctorID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAddDoctor)
                 .addGap(18, 18, 18)
@@ -186,7 +184,7 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtDoctorName1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDoctorID1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -198,7 +196,7 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtDoctorName2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDoctorID2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGetAvailability)
                 .addGap(18, 18, 18)
@@ -209,25 +207,25 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtDoctorName1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDoctorName1ActionPerformed
+    private void txtDoctorID1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDoctorID1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtDoctorName1ActionPerformed
+    }//GEN-LAST:event_txtDoctorID1ActionPerformed
 
-    private void txtDoctorNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDoctorNameActionPerformed
+    private void txtDoctorIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDoctorIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtDoctorNameActionPerformed
+    }//GEN-LAST:event_txtDoctorIDActionPerformed
 
-    private void txtDoctorName2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDoctorName2ActionPerformed
+    private void txtDoctorID2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDoctorID2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtDoctorName2ActionPerformed
+    }//GEN-LAST:event_txtDoctorID2ActionPerformed
 
     // Add Doctor method
     private void addDoctor() {
-        String doctorName = txtDoctorName.getText();
+        String doctorName = txtDoctorID.getText();
 
-        // Check if doctor name is not empty
+        // Check if doctor ID is not empty
         if (doctorName.isEmpty()) {
-            txtAreaStatus.setText("Doctor name is required.");
+            txtAreaStatus.setText("Doctor ID is required.");
             return;
         }
 
@@ -235,8 +233,14 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
             appointmentServiceClient.addDoctor(AddDoctorRequest.newBuilder()
                     .setDoctorId(doctorName)
                     .build(), new StreamObserver<AddDoctorResponse>() {
+
+                private boolean success = false;
+                private String message = "";
+
                 @Override
                 public void onNext(AddDoctorResponse response) {
+                    success = response.getSuccess();
+                    message = response.getMessage();
                 }
 
                 @Override
@@ -246,8 +250,10 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
 
                 @Override
                 public void onCompleted() {
-                    txtAreaStatus.setText("Doctor added successfully.");
-                    txtDoctorName.setText("");
+                    txtAreaStatus.setText(message);
+                    if (success) {
+                        txtDoctorID.setText("");  // Clear only if success
+                    }
                 }
             });
         } catch (StatusRuntimeException e) {
@@ -257,7 +263,7 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
 
     // Add Availability method
     private void addAvailability() {
-        String doctorId = txtDoctorName1.getText();
+        String doctorId = txtDoctorID1.getText();
         String timeSlot = txtAvailabilityTime.getText();
 
         // Check if time slot is not empty
@@ -273,7 +279,11 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
                     .build(), new StreamObserver<AddAvailabilityResponse>() {
                 @Override
                 public void onNext(AddAvailabilityResponse response) {
-
+                    if (response.getSuccess()) {
+                        txtAreaStatus.setText("Availability added: " + response.getTimeSlot());
+                    } else {
+                        txtAreaStatus.setText("Failed to add availability: " + response.getMessage());
+                    }
                 }
 
                 @Override
@@ -283,8 +293,7 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
 
                 @Override
                 public void onCompleted() {
-                    txtAreaStatus.setText("Availability added successfully.");
-                    txtDoctorName1.setText("");  // Clear text fields after adding availability
+                    txtDoctorID1.setText("");
                 }
             });
         } catch (StatusRuntimeException e) {
@@ -294,7 +303,7 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
 
     // Get Availability method
     private void getAvailability() {
-        String doctorId = txtDoctorName2.getText();
+        String doctorId = txtDoctorID2.getText();
 
         if (doctorId.isEmpty()) {
             txtAreaStatus.setText("Doctor ID is required.");
@@ -377,8 +386,8 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea txtAreaStatus;
     private javax.swing.JTextField txtAvailabilityTime;
-    private javax.swing.JTextField txtDoctorName;
-    private javax.swing.JTextField txtDoctorName1;
-    private javax.swing.JTextField txtDoctorName2;
+    private javax.swing.JTextField txtDoctorID;
+    private javax.swing.JTextField txtDoctorID1;
+    private javax.swing.JTextField txtDoctorID2;
     // End of variables declaration//GEN-END:variables
 }

@@ -8,10 +8,10 @@ package distsys.smart_healthcare;
  *
  * @author vinicius
  */
-
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import io.grpc.ServerInterceptors;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +27,8 @@ import generated.grpc.TelemedicineService.TelemedicineServiceGrpc.TelemedicineSe
 import generated.grpc.TelemedicineService.*;
 import generated.grpc.HealthMonitoringService.HealthMonitoringServiceGrpc.HealthMonitoringServiceImplBase;
 import generated.grpc.HealthMonitoringService.*;
+import distsys.smart_healthcare.Auth.AuthorizationServerInterceptor;
+import distsys.smart_healthcare.Auth.Constants;
 
 public class SmartHealthcareServer {
 
@@ -35,7 +37,7 @@ public class SmartHealthcareServer {
 
         // List to store appointment data
         ArrayList<Appointment> appointments = new ArrayList<>();
-        
+
         // List to store doctor information
         ArrayList<Doctor> doctors = new ArrayList<>();
 
@@ -45,16 +47,59 @@ public class SmartHealthcareServer {
         // Method to schedule a new appointment
         @Override
         public void scheduleAppointment(AppointmentRequest request, StreamObserver<AppointmentResponse> responseObserver) {
-            String appointmentId = "APPT-" + appointmentCounter++;  // Create unique ID
+            // Auth  
+            String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
+            System.out.println("Processing request from " + clientId);
+
+            String doctorId = request.getDoctorId();
+            String timeSlot = request.getDateTime();
+
+            // Find the doctor
+            Doctor foundDoctor = null;
+            for (Doctor doctor : doctors) {
+                if (doctor.getDoctorId().equals(doctorId)) {
+                    foundDoctor = doctor;
+                    break;
+                }
+            }
+
+            if (foundDoctor == null) {
+                AppointmentResponse response = AppointmentResponse.newBuilder()
+                        .setSuccess(false)
+                        .setMessage("Error: Doctor with ID '" + doctorId + "' not found.")
+                        .build();
+
+                responseObserver.onNext(response);
+                responseObserver.onCompleted();
+                return;
+            }
+
+            // Check if the requested time slot is available
+            if (!foundDoctor.getAvailableSlots().contains(timeSlot)) {
+                AppointmentResponse response = AppointmentResponse.newBuilder()
+                        .setSuccess(false)
+                        .setMessage("Error: Requested time slot '" + timeSlot + "' is not available for Doctor " + doctorId)
+                        .build();
+
+                responseObserver.onNext(response);
+                responseObserver.onCompleted();
+                return;
+            }
+
+            // Create unique ID
+            String appointmentId = "APPT-" + appointmentCounter++;
 
             // Create and store the appointment object
             Appointment appointment = new Appointment(
                     appointmentId,
                     request.getPatientId(),
-                    request.getDoctorId(),
-                    request.getDateTime()
+                    doctorId,
+                    timeSlot
             );
-            appointments.add(appointment);  // Add to the appointment list
+            appointments.add(appointment);
+
+            // Remove the booked time slot from availability
+            foundDoctor.removeAvailability(timeSlot);
 
             // Create a response message indicating success
             AppointmentResponse response = AppointmentResponse.newBuilder()
@@ -71,6 +116,10 @@ public class SmartHealthcareServer {
         // Method to get an appointment based on ID
         @Override
         public void getAppointment(AppointmentIdRequest request, StreamObserver<AppointmentResponse> responseObserver) {
+            // Auth  
+            String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
+            System.out.println("Processing request from " + clientId);
+
             // Search for the appointment with the requested ID
             for (Appointment appointment : appointments) {
                 if (appointment.getAppointmentId().equals(request.getAppointmentId())) {
@@ -104,12 +153,30 @@ public class SmartHealthcareServer {
         // Method to add a new doctor
         @Override
         public void addDoctor(AddDoctorRequest request, StreamObserver<AddDoctorResponse> responseObserver) {
+            // Auth  
+            String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
+            System.out.println("Processing request from " + clientId);
+
             String doctorId = request.getDoctorId();
 
-            // Add the doctor to the list
+            // Check for duplicate doctor ID
+            for (Doctor doctor : doctors) {
+                if (doctor.getDoctorId().equals(doctorId)) {
+                    AddDoctorResponse response = AddDoctorResponse.newBuilder()
+                            .setSuccess(false)
+                            .setMessage("Error: Doctor with ID '" + doctorId + "' already exists.")
+                            .setDoctorId(doctorId)
+                            .build();
+
+                    responseObserver.onNext(response);
+                    responseObserver.onCompleted();
+                    return;
+                }
+            }
+
+            // Add the doctor
             doctors.add(new Doctor(doctorId));
 
-            // Create a response indicating success
             AddDoctorResponse response = AddDoctorResponse.newBuilder()
                     .setSuccess(true)
                     .setMessage("Doctor added successfully.")
@@ -123,31 +190,42 @@ public class SmartHealthcareServer {
         // Method to add availability for a specific doctor
         @Override
         public void addAvailability(AddAvailabilityRequest request, StreamObserver<AddAvailabilityResponse> responseObserver) {
+            // Auth  
+            String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
+            System.out.println("Processing request from " + clientId);
+
             String doctorId = request.getDoctorId();
             String timeSlot = request.getTimeSlot();
 
-            boolean doctorFound = false;
-            // Check if the doctor exists in the list
+            // Check if doctor exists
+            Doctor foundDoctor = null;
             for (Doctor doctor : doctors) {
                 if (doctor.getDoctorId().equals(doctorId)) {
-                    // Add the availability if doctor is found
-                    doctor.addAvailability(timeSlot);
-                    doctorFound = true;
+                    foundDoctor = doctor;
                     break;
                 }
             }
 
-            // Build response based on whether doctor was found
-            AddAvailabilityResponse response = AddAvailabilityResponse.newBuilder()
-                    .setSuccess(doctorFound)
-                    .setMessage(doctorFound ? "Availability added." : "Doctor not found.")
-                    .setDoctorId(doctorId)
-                    .setTimeSlot(timeSlot)
-                    .build();
+            AddAvailabilityResponse response;
 
-            // Log if doctor was not found
-            if (!doctorFound) {
+            if (foundDoctor != null) {
+                // Add availability
+                foundDoctor.addAvailability(timeSlot);
+                response = AddAvailabilityResponse.newBuilder()
+                        .setSuccess(true)
+                        .setMessage("Availability added.")
+                        .setDoctorId(doctorId)
+                        .setTimeSlot(timeSlot)
+                        .build();
+            } else {
+                // Doctor not found
                 System.out.println("Doctor not found: " + doctorId);
+                response = AddAvailabilityResponse.newBuilder()
+                        .setSuccess(false)
+                        .setMessage("Error: Doctor with ID '" + doctorId + "' not found.")
+                        .setDoctorId(doctorId)
+                        .setTimeSlot(timeSlot)
+                        .build();
             }
 
             responseObserver.onNext(response);
@@ -157,6 +235,10 @@ public class SmartHealthcareServer {
         // Method to get the availability of a specific doctor
         @Override
         public void getAvailability(AvailabilityRequest request, StreamObserver<AvailabilityResponse> responseObserver) {
+            // Auth  
+            String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
+            System.out.println("Processing request from " + clientId);
+
             String doctorId = request.getDoctorId();
             boolean doctorFound = false;
 
@@ -197,6 +279,10 @@ public class SmartHealthcareServer {
         // Method to start a telemedicine consultation
         @Override
         public void startConsultation(ConsultationRequest request, StreamObserver<ConsultationResponse> responseObserver) {
+            // Auth  
+            String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
+            System.out.println("Processing request from " + clientId);
+
             String patientId = request.getPatientId();
             String doctorId = request.getDoctorId();
 
@@ -214,6 +300,10 @@ public class SmartHealthcareServer {
         // Method to handle chat between patients and doctors
         @Override
         public StreamObserver<MessageRequest> chat(StreamObserver<MessageResponse> responseObserver) {
+            // Auth  
+            String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
+            System.out.println("Processing request from " + clientId);
+
             // Add the client to the list of connected clients
             connectedClients.add(responseObserver);
 
@@ -251,7 +341,12 @@ public class SmartHealthcareServer {
         // Method to handle incoming health data
         @Override
         public StreamObserver<HealthDataRequest> sendHealthData(StreamObserver<HealthDataResponse> responseObserver) {
+            // Auth  
+            String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
+            System.out.println("Processing request from " + clientId);
+
             return new StreamObserver<>() {
+
                 List<HealthDataRequest> receivedData = new ArrayList<>();
 
                 @Override
@@ -305,6 +400,10 @@ public class SmartHealthcareServer {
         // Method to handle emergency alert stream
         @Override
         public StreamObserver<EmergencyAlertRequest> alertEmergency(StreamObserver<EmergencyAlertResponse> responseObserver) {
+            // Auth  
+            String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
+            System.out.println("Processing request from " + clientId);
+
             // Executor for scheduling follow-up tasks
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -368,13 +467,13 @@ public class SmartHealthcareServer {
     public static void main(String[] args) throws IOException, InterruptedException {
         // Set up the gRPC server to listen on port 50051 and add services
         Server server = ServerBuilder.forPort(50051)
-                .addService(new AppointmentServiceImpl())  // Add Appointment Service
-                .addService(new TelemedicineServiceImpl()) // Add Telemedicine Service
-                .addService(new HealthMonitoringServiceImpl())  // Add Health Monitoring Service
+                .addService(ServerInterceptors.intercept(new AppointmentServiceImpl(), new AuthorizationServerInterceptor())) // Add Appointment Service
+                .addService(ServerInterceptors.intercept(new TelemedicineServiceImpl(), new AuthorizationServerInterceptor())) // Add Telemedicine Service
+                .addService(ServerInterceptors.intercept(new HealthMonitoringServiceImpl(), new AuthorizationServerInterceptor())) // Add Health Monitoring Service
                 .build()
-                .start();  // Start the server
+                .start();
 
         System.out.println("Healthcare Service started on port 50051...");
-        server.awaitTermination();  // Wait for the server to terminate
+        server.awaitTermination();
     }
 }

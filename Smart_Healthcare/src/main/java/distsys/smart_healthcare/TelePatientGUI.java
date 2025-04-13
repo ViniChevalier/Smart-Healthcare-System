@@ -8,10 +8,16 @@ package distsys.smart_healthcare;
  *
  * @author vinicius
  */
+import distsys.smart_healthcare.Auth.Constants;
 import generated.grpc.TelemedicineService.*;
+
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.swing.*;
 
@@ -30,14 +36,60 @@ public class TelePatientGUI extends javax.swing.JFrame {
     //Constructor
     public TelePatientGUI() {
         initComponents();
+        setupGrpcClient();
+        startChatStream();
+    }
 
-        // Initialize the gRPC connection
+    // Setup GRPC
+    private void setupGrpcClient() {
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
-        asyncStub = TelemedicineServiceGrpc.newStub(channel);
-        blockingStub = TelemedicineServiceGrpc.newBlockingStub(channel);
-        startChatStream();
+
+        String jwt = getJwt();
+        Metadata headers = new Metadata();
+        Metadata.Key<String> jwtKey = Metadata.Key.of("authorization", Metadata.ASCII_STRING_MARSHALLER);
+        headers.put(jwtKey, "Bearer " + jwt);
+
+        asyncStub = MetadataUtils.attachHeaders(TelemedicineServiceGrpc.newStub(channel), headers);
+        blockingStub = MetadataUtils.attachHeaders(TelemedicineServiceGrpc.newBlockingStub(channel), headers);
+    }
+
+    // Generate a valid token
+    private static String getJwt() {
+        return Jwts.builder()
+                .setSubject("Telemedicine - Patient Client") // client's identifier
+                .signWith(SignatureAlgorithm.HS256, Constants.JWT_SIGNING_KEY)
+                .compact();
+    }
+
+    private void startChatStream() {
+        // Start the chat stream using the async stub
+        chatRequestStream = asyncStub.chat(new StreamObserver<MessageResponse>() {
+            @Override
+            public void onNext(MessageResponse value) {
+                // If the received message is not from the "Patient", show it in the chat area
+                if (!value.getSender().equals("Patient")) {
+                    SwingUtilities.invokeLater(() -> {
+                        chatArea.append(value.getSender() + ": " + value.getMessageText() + "\n");
+                    });
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                SwingUtilities.invokeLater(() -> {
+                    chatArea.append("Chat error: " + t.getMessage() + "\n");
+                });
+            }
+
+            @Override
+            public void onCompleted() {
+                SwingUtilities.invokeLater(() -> {
+                    chatArea.append("Chat session ended.\n");
+                });
+            }
+        });
     }
 
     /**
@@ -67,6 +119,9 @@ public class TelePatientGUI extends javax.swing.JFrame {
         chatArea.setRows(5);
         jScrollPane1.setViewportView(chatArea);
 
+        chatInput.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        chatInput.setActionCommand("<Not Set>");
+
         sendButton.setText("Send");
         sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,6 +138,12 @@ public class TelePatientGUI extends javax.swing.JFrame {
         btnStartConsultation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnStartConsultationActionPerformed(evt);
+            }
+        });
+
+        txtDoctorId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDoctorIdActionPerformed(evt);
             }
         });
 
@@ -145,99 +206,66 @@ public class TelePatientGUI extends javax.swing.JFrame {
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         // TODO add your handling code here:
-        // Handle sending a message from the patient
-        String message = chatInput.getText().trim();
+        // Handle sending a message
         // Check if the message is not empty
-        if (!message.isEmpty()) {
-            // Build a MessageRequest with the sender as "Patient" and the message text
-            MessageRequest request = MessageRequest.newBuilder()
+        String message = chatInput.getText().trim();
+
+        if (!message.isEmpty() && chatRequestStream != null) {
+            chatRequestStream.onNext(MessageRequest.newBuilder()
                     .setSender("Patient")
                     .setMessageText(message)
-                    .build();
-
-            // If the stream is available, send the message to the server
-            if (chatRequestStream != null) {
-                chatRequestStream.onNext(request);
-                // Display the sent message in the chat area
-                chatArea.append("You: " + message + "\n");
-                // Clear the input field after sending
-                chatInput.setText("");
-            } else {
-                chatArea.append("Error: Chat stream not available.\n");
-            }
+                    .build());
+            chatArea.append("You: " + message + "\n");
+            chatInput.setText("");
+        } else if (chatRequestStream == null) {
+            chatArea.append("Error: Chat stream not available." + "\n");
         }
+
     }//GEN-LAST:event_sendButtonActionPerformed
 
     private void btnStartConsultationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartConsultationActionPerformed
         // TODO add your handling code here:
-        // Handle starting the consultation session between patient and doctor
-        String patientId = txtPatientId.getText().trim();
+        // Handle starting a consultation session between doctor and patient
         String doctorId = txtDoctorId.getText().trim();
+        String patientId = txtPatientId.getText().trim();
 
-        // Check if either patient or doctor ID is empty
+        // Check if either the patient or doctor ID is empty
         if (patientId.isEmpty() || doctorId.isEmpty()) {
             chatArea.append("Please enter both Patient ID and Doctor ID.\n");
             return;
         }
 
-        // If both IDs are entered, initiate the consultation process
+        // If both IDs are provided, initiate the consultation
         initiateConsultation(patientId, doctorId);
     }//GEN-LAST:event_btnStartConsultationActionPerformed
 
+    private void txtDoctorIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDoctorIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDoctorIdActionPerformed
+
     private void initiateConsultation(String patientId, String doctorId) {
-        // Create the request with patient and doctor IDs
+        // Create a ConsultationRequest with patient and doctor IDs
         ConsultationRequest request = ConsultationRequest.newBuilder()
                 .setPatientId(patientId)
                 .setDoctorId(doctorId)
                 .build();
 
         try {
-            // Make the blocking call to initiate the consultation
+            // Send the request and get the response
             ConsultationResponse response = blockingStub.startConsultation(request);
             if (response.getSuccess()) {
-                chatArea.append("Consultation started with Dr. " + doctorId + "\n");
+                chatArea.append("Consultation started with Dr ID: " + doctorId + "\n");
             } else {
                 chatArea.append("Failed to start consultation.\n");
             }
         } catch (Exception e) {
-            // If an error occurs while starting the consultation, show the error message
+            // Handle any errors that occur during the consultation initiation
             chatArea.append("Error starting consultation: " + e.getMessage() + "\n");
         }
     }
 
-    private void startChatStream() {
-        // Start the chat stream
-        chatRequestStream = asyncStub.chat(new StreamObserver<MessageResponse>() {
-            @Override
-            public void onNext(MessageResponse value) {
-                // If the received message is not from the "Patient", display it in the chat area
-                if (!value.getSender().equals("Patient")) {
-                    SwingUtilities.invokeLater(() -> {
-                        chatArea.append(value.getSender() + ": " + value.getMessageText() + "\n");
-                    });
-                }
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                // If an error occurs, display the error message in the chat area
-                SwingUtilities.invokeLater(() -> {
-                    chatArea.append("Chat error: " + t.getMessage() + "\n");
-                });
-            }
-
-            @Override
-            public void onCompleted() {
-                SwingUtilities.invokeLater(() -> {
-                    chatArea.append("Chat session ended.\n");
-                });
-            }
-        });
-    }
-
     @Override
     public void dispose() {
-        // Cleanup when the window is closed
         if (chatRequestStream != null) {
             chatRequestStream.onCompleted();
         }
@@ -269,6 +297,18 @@ public class TelePatientGUI extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelePatientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

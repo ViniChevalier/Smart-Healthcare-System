@@ -39,4 +39,8 @@ class Doctor {
         availableSlots.add(slot);
     }
 
+    public void removeAvailability(String timeSlot) {
+        availableSlots.remove(timeSlot);
+    }
+
 }

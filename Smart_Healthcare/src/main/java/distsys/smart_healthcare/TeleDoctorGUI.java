@@ -8,10 +8,16 @@ package distsys.smart_healthcare;
  *
  * @author vinicius
  */
+import distsys.smart_healthcare.Auth.Constants;
 import generated.grpc.TelemedicineService.*;
+
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.swing.*;
 
@@ -30,15 +36,60 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
     //Constructor
     public TeleDoctorGUI() {
         initComponents();
+        setupGrpcClient();
+        startChatStream();
+    }
 
-        // Initialize the gRPC connection
+    // Setup GRPC
+    private void setupGrpcClient() {
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
 
-        asyncStub = TelemedicineServiceGrpc.newStub(channel);
-        blockingStub = TelemedicineServiceGrpc.newBlockingStub(channel);
-        startChatStream();
+        String jwt = getJwt();
+        Metadata headers = new Metadata();
+        Metadata.Key<String> jwtKey = Metadata.Key.of("authorization", Metadata.ASCII_STRING_MARSHALLER);
+        headers.put(jwtKey, "Bearer " + jwt);
+
+        asyncStub = MetadataUtils.attachHeaders(TelemedicineServiceGrpc.newStub(channel), headers);
+        blockingStub = MetadataUtils.attachHeaders(TelemedicineServiceGrpc.newBlockingStub(channel), headers);
+    }
+
+    // Generate a valid token
+    private static String getJwt() {
+        return Jwts.builder()
+                .setSubject("Telemedicine - Doctor Client") // client's identifier
+                .signWith(SignatureAlgorithm.HS256, Constants.JWT_SIGNING_KEY)
+                .compact();
+    }
+
+    private void startChatStream() {
+        // Start the chat stream using the async stub
+        chatRequestStream = asyncStub.chat(new StreamObserver<MessageResponse>() {
+            @Override
+            public void onNext(MessageResponse value) {
+                // If the received message is not from the "Doctor", show it in the chat area
+                if (!value.getSender().equals("Doctor")) {
+                    SwingUtilities.invokeLater(() -> {
+                        chatArea.append(value.getSender() + ": " + value.getMessageText() + "\n");
+                    });
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                SwingUtilities.invokeLater(() -> {
+                    chatArea.append("Chat error: " + t.getMessage() + "\n");
+                });
+            }
+
+            @Override
+            public void onCompleted() {
+                SwingUtilities.invokeLater(() -> {
+                    chatArea.append("Chat session ended.\n");
+                });
+            }
+        });
     }
 
     /**
@@ -147,27 +198,20 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         // TODO add your handling code here:
         // Handle sending a message
-        // Handle sending a message from the user (e.g., doctor)
-        // Get the message from the input field
-        String message = chatInput.getText().trim();
         // Check if the message is not empty
-        if (!message.isEmpty()) {
-            // Build a MessageRequest with the message text and sender information
-            MessageRequest request = MessageRequest.newBuilder()
+        String message = chatInput.getText().trim();
+
+        if (!message.isEmpty() && chatRequestStream != null) {
+            chatRequestStream.onNext(MessageRequest.newBuilder()
                     .setSender("Doctor")
                     .setMessageText(message)
-                    .build();
-
-            // If the chatRequestStream is available, send the message
-            if (chatRequestStream != null) {
-                chatRequestStream.onNext(request);
-                chatArea.append("You: " + message + "\n");
-                chatInput.setText("");
-            } else {
-                // If the chat stream is not available, show an error message
-                chatArea.append("Error: Chat stream not available.\n");
-            }
+                    .build());
+            chatArea.append("You: " + message + "\n");
+            chatInput.setText("");
+        } else if (chatRequestStream == null) {
+            chatArea.append("Error: Chat stream not available." + "\n");
         }
+
     }//GEN-LAST:event_sendButtonActionPerformed
 
     private void btnStartConsultationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartConsultationActionPerformed
@@ -207,38 +251,8 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
         }
     }
 
-    private void startChatStream() {
-        // Start the chat stream using the async stub
-        chatRequestStream = asyncStub.chat(new StreamObserver<MessageResponse>() {
-            @Override
-            public void onNext(MessageResponse value) {
-                // If the received message is not from the "Doctor", show it in the chat area
-                if (!value.getSender().equals("Doctor")) {
-                    SwingUtilities.invokeLater(() -> {
-                        chatArea.append(value.getSender() + ": " + value.getMessageText() + "\n");
-                    });
-                }
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                SwingUtilities.invokeLater(() -> {
-                    chatArea.append("Chat error: " + t.getMessage() + "\n");
-                });
-            }
-
-            @Override
-            public void onCompleted() {
-                SwingUtilities.invokeLater(() -> {
-                    chatArea.append("Chat session ended.\n");
-                });
-            }
-        });
-    }
-
     @Override
     public void dispose() {
-        // Cleanup when the window is closed
         if (chatRequestStream != null) {
             chatRequestStream.onCompleted();
         }
