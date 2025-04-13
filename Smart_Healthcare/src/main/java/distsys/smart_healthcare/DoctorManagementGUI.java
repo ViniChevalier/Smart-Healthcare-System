@@ -21,21 +21,21 @@ import java.awt.event.ActionListener;
  */
 public class DoctorManagementGUI extends javax.swing.JFrame {
 
-    // gRPC channel and stub to connect to the AppointmentService
     private ManagedChannel channel;
     private AppointmentServiceGrpc.AppointmentServiceStub appointmentServiceClient;
 
     /**
      * Creates new form DoctorManagementGUI
      */
-    // Constructor
     public DoctorManagementGUI() {
         initComponents();
 
-        // Build gRPC channel and stub for synchronous/blocking calls
+        // Initialize the gRPC connection
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
+
+        // Initialize the client
         appointmentServiceClient = AppointmentServiceGrpc.newStub(channel);
 
         // Action listener for Add Doctor button
@@ -61,6 +61,113 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
                 getAvailability();
             }
         });
+    }
+
+    // Add Doctor method
+    private void addDoctor() {
+        String doctorName = txtDoctorName.getText();
+
+        // Check if doctor name is not empty
+        if (doctorName.isEmpty()) {
+            txtAreaStatus.setText("Doctor name is required.");
+            return;
+        }
+
+        try {
+            appointmentServiceClient.addDoctor(AddDoctorRequest.newBuilder()
+                    .setDoctorId(doctorName)
+                    .build(), new StreamObserver<AddDoctorResponse>() {
+                @Override
+                public void onNext(AddDoctorResponse response) {
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    txtAreaStatus.setText("Error adding doctor: " + t.getMessage());
+                }
+
+                @Override
+                public void onCompleted() {
+                    txtAreaStatus.setText("Doctor added successfully.");
+                    txtDoctorName.setText("");
+                }
+            });
+        } catch (StatusRuntimeException e) {
+            txtAreaStatus.setText("Error adding doctor: " + e.getStatus().getDescription());
+        }
+    }
+
+    // Add Availability method
+    private void addAvailability() {
+        String doctorId = txtDoctorName1.getText();
+        String timeSlot = txtAvailabilityTime.getText();
+
+        // Check if time slot is not empty
+        if (doctorId.isEmpty() || timeSlot.isEmpty()) {
+            txtAreaStatus.setText("Both doctor ID and availability slot are required.");
+            return;
+        }
+
+        try {
+            appointmentServiceClient.addAvailability(AddAvailabilityRequest.newBuilder()
+                    .setDoctorId(doctorId)
+                    .setTimeSlot(timeSlot)
+                    .build(), new StreamObserver<AddAvailabilityResponse>() {
+                @Override
+                public void onNext(AddAvailabilityResponse response) {
+
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    txtAreaStatus.setText("Error adding availability: " + t.getMessage());
+                }
+
+                @Override
+                public void onCompleted() {
+                    txtAreaStatus.setText("Availability added successfully.");
+                    txtDoctorName1.setText("");  // Clear text fields after adding availability
+                }
+            });
+        } catch (StatusRuntimeException e) {
+            txtAreaStatus.setText("Error adding availability: " + e.getStatus().getDescription());
+        }
+    }
+
+    // Get Availability method (Streaming)
+    private void getAvailability() {
+        String doctorId = txtDoctorName2.getText();
+
+        if (doctorId.isEmpty()) {
+            txtAreaStatus.setText("Doctor ID is required.");
+            return;
+        }
+
+        AvailabilityRequest request = AvailabilityRequest.newBuilder()
+                .setDoctorId(doctorId)
+                .build();
+
+        appointmentServiceClient.getAvailability(
+                request,
+                new StreamObserver<AvailabilityResponse>() {
+            @Override
+            public void onNext(AvailabilityResponse value) {
+                String current = txtAreaStatus.getText();
+                txtAreaStatus.setText(current + "\nAvailable slot: " + value.getDateTime());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                txtAreaStatus.setText("Error: " + t.getMessage());
+            }
+
+            @Override
+            public void onCompleted() {
+                String current = txtAreaStatus.getText();
+                txtAreaStatus.setText(current + "\nAvailability streaming completed.");
+            }
+        }
+        );
     }
 
     /**
@@ -220,113 +327,6 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
     private void txtDoctorName2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDoctorName2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDoctorName2ActionPerformed
-
-    // Add Doctor method
-    private void addDoctor() {
-        String doctorName = txtDoctorName.getText();
-
-        // Check if doctor name is not empty
-        if (doctorName.isEmpty()) {
-            txtAreaStatus.setText("Doctor name is required.");
-            return;
-        }
-
-        try {
-            appointmentServiceClient.addDoctor(AddDoctorRequest.newBuilder()
-                    .setDoctorId(doctorName)
-                    .build(), new StreamObserver<AddDoctorResponse>() {
-                @Override
-                public void onNext(AddDoctorResponse response) {
-                }
-
-                @Override
-                public void onError(Throwable t) {
-                    txtAreaStatus.setText("Error adding doctor: " + t.getMessage());
-                }
-
-                @Override
-                public void onCompleted() {
-                    txtAreaStatus.setText("Doctor added successfully.");
-                    txtDoctorName.setText("");
-                }
-            });
-        } catch (StatusRuntimeException e) {
-            txtAreaStatus.setText("Error adding doctor: " + e.getStatus().getDescription());
-        }
-    }
-
-    // Add Availability method
-    private void addAvailability() {
-        String doctorId = txtDoctorName1.getText();
-        String timeSlot = txtAvailabilityTime.getText();
-
-        // Check if time slot is not empty
-        if (doctorId.isEmpty() || timeSlot.isEmpty()) {
-            txtAreaStatus.setText("Both doctor ID and availability slot are required.");
-            return;
-        }
-
-        try {
-            appointmentServiceClient.addAvailability(AddAvailabilityRequest.newBuilder()
-                    .setDoctorId(doctorId)
-                    .setTimeSlot(timeSlot)
-                    .build(), new StreamObserver<AddAvailabilityResponse>() {
-                @Override
-                public void onNext(AddAvailabilityResponse response) {
-
-                }
-
-                @Override
-                public void onError(Throwable t) {
-                    txtAreaStatus.setText("Error adding availability: " + t.getMessage());
-                }
-
-                @Override
-                public void onCompleted() {
-                    txtAreaStatus.setText("Availability added successfully.");
-                    txtDoctorName1.setText("");  // Clear text fields after adding availability
-                }
-            });
-        } catch (StatusRuntimeException e) {
-            txtAreaStatus.setText("Error adding availability: " + e.getStatus().getDescription());
-        }
-    }
-
-    // Get Availability method
-    private void getAvailability() {
-        String doctorId = txtDoctorName2.getText();
-
-        if (doctorId.isEmpty()) {
-            txtAreaStatus.setText("Doctor ID is required.");
-            return;
-        }
-
-        AvailabilityRequest request = AvailabilityRequest.newBuilder()
-                .setDoctorId(doctorId)
-                .build();
-
-        appointmentServiceClient.getAvailability(
-                request,
-                new StreamObserver<AvailabilityResponse>() {
-            @Override
-            public void onNext(AvailabilityResponse value) {
-                String current = txtAreaStatus.getText();
-                txtAreaStatus.setText(current + "\nAvailable slot: " + value.getDateTime());
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                txtAreaStatus.setText("Error: " + t.getMessage());
-            }
-
-            @Override
-            public void onCompleted() {
-                String current = txtAreaStatus.getText();
-                txtAreaStatus.setText(current + "\nAvailability streaming completed.");
-            }
-        }
-        );
-    }
 
     /**
      * @param args the command line arguments

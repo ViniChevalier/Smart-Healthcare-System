@@ -8,9 +8,13 @@ package distsys.smart_healthcare;
  *
  * @author vinicius
  */
+<<<<<<< HEAD
 import auth.AuthServiceGrpc;
 import auth.AuthServiceOuterClass.LoginRequest;
 import auth.AuthServiceOuterClass.LoginResponse;
+=======
+
+>>>>>>> parent of fe9b6ec (Improvement on server)
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -30,8 +34,13 @@ import io.grpc.stub.MetadataUtils;
 
 public class AppointmentGUI extends javax.swing.JFrame {
 
+<<<<<<< HEAD
     // gRPC channel and stub to connect to the AppointmentService
     private AppointmentServiceGrpc.AppointmentServiceBlockingStub appointmentStub;
+=======
+    private ManagedChannel channel;
+    private AppointmentServiceGrpc.AppointmentServiceBlockingStub blockingStub;
+>>>>>>> parent of fe9b6ec (Improvement on server)
 
     /**
      * Creates new form AppointmentClientGUI
@@ -42,6 +51,7 @@ public class AppointmentGUI extends javax.swing.JFrame {
     public AppointmentGUI() {
         initComponents();
 
+<<<<<<< HEAD
         // Start a background thread to handle the gRPC setup
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
@@ -101,6 +111,15 @@ public class AppointmentGUI extends javax.swing.JFrame {
         worker.execute();
 
         // Add action listeners to buttons
+=======
+        // Initialize the gRPC connection
+        channel = ManagedChannelBuilder.forAddress("localhost", 50051)
+                .usePlaintext()
+                .build();
+        blockingStub = AppointmentServiceGrpc.newBlockingStub(channel);
+
+        // Event handler: Book Appointment
+>>>>>>> parent of fe9b6ec (Improvement on server)
         btnBook.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Ensure appointmentStub is initialized before using it
@@ -112,6 +131,10 @@ public class AppointmentGUI extends javax.swing.JFrame {
             }
         });
 
+<<<<<<< HEAD
+=======
+        // Event handler: Get Appointment by ID
+>>>>>>> parent of fe9b6ec (Improvement on server)
         btnRetrieve.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Ensure appointmentStub is initialized before using it
@@ -122,8 +145,14 @@ public class AppointmentGUI extends javax.swing.JFrame {
                 }
             }
         });
+<<<<<<< HEAD
 
         btnLoadAvailability.addActionListener(new ActionListener() {
+=======
+        
+        // Event handler: Load availability
+               btnLoadAvailability.addActionListener(new ActionListener() {
+>>>>>>> parent of fe9b6ec (Improvement on server)
             public void actionPerformed(ActionEvent e) {
                 // Ensure appointmentStub is initialized before using it
                 if (appointmentStub != null) {
@@ -284,8 +313,7 @@ public class AppointmentGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAppointmentIdActionPerformed
 
-    // Load and display available slots for a doctor
-    private void updateAvailableSlots() {
+ private void updateAvailableSlots() {
         String doctorId = txtDoctor.getText().trim();
         jComboTime.removeAllItems();
 

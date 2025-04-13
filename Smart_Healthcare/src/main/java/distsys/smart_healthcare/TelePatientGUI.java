@@ -17,21 +17,16 @@ import javax.swing.*;
 
 public class TelePatientGUI extends javax.swing.JFrame {
 
-    // gRPC channel and stubs for communication
     private ManagedChannel channel;
-
     private TelemedicineServiceGrpc.TelemedicineServiceStub asyncStub;
     private TelemedicineServiceGrpc.TelemedicineServiceBlockingStub blockingStub;
     private StreamObserver<MessageRequest> chatRequestStream;
 
     /**
-     * Creates new form TelePatientGUI
+     * Creates new form TeleDoctorGUI
      */
-    //Constructor
     public TelePatientGUI() {
-        initComponents();
-
-        // Initialize the gRPC connection
+       initComponents();
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
@@ -39,6 +34,7 @@ public class TelePatientGUI extends javax.swing.JFrame {
         blockingStub = TelemedicineServiceGrpc.newBlockingStub(channel);
         startChatStream();
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -145,22 +141,17 @@ public class TelePatientGUI extends javax.swing.JFrame {
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         // TODO add your handling code here:
-        // Handle sending a message from the patient
-        String message = chatInput.getText().trim();
-        // Check if the message is not empty
+        // Handle sending a message
+    String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
-            // Build a MessageRequest with the sender as "Patient" and the message text
             MessageRequest request = MessageRequest.newBuilder()
                     .setSender("Patient")
                     .setMessageText(message)
                     .build();
 
-            // If the stream is available, send the message to the server
             if (chatRequestStream != null) {
                 chatRequestStream.onNext(request);
-                // Display the sent message in the chat area
                 chatArea.append("You: " + message + "\n");
-                // Clear the input field after sending
                 chatInput.setText("");
             } else {
                 chatArea.append("Error: Chat stream not available.\n");
@@ -170,29 +161,24 @@ public class TelePatientGUI extends javax.swing.JFrame {
 
     private void btnStartConsultationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartConsultationActionPerformed
         // TODO add your handling code here:
-        // Handle starting the consultation session between patient and doctor
         String patientId = txtPatientId.getText().trim();
         String doctorId = txtDoctorId.getText().trim();
 
-        // Check if either patient or doctor ID is empty
         if (patientId.isEmpty() || doctorId.isEmpty()) {
             chatArea.append("Please enter both Patient ID and Doctor ID.\n");
             return;
         }
 
-        // If both IDs are entered, initiate the consultation process
         initiateConsultation(patientId, doctorId);
     }//GEN-LAST:event_btnStartConsultationActionPerformed
 
     private void initiateConsultation(String patientId, String doctorId) {
-        // Create the request with patient and doctor IDs
         ConsultationRequest request = ConsultationRequest.newBuilder()
                 .setPatientId(patientId)
                 .setDoctorId(doctorId)
                 .build();
 
         try {
-            // Make the blocking call to initiate the consultation
             ConsultationResponse response = blockingStub.startConsultation(request);
             if (response.getSuccess()) {
                 chatArea.append("Consultation started with Dr. " + doctorId + "\n");
@@ -200,17 +186,14 @@ public class TelePatientGUI extends javax.swing.JFrame {
                 chatArea.append("Failed to start consultation.\n");
             }
         } catch (Exception e) {
-            // If an error occurs while starting the consultation, show the error message
             chatArea.append("Error starting consultation: " + e.getMessage() + "\n");
         }
     }
 
     private void startChatStream() {
-        // Start the chat stream
         chatRequestStream = asyncStub.chat(new StreamObserver<MessageResponse>() {
             @Override
             public void onNext(MessageResponse value) {
-                // If the received message is not from the "Patient", display it in the chat area
                 if (!value.getSender().equals("Patient")) {
                     SwingUtilities.invokeLater(() -> {
                         chatArea.append(value.getSender() + ": " + value.getMessageText() + "\n");
@@ -220,7 +203,6 @@ public class TelePatientGUI extends javax.swing.JFrame {
 
             @Override
             public void onError(Throwable t) {
-                // If an error occurs, display the error message in the chat area
                 SwingUtilities.invokeLater(() -> {
                     chatArea.append("Chat error: " + t.getMessage() + "\n");
                 });
@@ -237,7 +219,6 @@ public class TelePatientGUI extends javax.swing.JFrame {
 
     @Override
     public void dispose() {
-        // Cleanup when the window is closed
         if (chatRequestStream != null) {
             chatRequestStream.onCompleted();
         }
