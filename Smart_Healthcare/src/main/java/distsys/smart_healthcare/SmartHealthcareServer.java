@@ -8,7 +8,7 @@ package distsys.smart_healthcare;
  *
  * @author vinicius
  */
-import io.grpc.Server;
+import io.grpc.*;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 import io.grpc.ServerInterceptors;
@@ -29,8 +29,15 @@ import generated.grpc.HealthMonitoringService.HealthMonitoringServiceGrpc.Health
 import generated.grpc.HealthMonitoringService.*;
 import distsys.smart_healthcare.Auth.AuthorizationServerInterceptor;
 import distsys.smart_healthcare.Auth.Constants;
+import io.grpc.ServerCall.Listener;
+import io.grpc.ServerInterceptor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SmartHealthcareServer {
+
+    // Metadata
+    private static final Logger logger = Logger.getLogger(SmartHealthcareServer.class.getName());
 
     // Appointment service implementation
     static class AppointmentServiceImpl extends AppointmentServiceImplBase {
@@ -49,7 +56,7 @@ public class SmartHealthcareServer {
         public void scheduleAppointment(AppointmentRequest request, StreamObserver<AppointmentResponse> responseObserver) {
             // Auth  
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
-            System.out.println("Processing request from " + clientId);
+            logger.info("Processing scheduleAppointment request from " + clientId);
 
             String doctorId = request.getDoctorId();
             String timeSlot = request.getDateTime();
@@ -118,7 +125,7 @@ public class SmartHealthcareServer {
         public void getAppointment(AppointmentIdRequest request, StreamObserver<AppointmentResponse> responseObserver) {
             // Auth  
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
-            System.out.println("Processing request from " + clientId);
+            logger.info("Processing scheduleAppointment request from " + clientId);
 
             // Search for the appointment with the requested ID
             for (Appointment appointment : appointments) {
@@ -155,7 +162,7 @@ public class SmartHealthcareServer {
         public void addDoctor(AddDoctorRequest request, StreamObserver<AddDoctorResponse> responseObserver) {
             // Auth  
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
-            System.out.println("Processing request from " + clientId);
+            logger.info("Processing scheduleAppointment request from " + clientId);
 
             String doctorId = request.getDoctorId();
 
@@ -192,7 +199,7 @@ public class SmartHealthcareServer {
         public void addAvailability(AddAvailabilityRequest request, StreamObserver<AddAvailabilityResponse> responseObserver) {
             // Auth  
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
-            System.out.println("Processing request from " + clientId);
+            logger.info("Processing scheduleAppointment request from " + clientId);
 
             String doctorId = request.getDoctorId();
             String timeSlot = request.getTimeSlot();
@@ -237,7 +244,7 @@ public class SmartHealthcareServer {
         public void getAvailability(AvailabilityRequest request, StreamObserver<AvailabilityResponse> responseObserver) {
             // Auth  
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
-            System.out.println("Processing request from " + clientId);
+            logger.info("Processing scheduleAppointment request from " + clientId);
 
             String doctorId = request.getDoctorId();
             boolean doctorFound = false;
@@ -281,7 +288,7 @@ public class SmartHealthcareServer {
         public void startConsultation(ConsultationRequest request, StreamObserver<ConsultationResponse> responseObserver) {
             // Auth  
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
-            System.out.println("Processing request from " + clientId);
+            logger.info("Processing scheduleAppointment request from " + clientId);
 
             String patientId = request.getPatientId();
             String doctorId = request.getDoctorId();
@@ -302,7 +309,7 @@ public class SmartHealthcareServer {
         public StreamObserver<MessageRequest> chat(StreamObserver<MessageResponse> responseObserver) {
             // Auth  
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
-            System.out.println("Processing request from " + clientId);
+            logger.info("Processing scheduleAppointment request from " + clientId);
 
             // Add the client to the list of connected clients
             connectedClients.add(responseObserver);
@@ -343,7 +350,7 @@ public class SmartHealthcareServer {
         public StreamObserver<HealthDataRequest> sendHealthData(StreamObserver<HealthDataResponse> responseObserver) {
             // Auth  
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
-            System.out.println("Processing request from " + clientId);
+            logger.info("Processing scheduleAppointment request from " + clientId);
 
             return new StreamObserver<>() {
 
@@ -466,14 +473,28 @@ public class SmartHealthcareServer {
     // Main method to start the healthcare server
     public static void main(String[] args) throws IOException, InterruptedException {
         // Set up the gRPC server to listen on port 50051 and add services
-        Server server = ServerBuilder.forPort(50051)
-                .addService(ServerInterceptors.intercept(new AppointmentServiceImpl(), new AuthorizationServerInterceptor())) // Add Appointment Service
-                .addService(ServerInterceptors.intercept(new TelemedicineServiceImpl(), new AuthorizationServerInterceptor())) // Add Telemedicine Service
-                .addService(ServerInterceptors.intercept(new HealthMonitoringServiceImpl(), new AuthorizationServerInterceptor())) // Add Health Monitoring Service
-                .build()
-                .start();
+        // Create a gRPC server
 
-        System.out.println("Healthcare Service started on port 50051...");
+        int port = 50051;
+
+        Server server = ServerBuilder.forPort(port)
+                .addService(ServerInterceptors.intercept(new AppointmentServiceImpl(), new AuthorizationServerInterceptor()))
+                .addService(ServerInterceptors.intercept(new TelemedicineServiceImpl(), new AuthorizationServerInterceptor()))
+                .addService(ServerInterceptors.intercept(new HealthMonitoringServiceImpl(), new AuthorizationServerInterceptor()))
+                .build();
+
+        // Start the server
+        server.start();
+        logger.log(Level.INFO, "Server started, listening on {0}", port);
+        System.out.println("Healthcare Server started, listening on " + port);
+
+        // Add a shutdown hook for graceful shutdown
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            logger.info("Shutting down...");
+            server.shutdown();
+        }));
+
+        // Block the main thread so the server keeps running
         server.awaitTermination();
     }
 }

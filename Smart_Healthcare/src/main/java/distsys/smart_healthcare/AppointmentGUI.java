@@ -10,18 +10,25 @@ package distsys.smart_healthcare;
  */
 import distsys.smart_healthcare.Auth.Constants;
 import generated.grpc.AppointmentService.*;
+import io.grpc.ClientCall;
+import io.grpc.ClientInterceptor;
+import io.grpc.*;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
+import static io.grpc.Metadata.ASCII_STRING_MARSHALLER;
+import io.grpc.MethodDescriptor;
 import io.grpc.stub.MetadataUtils;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 public class AppointmentGUI extends javax.swing.JFrame {
 
+    private static final Logger logger = Logger.getLogger(AppointmentGUI.class.getName());
     private ManagedChannel channel;
     private AppointmentServiceGrpc.AppointmentServiceBlockingStub blockingStub;
 
@@ -62,6 +69,7 @@ public class AppointmentGUI extends javax.swing.JFrame {
         btnRetrieve.addActionListener(e -> getAppointment());
         btnLoadAvailability.addActionListener(e -> updateAvailableSlots());
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

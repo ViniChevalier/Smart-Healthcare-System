@@ -18,12 +18,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 
 /**
  *
  * @author vinicius
  */
 public class DoctorManagementGUI extends javax.swing.JFrame {
+
+    // Metadata
+    private static final Logger logger = Logger.getLogger(DoctorManagementGUI.class.getName());
 
     // gRPC channel and stub to connect to the AppointmentService
     private ManagedChannel channel;

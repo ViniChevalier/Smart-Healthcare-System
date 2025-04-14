@@ -18,10 +18,14 @@ import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.logging.Logger;
 
 import javax.swing.*;
 
 public class TeleDoctorGUI extends javax.swing.JFrame {
+    
+    // Metadata
+    private static final Logger logger = Logger.getLogger(TeleDoctorGUI.class.getName());
 
     // gRPC channel and stubs for communication
     private ManagedChannel channel;

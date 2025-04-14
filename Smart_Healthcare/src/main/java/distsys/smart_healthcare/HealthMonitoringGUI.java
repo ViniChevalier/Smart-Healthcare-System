@@ -17,12 +17,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  *
  * @author vinicius
  */
 public class HealthMonitoringGUI extends javax.swing.JFrame {
+    
+    // Metadata
+    private static final Logger logger = Logger.getLogger(HealthMonitoringGUI.class.getName());
 
     // gRPC channel and stubs for communication
     private ManagedChannel channel;
@@ -144,6 +148,7 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
         btnSendHealthData = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtHealthData = new javax.swing.JTextArea();
+        jLabel8 = new javax.swing.JLabel();
         emergencyAlertPanel = new javax.swing.JPanel();
         txtAlertPatientId = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -152,6 +157,7 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtEmergencyResponse = new javax.swing.JTextArea();
+        jLabel7 = new javax.swing.JLabel();
 
         jCheckBox1.setText("jCheckBox1");
 
@@ -183,35 +189,42 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
         txtHealthData.setRows(5);
         jScrollPane2.setViewportView(txtHealthData);
 
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("Send Health Data");
+
         javax.swing.GroupLayout healthDataPanelLayout = new javax.swing.GroupLayout(healthDataPanel);
         healthDataPanel.setLayout(healthDataPanelLayout);
         healthDataPanelLayout.setHorizontalGroup(
             healthDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(healthDataPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(healthDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, healthDataPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSendHealthData, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, healthDataPanelLayout.createSequentialGroup()
+                    .addComponent(jScrollPane2)
+                    .addGroup(healthDataPanelLayout.createSequentialGroup()
                         .addGroup(healthDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(healthDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtHeartRate)
-                            .addComponent(txtPatientId)
-                            .addComponent(txtTemperature)
-                            .addComponent(txtDeviceId)))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE))
-                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, healthDataPanelLayout.createSequentialGroup()
+                                .addGap(0, 658, Short.MAX_VALUE)
+                                .addComponent(btnSendHealthData, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, healthDataPanelLayout.createSequentialGroup()
+                                .addGroup(healthDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(healthDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtHeartRate)
+                                    .addComponent(txtPatientId)
+                                    .addComponent(txtTemperature)
+                                    .addComponent(txtDeviceId))))
+                        .addContainerGap())))
         );
         healthDataPanelLayout.setVerticalGroup(
             healthDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(healthDataPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(healthDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPatientId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -227,10 +240,10 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
                 .addGroup(healthDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDeviceId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSendHealthData)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -247,6 +260,9 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
         txtEmergencyResponse.setRows(5);
         jScrollPane3.setViewportView(txtEmergencyResponse);
 
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Emergency Alert");
+
         javax.swing.GroupLayout emergencyAlertPanelLayout = new javax.swing.GroupLayout(emergencyAlertPanel);
         emergencyAlertPanel.setLayout(emergencyAlertPanelLayout);
         emergencyAlertPanelLayout.setHorizontalGroup(
@@ -255,9 +271,14 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(emergencyAlertPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(emergencyAlertPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(emergencyAlertPanelLayout.createSequentialGroup()
                         .addGroup(emergencyAlertPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(emergencyAlertPanelLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
                                 .addComponent(jLabel6)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -266,14 +287,14 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
                                 .addComponent(comboAlertType, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnSendAlert, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtAlertPatientId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 672, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane3))
-                .addContainerGap())
+                            .addComponent(txtAlertPatientId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 672, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         );
         emergencyAlertPanelLayout.setVerticalGroup(
             emergencyAlertPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(emergencyAlertPanelLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addGap(5, 5, 5)
                 .addGroup(emergencyAlertPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAlertPatientId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
@@ -283,7 +304,7 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(btnSendAlert))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -295,14 +316,14 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(healthDataPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(emergencyAlertPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(emergencyAlertPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(healthDataPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(healthDataPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(emergencyAlertPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -475,6 +496,8 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField txtAlertPatientId;
