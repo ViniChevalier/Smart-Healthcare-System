@@ -202,6 +202,10 @@ private static final long serialVersionUID = 0L;
   public static final int ALERTMESSAGE_FIELD_NUMBER = 3;
   private volatile java.lang.Object alertMessage_;
   /**
+   * <pre>
+   * Optional message describing the emergency
+   * </pre>
+   *
    * <code>string alertMessage = 3;</code>
    * @return The alertMessage.
    */
@@ -219,6 +223,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   * Optional message describing the emergency
+   * </pre>
+   *
    * <code>string alertMessage = 3;</code>
    * @return The bytes for alertMessage.
    */
@@ -771,6 +779,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object alertMessage_ = "";
     /**
+     * <pre>
+     * Optional message describing the emergency
+     * </pre>
+     *
      * <code>string alertMessage = 3;</code>
      * @return The alertMessage.
      */
@@ -787,6 +799,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * Optional message describing the emergency
+     * </pre>
+     *
      * <code>string alertMessage = 3;</code>
      * @return The bytes for alertMessage.
      */
@@ -804,6 +820,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * Optional message describing the emergency
+     * </pre>
+     *
      * <code>string alertMessage = 3;</code>
      * @param value The alertMessage to set.
      * @return This builder for chaining.
@@ -819,6 +839,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Optional message describing the emergency
+     * </pre>
+     *
      * <code>string alertMessage = 3;</code>
      * @return This builder for chaining.
      */
@@ -829,6 +853,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Optional message describing the emergency
+     * </pre>
+     *
      * <code>string alertMessage = 3;</code>
      * @param value The bytes for alertMessage to set.
      * @return This builder for chaining.

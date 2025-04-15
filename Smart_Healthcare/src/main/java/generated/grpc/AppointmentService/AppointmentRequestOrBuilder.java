@@ -8,11 +8,19 @@ public interface AppointmentRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * ID of the patient
+   * </pre>
+   *
    * <code>string patient_id = 1;</code>
    * @return The patientId.
    */
   java.lang.String getPatientId();
   /**
+   * <pre>
+   * ID of the patient
+   * </pre>
+   *
    * <code>string patient_id = 1;</code>
    * @return The bytes for patientId.
    */
@@ -20,11 +28,19 @@ public interface AppointmentRequestOrBuilder extends
       getPatientIdBytes();
 
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 2;</code>
    * @return The doctorId.
    */
   java.lang.String getDoctorId();
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 2;</code>
    * @return The bytes for doctorId.
    */
@@ -32,11 +48,19 @@ public interface AppointmentRequestOrBuilder extends
       getDoctorIdBytes();
 
   /**
+   * <pre>
+   * Date and time of the appointment
+   * </pre>
+   *
    * <code>string date_time = 3;</code>
    * @return The dateTime.
    */
   java.lang.String getDateTime();
   /**
+   * <pre>
+   * Date and time of the appointment
+   * </pre>
+   *
    * <code>string date_time = 3;</code>
    * @return The bytes for dateTime.
    */

@@ -108,6 +108,10 @@ private static final long serialVersionUID = 0L;
   public static final int SUCCESS_FIELD_NUMBER = 1;
   private boolean success_;
   /**
+   * <pre>
+   * Indicates if the doctor was add successful
+   * </pre>
+   *
    * <code>bool success = 1;</code>
    * @return The success.
    */
@@ -119,6 +123,10 @@ private static final long serialVersionUID = 0L;
   public static final int MESSAGE_FIELD_NUMBER = 2;
   private volatile java.lang.Object message_;
   /**
+   * <pre>
+   * Informational message
+   * </pre>
+   *
    * <code>string message = 2;</code>
    * @return The message.
    */
@@ -136,6 +144,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   * Informational message
+   * </pre>
+   *
    * <code>string message = 2;</code>
    * @return The bytes for message.
    */
@@ -157,6 +169,10 @@ private static final long serialVersionUID = 0L;
   public static final int DOCTOR_ID_FIELD_NUMBER = 3;
   private volatile java.lang.Object doctorId_;
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 3;</code>
    * @return The doctorId.
    */
@@ -174,6 +190,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 3;</code>
    * @return The bytes for doctorId.
    */
@@ -535,6 +555,10 @@ private static final long serialVersionUID = 0L;
 
     private boolean success_ ;
     /**
+     * <pre>
+     * Indicates if the doctor was add successful
+     * </pre>
+     *
      * <code>bool success = 1;</code>
      * @return The success.
      */
@@ -543,6 +567,10 @@ private static final long serialVersionUID = 0L;
       return success_;
     }
     /**
+     * <pre>
+     * Indicates if the doctor was add successful
+     * </pre>
+     *
      * <code>bool success = 1;</code>
      * @param value The success to set.
      * @return This builder for chaining.
@@ -554,6 +582,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Indicates if the doctor was add successful
+     * </pre>
+     *
      * <code>bool success = 1;</code>
      * @return This builder for chaining.
      */
@@ -566,6 +598,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object message_ = "";
     /**
+     * <pre>
+     * Informational message
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @return The message.
      */
@@ -582,6 +618,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * Informational message
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @return The bytes for message.
      */
@@ -599,6 +639,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * Informational message
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @param value The message to set.
      * @return This builder for chaining.
@@ -614,6 +658,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Informational message
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @return This builder for chaining.
      */
@@ -624,6 +672,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Informational message
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @param value The bytes for message to set.
      * @return This builder for chaining.
@@ -642,6 +694,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object doctorId_ = "";
     /**
+     * <pre>
+     * ID of the doctor
+     * </pre>
+     *
      * <code>string doctor_id = 3;</code>
      * @return The doctorId.
      */
@@ -658,6 +714,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * ID of the doctor
+     * </pre>
+     *
      * <code>string doctor_id = 3;</code>
      * @return The bytes for doctorId.
      */
@@ -675,6 +735,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * ID of the doctor
+     * </pre>
+     *
      * <code>string doctor_id = 3;</code>
      * @param value The doctorId to set.
      * @return This builder for chaining.
@@ -690,6 +754,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * ID of the doctor
+     * </pre>
+     *
      * <code>string doctor_id = 3;</code>
      * @return This builder for chaining.
      */
@@ -700,6 +768,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * ID of the doctor
+     * </pre>
+     *
      * <code>string doctor_id = 3;</code>
      * @param value The bytes for doctorId to set.
      * @return This builder for chaining.

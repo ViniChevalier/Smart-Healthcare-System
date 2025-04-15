@@ -8,17 +8,29 @@ public interface AddAvailabilityResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * Indicates if the availability was add successful
+   * </pre>
+   *
    * <code>bool success = 1;</code>
    * @return The success.
    */
   boolean getSuccess();
 
   /**
+   * <pre>
+   * Informational message
+   * </pre>
+   *
    * <code>string message = 2;</code>
    * @return The message.
    */
   java.lang.String getMessage();
   /**
+   * <pre>
+   * Informational message
+   * </pre>
+   *
    * <code>string message = 2;</code>
    * @return The bytes for message.
    */
@@ -26,11 +38,19 @@ public interface AddAvailabilityResponseOrBuilder extends
       getMessageBytes();
 
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 3;</code>
    * @return The doctorId.
    */
   java.lang.String getDoctorId();
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 3;</code>
    * @return The bytes for doctorId.
    */
@@ -38,11 +58,19 @@ public interface AddAvailabilityResponseOrBuilder extends
       getDoctorIdBytes();
 
   /**
+   * <pre>
+   * Add date &amp; time of availability
+   * </pre>
+   *
    * <code>string time_slot = 4;</code>
    * @return The timeSlot.
    */
   java.lang.String getTimeSlot();
   /**
+   * <pre>
+   * Add date &amp; time of availability
+   * </pre>
+   *
    * <code>string time_slot = 4;</code>
    * @return The bytes for timeSlot.
    */

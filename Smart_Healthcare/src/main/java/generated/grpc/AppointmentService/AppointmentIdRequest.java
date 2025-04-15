@@ -96,6 +96,10 @@ private static final long serialVersionUID = 0L;
   public static final int APPOINTMENT_ID_FIELD_NUMBER = 1;
   private volatile java.lang.Object appointmentId_;
   /**
+   * <pre>
+   * List of scheduled appointments
+   * </pre>
+   *
    * <code>string appointment_id = 1;</code>
    * @return The appointmentId.
    */
@@ -113,6 +117,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   * List of scheduled appointments
+   * </pre>
+   *
    * <code>string appointment_id = 1;</code>
    * @return The bytes for appointmentId.
    */
@@ -439,6 +447,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object appointmentId_ = "";
     /**
+     * <pre>
+     * List of scheduled appointments
+     * </pre>
+     *
      * <code>string appointment_id = 1;</code>
      * @return The appointmentId.
      */
@@ -455,6 +467,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * List of scheduled appointments
+     * </pre>
+     *
      * <code>string appointment_id = 1;</code>
      * @return The bytes for appointmentId.
      */
@@ -472,6 +488,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * List of scheduled appointments
+     * </pre>
+     *
      * <code>string appointment_id = 1;</code>
      * @param value The appointmentId to set.
      * @return This builder for chaining.
@@ -487,6 +507,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * List of scheduled appointments
+     * </pre>
+     *
      * <code>string appointment_id = 1;</code>
      * @return This builder for chaining.
      */
@@ -497,6 +521,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * List of scheduled appointments
+     * </pre>
+     *
      * <code>string appointment_id = 1;</code>
      * @param value The bytes for appointmentId to set.
      * @return This builder for chaining.

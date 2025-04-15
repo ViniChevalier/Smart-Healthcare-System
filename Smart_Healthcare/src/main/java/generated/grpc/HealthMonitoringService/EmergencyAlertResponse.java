@@ -169,6 +169,10 @@ private static final long serialVersionUID = 0L;
   public static final int CONFIRMATION_FIELD_NUMBER = 3;
   private volatile java.lang.Object confirmation_;
   /**
+   * <pre>
+   * Optional confirmation string
+   * </pre>
+   *
    * <code>string confirmation = 3;</code>
    * @return The confirmation.
    */
@@ -186,6 +190,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   * Optional confirmation string
+   * </pre>
+   *
    * <code>string confirmation = 3;</code>
    * @return The bytes for confirmation.
    */
@@ -686,6 +694,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object confirmation_ = "";
     /**
+     * <pre>
+     * Optional confirmation string
+     * </pre>
+     *
      * <code>string confirmation = 3;</code>
      * @return The confirmation.
      */
@@ -702,6 +714,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * Optional confirmation string
+     * </pre>
+     *
      * <code>string confirmation = 3;</code>
      * @return The bytes for confirmation.
      */
@@ -719,6 +735,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * Optional confirmation string
+     * </pre>
+     *
      * <code>string confirmation = 3;</code>
      * @param value The confirmation to set.
      * @return This builder for chaining.
@@ -734,6 +754,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Optional confirmation string
+     * </pre>
+     *
      * <code>string confirmation = 3;</code>
      * @return This builder for chaining.
      */
@@ -744,6 +768,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Optional confirmation string
+     * </pre>
+     *
      * <code>string confirmation = 3;</code>
      * @param value The bytes for confirmation to set.
      * @return This builder for chaining.

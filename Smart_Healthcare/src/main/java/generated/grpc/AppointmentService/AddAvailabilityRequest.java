@@ -103,6 +103,10 @@ private static final long serialVersionUID = 0L;
   public static final int DOCTOR_ID_FIELD_NUMBER = 1;
   private volatile java.lang.Object doctorId_;
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 1;</code>
    * @return The doctorId.
    */
@@ -120,6 +124,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 1;</code>
    * @return The bytes for doctorId.
    */
@@ -141,6 +149,10 @@ private static final long serialVersionUID = 0L;
   public static final int TIME_SLOT_FIELD_NUMBER = 2;
   private volatile java.lang.Object timeSlot_;
   /**
+   * <pre>
+   * Add date &amp; time of availability
+   * </pre>
+   *
    * <code>string time_slot = 2;</code>
    * @return The timeSlot.
    */
@@ -158,6 +170,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   * Add date &amp; time of availability
+   * </pre>
+   *
    * <code>string time_slot = 2;</code>
    * @return The bytes for timeSlot.
    */
@@ -501,6 +517,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object doctorId_ = "";
     /**
+     * <pre>
+     * ID of the doctor
+     * </pre>
+     *
      * <code>string doctor_id = 1;</code>
      * @return The doctorId.
      */
@@ -517,6 +537,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * ID of the doctor
+     * </pre>
+     *
      * <code>string doctor_id = 1;</code>
      * @return The bytes for doctorId.
      */
@@ -534,6 +558,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * ID of the doctor
+     * </pre>
+     *
      * <code>string doctor_id = 1;</code>
      * @param value The doctorId to set.
      * @return This builder for chaining.
@@ -549,6 +577,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * ID of the doctor
+     * </pre>
+     *
      * <code>string doctor_id = 1;</code>
      * @return This builder for chaining.
      */
@@ -559,6 +591,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * ID of the doctor
+     * </pre>
+     *
      * <code>string doctor_id = 1;</code>
      * @param value The bytes for doctorId to set.
      * @return This builder for chaining.
@@ -577,6 +613,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object timeSlot_ = "";
     /**
+     * <pre>
+     * Add date &amp; time of availability
+     * </pre>
+     *
      * <code>string time_slot = 2;</code>
      * @return The timeSlot.
      */
@@ -593,6 +633,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * Add date &amp; time of availability
+     * </pre>
+     *
      * <code>string time_slot = 2;</code>
      * @return The bytes for timeSlot.
      */
@@ -610,6 +654,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * Add date &amp; time of availability
+     * </pre>
+     *
      * <code>string time_slot = 2;</code>
      * @param value The timeSlot to set.
      * @return This builder for chaining.
@@ -625,6 +673,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Add date &amp; time of availability
+     * </pre>
+     *
      * <code>string time_slot = 2;</code>
      * @return This builder for chaining.
      */
@@ -635,6 +687,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Add date &amp; time of availability
+     * </pre>
+     *
      * <code>string time_slot = 2;</code>
      * @param value The bytes for timeSlot to set.
      * @return This builder for chaining.

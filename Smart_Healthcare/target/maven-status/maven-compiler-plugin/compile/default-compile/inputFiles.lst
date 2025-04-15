@@ -43,6 +43,7 @@
 /Users/vinicius/OneDrive/Documents/Educação/NCI - HDSC/Distributed Systems/CA1/Smart-Healthcare-System/Smart_Healthcare/src/main/java/distsys/smart_healthcare/SmartHealthcareServer.java
 /Users/vinicius/OneDrive/Documents/Educação/NCI - HDSC/Distributed Systems/CA1/Smart-Healthcare-System/Smart_Healthcare/src/main/java/generated/grpc/TelemedicineService/ConsultationResponseOrBuilder.java
 /Users/vinicius/OneDrive/Documents/Educação/NCI - HDSC/Distributed Systems/CA1/Smart-Healthcare-System/Smart_Healthcare/src/main/java/generated/grpc/TelemedicineService/TelemedicineServiceGrpc.java
+/Users/vinicius/OneDrive/Documents/Educação/NCI - HDSC/Distributed Systems/CA1/Smart-Healthcare-System/Smart_Healthcare/src/main/java/distsys/smart_healthcare/Auth/BearerToken.java
 /Users/vinicius/OneDrive/Documents/Educação/NCI - HDSC/Distributed Systems/CA1/Smart-Healthcare-System/Smart_Healthcare/src/main/java/generated/grpc/AppointmentService/AddDoctorResponse.java
 /Users/vinicius/OneDrive/Documents/Educação/NCI - HDSC/Distributed Systems/CA1/Smart-Healthcare-System/Smart_Healthcare/src/main/java/generated/grpc/HealthMonitoringService/EmergencyAlertRequest.java
 /Users/vinicius/OneDrive/Documents/Educação/NCI - HDSC/Distributed Systems/CA1/Smart-Healthcare-System/Smart_Healthcare/src/main/java/generated/grpc/TelemedicineService/ConsultationRequest.java

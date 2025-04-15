@@ -3,9 +3,6 @@ package generated.grpc.TelemedicineService;
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 
 /**
- * <pre>
- * TelemedicineService enables remote consultations and communication.
- * </pre>
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.52.1)",
@@ -125,9 +122,6 @@ public final class TelemedicineServiceGrpc {
   }
 
   /**
-   * <pre>
-   * TelemedicineService enables remote consultations and communication.
-   * </pre>
    */
   public static abstract class TelemedicineServiceImplBase implements io.grpc.BindableService {
 
@@ -172,9 +166,6 @@ public final class TelemedicineServiceGrpc {
   }
 
   /**
-   * <pre>
-   * TelemedicineService enables remote consultations and communication.
-   * </pre>
    */
   public static final class TelemedicineServiceStub extends io.grpc.stub.AbstractAsyncStub<TelemedicineServiceStub> {
     private TelemedicineServiceStub(
@@ -212,9 +203,6 @@ public final class TelemedicineServiceGrpc {
   }
 
   /**
-   * <pre>
-   * TelemedicineService enables remote consultations and communication.
-   * </pre>
    */
   public static final class TelemedicineServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<TelemedicineServiceBlockingStub> {
     private TelemedicineServiceBlockingStub(
@@ -240,9 +228,6 @@ public final class TelemedicineServiceGrpc {
   }
 
   /**
-   * <pre>
-   * TelemedicineService enables remote consultations and communication.
-   * </pre>
    */
   public static final class TelemedicineServiceFutureStub extends io.grpc.stub.AbstractFutureStub<TelemedicineServiceFutureStub> {
     private TelemedicineServiceFutureStub(

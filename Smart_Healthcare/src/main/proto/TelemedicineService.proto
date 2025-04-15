@@ -6,7 +6,6 @@ option java_outer_classname = "TelemedicineServiceImpl";
 
 package TelemedicineService;
 
-// TelemedicineService enables remote consultations and communication.
 service TelemedicineService {
     // Starts a virtual consultation between a patient and a doctor. (Unary RPC)
     rpc StartConsultation (ConsultationRequest) returns (ConsultationResponse);

@@ -25,54 +25,54 @@ service AppointmentService {
 
 // Request message for scheduling an appointment.
 message AppointmentRequest {
-    string patient_id = 1;
-    string doctor_id = 2;
-    string date_time = 3;
+    string patient_id = 1;       // ID of the patient
+    string doctor_id = 2;       // ID of the doctor
+    string date_time = 3;      // Date and time of the appointment
 }
 
 // Response message confirming appointment scheduling or retrieval.
 message AppointmentResponse {
-    bool success = 1;
-    string message = 2;
+    bool success = 1;        // Indicates if the scheduling was successful
+    string message = 2;     // Informational message
 }
 
 // Request message for checking doctor availability.
 message AvailabilityRequest {
-    string doctor_id = 1;
+    string doctor_id = 1;   // ID of the doctor
 }
 
 // Response message streaming available slots.
 message AvailabilityResponse {
-    string date_time = 1;
+    string date_time = 1;   // List of available time slots
 }
 
 // Request message for getting appointment by ID
 message AppointmentIdRequest {
-    string appointment_id = 1;
+    string appointment_id = 1;   // List of scheduled appointments
 }
 
 // Request message to add a new doctor.
 message AddDoctorRequest {
-    string doctor_id = 1;
+    string doctor_id = 1;    // ID of the doctor
 }
 
 // Response message confirming the doctor has been added.
 message AddDoctorResponse {
-    bool success = 1;
-    string message = 2;
-    string doctor_id = 3;
+    bool success = 1;          // Indicates if the doctor was add successful
+    string message = 2;       // Informational message
+    string doctor_id = 3;    // ID of the doctor
 }
 
 // Request message to add availability for a doctor.
 message AddAvailabilityRequest {
-    string doctor_id = 1;
-    string time_slot = 2;
+    string doctor_id = 1;    // ID of the doctor
+    string time_slot = 2;   // Add date & time of availability
 }
 
 // Response message confirming the availability has been added.
 message AddAvailabilityResponse {
-    bool success = 1;
-    string message = 2;
-    string doctor_id = 3;
-    string time_slot = 4;
+    bool success = 1;           // Indicates if the availability was add successful
+    string message = 2;        // Informational message
+    string doctor_id = 3;     // ID of the doctor
+    string time_slot = 4;    // Add date & time of availability
 }

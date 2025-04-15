@@ -6,7 +6,6 @@ option java_outer_classname = "HealthMonitoringServiceImpl";
 
 package HealthMonitoringService;
 
-// HealthMonitoringService collects and analyzes patient health data.
 service HealthMonitoringService {
     // Streams real-time health data from IoT devices. (Client Streaming RPC)
     rpc SendHealthData (stream HealthDataRequest) returns (HealthDataResponse);
@@ -31,14 +30,14 @@ message HealthDataResponse {
 
 // Message for emergency alert request.
 message EmergencyAlertRequest {
-    string patient_id = 1;  // Patient's unique identifier
-    string alert_type = 2;  // Example: "Heart Rate Spike", "High Temperature"
-    string alertMessage = 3;
+    string patient_id = 1;      // Patient's unique identifier
+    string alert_type = 2;      // Example: "Heart Rate Spike", "High Temperature"
+    string alertMessage = 3;    // Optional message describing the emergency
 }
 
 // Response message for emergency alerts.
 message EmergencyAlertResponse {
-    bool acknowledged = 1;  // Indicates if the alert was received
-    string response_message = 2; // Details about the response or next steps
-    string confirmation = 3;
+    bool acknowledged = 1;          // Indicates if the alert was received
+    string response_message = 2;    // Details about the response or next steps
+    string confirmation = 3;        // Optional confirmation string
 }

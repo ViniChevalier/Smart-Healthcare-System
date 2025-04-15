@@ -48,11 +48,19 @@ public interface EmergencyAlertRequestOrBuilder extends
       getAlertTypeBytes();
 
   /**
+   * <pre>
+   * Optional message describing the emergency
+   * </pre>
+   *
    * <code>string alertMessage = 3;</code>
    * @return The alertMessage.
    */
   java.lang.String getAlertMessage();
   /**
+   * <pre>
+   * Optional message describing the emergency
+   * </pre>
+   *
    * <code>string alertMessage = 3;</code>
    * @return The bytes for alertMessage.
    */

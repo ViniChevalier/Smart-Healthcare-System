@@ -14,6 +14,7 @@ generated/grpc/TelemedicineService/TelemedicineServiceGrpc$TelemedicineServiceMe
 generated/grpc/AppointmentService/AppointmentServiceGrpc$AppointmentServiceFutureStub.class
 distsys/smart_healthcare/TeleDoctorGUI$2.class
 generated/grpc/HealthMonitoringService/HealthDataResponseOrBuilder.class
+distsys/smart_healthcare/TeleDoctorGUI$5.class
 distsys/smart_healthcare/AppointmentGUI$1.class
 generated/grpc/AppointmentService/AppointmentRequest$Builder.class
 generated/grpc/HealthMonitoringService/HealthMonitoringServiceGrpc$1.class
@@ -57,6 +58,7 @@ generated/grpc/AppointmentService/AppointmentServiceGrpc$1.class
 generated/grpc/HealthMonitoringService/HealthMonitoringServiceGrpc$HealthMonitoringServiceStub.class
 distsys/smart_healthcare/SmartHealthcareServer$TelemedicineServiceImpl.class
 distsys/smart_healthcare/DoctorManagementGUI$7.class
+distsys/smart_healthcare/TelePatientGUI$6.class
 distsys/smart_healthcare/SmartHealthcareServer$AppointmentServiceImpl.class
 generated/grpc/AppointmentService/AppointmentServiceGrpc$AppointmentServiceBlockingStub.class
 generated/grpc/AppointmentService/AvailabilityRequest.class

@@ -8,11 +8,19 @@ public interface AddDoctorRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 1;</code>
    * @return The doctorId.
    */
   java.lang.String getDoctorId();
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 1;</code>
    * @return The bytes for doctorId.
    */

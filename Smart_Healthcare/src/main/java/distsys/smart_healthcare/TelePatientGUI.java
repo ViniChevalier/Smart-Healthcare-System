@@ -42,6 +42,7 @@ public class TelePatientGUI extends javax.swing.JFrame {
         initComponents();
         setupGrpcClient();
         startChatStream();
+        setupWindowCloseHandler();
     }
 
     // Setup GRPC
@@ -96,6 +97,19 @@ public class TelePatientGUI extends javax.swing.JFrame {
         });
     }
 
+        private void setupWindowCloseHandler() {
+    // Don't close the window automaticaly 
+    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+
+    addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            dispose(); 
+        }
+    });
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

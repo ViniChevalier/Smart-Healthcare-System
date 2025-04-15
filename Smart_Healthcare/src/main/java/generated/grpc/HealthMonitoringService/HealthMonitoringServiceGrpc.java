@@ -3,9 +3,6 @@ package generated.grpc.HealthMonitoringService;
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 
 /**
- * <pre>
- * HealthMonitoringService collects and analyzes patient health data.
- * </pre>
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.52.1)",
@@ -125,9 +122,6 @@ public final class HealthMonitoringServiceGrpc {
   }
 
   /**
-   * <pre>
-   * HealthMonitoringService collects and analyzes patient health data.
-   * </pre>
    */
   public static abstract class HealthMonitoringServiceImplBase implements io.grpc.BindableService {
 
@@ -172,9 +166,6 @@ public final class HealthMonitoringServiceGrpc {
   }
 
   /**
-   * <pre>
-   * HealthMonitoringService collects and analyzes patient health data.
-   * </pre>
    */
   public static final class HealthMonitoringServiceStub extends io.grpc.stub.AbstractAsyncStub<HealthMonitoringServiceStub> {
     private HealthMonitoringServiceStub(
@@ -212,9 +203,6 @@ public final class HealthMonitoringServiceGrpc {
   }
 
   /**
-   * <pre>
-   * HealthMonitoringService collects and analyzes patient health data.
-   * </pre>
    */
   public static final class HealthMonitoringServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<HealthMonitoringServiceBlockingStub> {
     private HealthMonitoringServiceBlockingStub(
@@ -230,9 +218,6 @@ public final class HealthMonitoringServiceGrpc {
   }
 
   /**
-   * <pre>
-   * HealthMonitoringService collects and analyzes patient health data.
-   * </pre>
    */
   public static final class HealthMonitoringServiceFutureStub extends io.grpc.stub.AbstractFutureStub<HealthMonitoringServiceFutureStub> {
     private HealthMonitoringServiceFutureStub(

@@ -8,11 +8,19 @@ public interface AvailabilityResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * List of available time slots
+   * </pre>
+   *
    * <code>string date_time = 1;</code>
    * @return The dateTime.
    */
   java.lang.String getDateTime();
   /**
+   * <pre>
+   * List of available time slots
+   * </pre>
+   *
    * <code>string date_time = 1;</code>
    * @return The bytes for dateTime.
    */

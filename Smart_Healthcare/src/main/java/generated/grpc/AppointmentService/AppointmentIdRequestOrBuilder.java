@@ -8,11 +8,19 @@ public interface AppointmentIdRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * List of scheduled appointments
+   * </pre>
+   *
    * <code>string appointment_id = 1;</code>
    * @return The appointmentId.
    */
   java.lang.String getAppointmentId();
   /**
+   * <pre>
+   * List of scheduled appointments
+   * </pre>
+   *
    * <code>string appointment_id = 1;</code>
    * @return The bytes for appointmentId.
    */

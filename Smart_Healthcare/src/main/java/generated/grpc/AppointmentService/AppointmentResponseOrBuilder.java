@@ -8,17 +8,29 @@ public interface AppointmentResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * Indicates if the scheduling was successful
+   * </pre>
+   *
    * <code>bool success = 1;</code>
    * @return The success.
    */
   boolean getSuccess();
 
   /**
+   * <pre>
+   * Informational message
+   * </pre>
+   *
    * <code>string message = 2;</code>
    * @return The message.
    */
   java.lang.String getMessage();
   /**
+   * <pre>
+   * Informational message
+   * </pre>
+   *
    * <code>string message = 2;</code>
    * @return The bytes for message.
    */

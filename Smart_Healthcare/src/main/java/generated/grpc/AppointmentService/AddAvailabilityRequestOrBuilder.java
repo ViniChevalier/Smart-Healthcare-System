@@ -8,11 +8,19 @@ public interface AddAvailabilityRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 1;</code>
    * @return The doctorId.
    */
   java.lang.String getDoctorId();
   /**
+   * <pre>
+   * ID of the doctor
+   * </pre>
+   *
    * <code>string doctor_id = 1;</code>
    * @return The bytes for doctorId.
    */
@@ -20,11 +28,19 @@ public interface AddAvailabilityRequestOrBuilder extends
       getDoctorIdBytes();
 
   /**
+   * <pre>
+   * Add date &amp; time of availability
+   * </pre>
+   *
    * <code>string time_slot = 2;</code>
    * @return The timeSlot.
    */
   java.lang.String getTimeSlot();
   /**
+   * <pre>
+   * Add date &amp; time of availability
+   * </pre>
+   *
    * <code>string time_slot = 2;</code>
    * @return The bytes for timeSlot.
    */

@@ -96,6 +96,10 @@ private static final long serialVersionUID = 0L;
   public static final int DATE_TIME_FIELD_NUMBER = 1;
   private volatile java.lang.Object dateTime_;
   /**
+   * <pre>
+   * List of available time slots
+   * </pre>
+   *
    * <code>string date_time = 1;</code>
    * @return The dateTime.
    */
@@ -113,6 +117,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   * List of available time slots
+   * </pre>
+   *
    * <code>string date_time = 1;</code>
    * @return The bytes for dateTime.
    */
@@ -439,6 +447,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object dateTime_ = "";
     /**
+     * <pre>
+     * List of available time slots
+     * </pre>
+     *
      * <code>string date_time = 1;</code>
      * @return The dateTime.
      */
@@ -455,6 +467,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * List of available time slots
+     * </pre>
+     *
      * <code>string date_time = 1;</code>
      * @return The bytes for dateTime.
      */
@@ -472,6 +488,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * List of available time slots
+     * </pre>
+     *
      * <code>string date_time = 1;</code>
      * @param value The dateTime to set.
      * @return This builder for chaining.
@@ -487,6 +507,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * List of available time slots
+     * </pre>
+     *
      * <code>string date_time = 1;</code>
      * @return This builder for chaining.
      */
@@ -497,6 +521,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * List of available time slots
+     * </pre>
+     *
      * <code>string date_time = 1;</code>
      * @param value The bytes for dateTime to set.
      * @return This builder for chaining.

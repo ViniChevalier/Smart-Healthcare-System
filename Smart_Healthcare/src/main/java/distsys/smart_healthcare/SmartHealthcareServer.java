@@ -29,8 +29,6 @@ import generated.grpc.HealthMonitoringService.HealthMonitoringServiceGrpc.Health
 import generated.grpc.HealthMonitoringService.*;
 import distsys.smart_healthcare.Auth.AuthorizationServerInterceptor;
 import distsys.smart_healthcare.Auth.Constants;
-import io.grpc.ServerCall.Listener;
-import io.grpc.ServerInterceptor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -288,7 +286,7 @@ public class SmartHealthcareServer {
         public void startConsultation(ConsultationRequest request, StreamObserver<ConsultationResponse> responseObserver) {
             // Auth  
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
-            logger.info("Processing scheduleAppointment request from " + clientId);
+            logger.info("Processing Telemedicine request from " + clientId);
 
             String patientId = request.getPatientId();
             String doctorId = request.getDoctorId();
@@ -309,7 +307,7 @@ public class SmartHealthcareServer {
         public StreamObserver<MessageRequest> chat(StreamObserver<MessageResponse> responseObserver) {
             // Auth  
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
-            logger.info("Processing scheduleAppointment request from " + clientId);
+            logger.info("Processing Telemedicine request from " + clientId);
 
             // Add the client to the list of connected clients
             connectedClients.add(responseObserver);
@@ -350,7 +348,7 @@ public class SmartHealthcareServer {
         public StreamObserver<HealthDataRequest> sendHealthData(StreamObserver<HealthDataResponse> responseObserver) {
             // Auth  
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
-            logger.info("Processing scheduleAppointment request from " + clientId);
+            logger.info("Processing monitoring request from " + clientId);
 
             return new StreamObserver<>() {
 
@@ -469,14 +467,15 @@ public class SmartHealthcareServer {
             };
         }
     }
+    
+    
 
     // Main method to start the healthcare server
-    public static void main(String[] args) throws IOException, InterruptedException {
-        // Set up the gRPC server to listen on port 50051 and add services
-        // Create a gRPC server
-
+   public static void main(String[] args) throws IOException, InterruptedException {
+        // Define the port 
         int port = 50051;
 
+        // Build the gRPC server with the services wrapped in an authorization interceptor
         Server server = ServerBuilder.forPort(port)
                 .addService(ServerInterceptors.intercept(new AppointmentServiceImpl(), new AuthorizationServerInterceptor()))
                 .addService(ServerInterceptors.intercept(new TelemedicineServiceImpl(), new AuthorizationServerInterceptor()))
@@ -488,13 +487,33 @@ public class SmartHealthcareServer {
         logger.log(Level.INFO, "Server started, listening on {0}", port);
         System.out.println("Healthcare Server started, listening on " + port);
 
-        // Add a shutdown hook for graceful shutdown
+        // Shutdown hook 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.err.println("Shutting down Healthcare Server");
             logger.info("Shutting down...");
-            server.shutdown();
+
+            if (server != null) {
+                // Initiate server shutdown
+                server.shutdown();
+                try {
+                    // Wait up to 30 seconds for the server to shut down gracefully
+                    if (!server.awaitTermination(30, TimeUnit.SECONDS)) {
+                        logger.warning("Server did not terminate, forcing shutdown...");
+                        // Force shutdown
+                        server.shutdownNow();
+                    }
+                } catch (InterruptedException e) {
+                    // Handle interruption during shutdown
+                    logger.log(Level.SEVERE, "Shutdown interrupted", e);
+                    server.shutdownNow();
+                }
+            }
+
+            // Log completion of shutdown
+            System.err.println("Server shut down");
         }));
 
-        // Block the main thread so the server keeps running
+        // Keep the server running
         server.awaitTermination();
     }
 }

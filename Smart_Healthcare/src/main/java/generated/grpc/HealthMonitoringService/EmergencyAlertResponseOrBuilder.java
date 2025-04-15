@@ -38,11 +38,19 @@ public interface EmergencyAlertResponseOrBuilder extends
       getResponseMessageBytes();
 
   /**
+   * <pre>
+   * Optional confirmation string
+   * </pre>
+   *
    * <code>string confirmation = 3;</code>
    * @return The confirmation.
    */
   java.lang.String getConfirmation();
   /**
+   * <pre>
+   * Optional confirmation string
+   * </pre>
+   *
    * <code>string confirmation = 3;</code>
    * @return The bytes for confirmation.
    */
