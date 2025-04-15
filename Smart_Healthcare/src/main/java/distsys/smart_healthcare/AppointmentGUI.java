@@ -69,7 +69,6 @@ public class AppointmentGUI extends javax.swing.JFrame {
         btnRetrieve.addActionListener(e -> getAppointment());
         btnLoadAvailability.addActionListener(e -> updateAvailableSlots());
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -222,34 +221,67 @@ public class AppointmentGUI extends javax.swing.JFrame {
 
     // Load and display available slots for a doctor
     private void updateAvailableSlots() {
+        // Get the doctor ID from the input field
         String doctorId = txtDoctor.getText().trim();
+
         jComboTime.removeAllItems();
 
+        // Validation of the doctor ID is empty
         if (doctorId.isEmpty()) {
             jComboTime.addItem("Enter a Doctor ID first");
             return;
         }
 
+        // Build the gRPC request
         AvailabilityRequest request = AvailabilityRequest.newBuilder()
                 .setDoctorId(doctorId)
                 .build();
 
         try {
+            // Make a blocking gRPC call
             Iterator<AvailabilityResponse> responses = blockingStub.getAvailability(request);
             boolean hasSlots = false;
 
+            // Iterate through the response stream and add each slot to the combo box
             while (responses.hasNext()) {
                 hasSlots = true;
                 String slot = responses.next().getDateTime();
                 jComboTime.addItem(slot);
             }
 
+            // If no slots were found
             if (!hasSlots) {
                 jComboTime.addItem("No available slots");
             }
+
         } catch (Exception e) {
+            String userMessage;
+            String logMessage = "Error loading availability: " + e.getMessage();
+
+            // Check if the error is a gRPC
+            if (e instanceof io.grpc.StatusRuntimeException) {
+                io.grpc.StatusRuntimeException ex = (io.grpc.StatusRuntimeException) e;
+
+                // For unavailable error
+                if (ex.getStatus().getCode() == io.grpc.Status.Code.UNAVAILABLE) {
+                    userMessage = "Availability service is currently unavailable. Please check your connection.";
+                } else {
+                    // For other gRPC errors
+                    userMessage = "Error: " + ex.getStatus().getDescription();
+                }
+            } else {
+                // Generic message
+                userMessage = "Unexpected error: " + e.getMessage();
+            }
+
+            // Add a default error item to the combo box
             jComboTime.addItem("Error fetching slots");
-            txtResult.setText("Error loading availability: " + e.getMessage());
+
+            // Show the rror to the user
+            txtResult.setText(userMessage);
+
+            // Log the error
+            System.err.println(logMessage);
         }
     }
 
@@ -259,26 +291,61 @@ public class AppointmentGUI extends javax.swing.JFrame {
         String doctorId = txtDoctor.getText().trim();
         String dateTime = (String) jComboTime.getSelectedItem();
 
+        // Validate that all fields have been filled
         if (patientId.isEmpty() || doctorId.isEmpty() || dateTime == null) {
             txtResult.setText("Please fill all fields before booking.");
             return;
         }
 
+        // Create the gRPC appointment request
         AppointmentRequest request = AppointmentRequest.newBuilder()
                 .setPatientId(patientId)
                 .setDoctorId(doctorId)
                 .setDateTime(dateTime)
                 .build();
 
-        AppointmentResponse response = blockingStub.scheduleAppointment(request);
+        try {
+            // Send the request to the gRPC server using the blocking stub
+            AppointmentResponse response = blockingStub.scheduleAppointment(request);
 
-        if (response.getSuccess()) {
-            txtResult.setText("Appointment booked successfully!\nMessage: " + response.getMessage());
-            txtPatient.setText("");
-            txtDoctor.setText("");
-            jComboTime.setSelectedIndex(-1);
-        } else {
-            txtResult.setText("Failed to book appointment.\nMessage: " + response.getMessage());
+            if (response.getSuccess()) {
+                txtResult.setText("Appointment booked successfully!"
+                        + "\nMessage: " + response.getMessage());
+                txtPatient.setText("");
+                txtDoctor.setText("");
+                jComboTime.setSelectedIndex(-1);
+            } else {
+                // If the booking failed
+                txtResult.setText("Failed to book appointment."
+                        + "\nMessage: " + response.getMessage());
+            }
+
+        } catch (Exception e) {
+            // Default user message for error
+            String userMessage;
+            String logMessage = "Error while booking appointment: " + e.getMessage();
+
+            // Check if the error is a gRPC
+            if (e instanceof io.grpc.StatusRuntimeException) {
+                io.grpc.StatusRuntimeException ex = (io.grpc.StatusRuntimeException) e;
+
+                // If the server is unavailable
+                if (ex.getStatus().getCode() == io.grpc.Status.Code.UNAVAILABLE) {
+                    userMessage = "Appointment service is currently unavailable. Please check your connection.";
+                } else {
+                    // For other gRPC errors
+                    userMessage = "Error: " + ex.getStatus().getDescription();
+                }
+            } else {
+                // If the error is unexpected
+                userMessage = "nexpected error: " + e.getMessage();
+            }
+
+            // Display a error message
+            txtResult.setText(userMessage);
+
+            // Log
+            System.err.println(logMessage);
         }
     }
 
@@ -286,21 +353,55 @@ public class AppointmentGUI extends javax.swing.JFrame {
     private void getAppointment() {
         String appointmentId = txtAppointmentId.getText().trim();
 
+        // Validate the input
         if (appointmentId.isEmpty()) {
             txtResult.setText("Enter a valid Appointment ID.");
             return;
         }
 
+        // Build the gRPC request
         AppointmentIdRequest request = AppointmentIdRequest.newBuilder()
                 .setAppointmentId(appointmentId)
                 .build();
 
-        AppointmentResponse response = blockingStub.getAppointment(request);
+        try {
+            // Call the gRPC service
+            AppointmentResponse response = blockingStub.getAppointment(request);
 
-        if (response.getSuccess()) {
-            txtResult.setText("Appointment details:\n" + response.getMessage());
-        } else {
-            txtResult.setText("Failed to get the appointment.\nMessage: " + response.getMessage());
+            if (response.getSuccess()) {
+                txtResult.setText("Appointment details:"
+                        + "\n" + response.getMessage());
+            } else {
+                // If the request failed
+                txtResult.setText("Failed to get the appointment."
+                        + "\nMessage: " + response.getMessage());
+            }
+
+        } catch (Exception e) {
+            String userMessage;
+            String logMessage = "Error while retrieving appointment: " + e.getMessage();
+
+            // If the error is from the gRPC
+            if (e instanceof io.grpc.StatusRuntimeException) {
+                io.grpc.StatusRuntimeException ex = (io.grpc.StatusRuntimeException) e;
+
+                // If the server is unavailable
+                if (ex.getStatus().getCode() == io.grpc.Status.Code.UNAVAILABLE) {
+                    userMessage = "Appointment service is currently unavailable. Please check your connection.";
+                } else {
+                    // For other gRPC errors
+                    userMessage = "Error: " + ex.getStatus().getDescription();
+                }
+            } else {
+                // If the error is unexpected
+                userMessage = "Unexpected error: " + e.getMessage();
+            }
+
+            // Display a error message
+            txtResult.setText(userMessage);
+
+            // Log
+            System.err.println(logMessage);
         }
     }
 

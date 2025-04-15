@@ -249,7 +249,25 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
 
                 @Override
                 public void onError(Throwable t) {
-                    txtAreaStatus.setText("Error adding doctor: " + t.getMessage());
+                    String userMessage;
+                    String logMessage = "Appointment service error: " + t.getMessage();
+
+                    if (t instanceof io.grpc.StatusRuntimeException) {
+                        io.grpc.StatusRuntimeException ex = (io.grpc.StatusRuntimeException) t;
+
+                        if (ex.getStatus().getCode() == io.grpc.Status.Code.UNAVAILABLE) {
+                            userMessage = "Doctor service is unavailable. Please check your connection.";
+                        } else {
+                            userMessage = "An error occurred: " + ex.getStatus().getDescription();
+                        }
+                    } else {
+                        userMessage = "Unexpected error: " + t.getMessage();
+                    }
+
+                    txtAreaStatus.append(userMessage + "\n");
+
+                    // Log the error
+                    System.err.println(logMessage);
                 }
 
                 @Override
@@ -292,7 +310,25 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
 
                 @Override
                 public void onError(Throwable t) {
-                    txtAreaStatus.setText("Error adding availability: " + t.getMessage());
+                    String userMessage = null;
+                    String logMessage = "Availability service error: " + t.getMessage();
+
+                    if (t instanceof io.grpc.StatusRuntimeException) {
+                        io.grpc.StatusRuntimeException ex = (io.grpc.StatusRuntimeException) t;
+
+                        if (ex.getStatus().getCode() == io.grpc.Status.Code.UNAVAILABLE) {
+                            userMessage = "Availability service is unavailable. Please check your connection.";
+                        } else {
+                            userMessage = "An error occurred: " + ex.getStatus().getDescription();
+                        }
+                    } else {
+                        userMessage = "Unexpected error: " + t.getMessage();
+                    }
+
+                    txtAreaStatus.append(userMessage + "\n");
+
+                    // Log the error
+                    System.err.println(logMessage);
                 }
 
                 @Override
@@ -329,7 +365,25 @@ public class DoctorManagementGUI extends javax.swing.JFrame {
 
             @Override
             public void onError(Throwable t) {
-                txtAreaStatus.setText("Error: " + t.getMessage());
+                String userMessage;
+                String logMessage = "AAvailability service error: " + t.getMessage();
+
+                if (t instanceof io.grpc.StatusRuntimeException) {
+                    io.grpc.StatusRuntimeException ex = (io.grpc.StatusRuntimeException) t;
+
+                    if (ex.getStatus().getCode() == io.grpc.Status.Code.UNAVAILABLE) {
+                        userMessage = "Availability service is unavailable. Please check your connection.";
+                    } else {
+                        userMessage = "An error occurred: " + ex.getStatus().getDescription();
+                    }
+                } else {
+                    userMessage = "Unexpected error: " + t.getMessage();
+                }
+
+                txtAreaStatus.append(userMessage + "\n");
+
+                // Log the error
+                System.err.println(logMessage);
             }
 
             @Override

@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @author vinicius
  */
 public class HealthMonitoringGUI extends javax.swing.JFrame {
-    
+
     // Metadata
     private static final Logger logger = Logger.getLogger(HealthMonitoringGUI.class.getName());
 
@@ -73,6 +73,7 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
 
     private void setupStreams() {
         healthDataStream = createHealthDataStream();
+
         emergencyStream = asyncStub.alertEmergency(new StreamObserver<EmergencyAlertResponse>() {
             @Override
             public void onNext(EmergencyAlertResponse response) {
@@ -81,12 +82,30 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
 
             @Override
             public void onError(Throwable t) {
-                txtEmergencyResponse.append("Error: " + t.getMessage() + "\n");
+                String userMessage;
+                String logMessage = "Emergency stream error: " + t.getMessage();
+
+                if (t instanceof io.grpc.StatusRuntimeException) {
+                    io.grpc.StatusRuntimeException ex = (io.grpc.StatusRuntimeException) t;
+
+                    if (ex.getStatus().getCode() == io.grpc.Status.Code.UNAVAILABLE) {
+                        userMessage = "Emergency service is unavailable. Please check your connection.";
+                    } else {
+                        userMessage = "An error occurred: " + ex.getStatus().getDescription();
+                    }
+                } else {
+                    userMessage = "Unexpected error: " + t.getMessage();
+                }
+
+                txtEmergencyResponse.append(userMessage + "\n");
+
+                // Log the error
+                System.err.println(logMessage);
             }
 
             @Override
             public void onCompleted() {
-                txtEmergencyResponse.append("Emergency stream closed by server.\n");
+                txtEmergencyResponse.append("[System] Emergency stream closed by server.\n");
             }
         });
     }
@@ -100,12 +119,30 @@ public class HealthMonitoringGUI extends javax.swing.JFrame {
 
             @Override
             public void onError(Throwable t) {
-                txtHealthData.append("Error: " + t.getMessage() + "\n");
+                String userMessage;
+                String logMessage = "Health data stream error: " + t.getMessage();
+
+                if (t instanceof io.grpc.StatusRuntimeException) {
+                    io.grpc.StatusRuntimeException ex = (io.grpc.StatusRuntimeException) t;
+
+                    if (ex.getStatus().getCode() == io.grpc.Status.Code.UNAVAILABLE) {
+                        userMessage = "Health monitoring service is unavailable. Please check your connection.";
+                    } else {
+                        userMessage = "An error occurred: " + ex.getStatus().getDescription();
+                    }
+                } else {
+                    userMessage = "Unexpected error: " + t.getMessage();
+                }
+
+                txtHealthData.append(userMessage + "\n");
+
+                // Log the full error
+                System.err.println(logMessage);
             }
 
             @Override
             public void onCompleted() {
-                txtHealthData.append("Health data stream completed.\n");
+                txtHealthData.append("[System] Health data stream completed.\n");
             }
         });
     }

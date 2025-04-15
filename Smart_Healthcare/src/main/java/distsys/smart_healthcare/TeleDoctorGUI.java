@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public class TeleDoctorGUI extends javax.swing.JFrame {
-    
+
     // Metadata
     private static final Logger logger = Logger.getLogger(TeleDoctorGUI.class.getName());
 
@@ -67,7 +67,8 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
                 .signWith(SignatureAlgorithm.HS256, Constants.JWT_SIGNING_KEY)
                 .compact();
     }
-
+    
+    // Start the Chat stream 
     private void startChatStream() {
         // Start the chat stream using the async stub
         chatRequestStream = asyncStub.chat(new StreamObserver<MessageResponse>() {
@@ -84,7 +85,30 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
             @Override
             public void onError(Throwable t) {
                 SwingUtilities.invokeLater(() -> {
-                    chatArea.append("Chat error: " + t.getMessage() + "\n");
+                    String userMessage;
+                    String logMessage = "Chat error: " + t.getMessage();
+
+                    // Check the error
+                    if (t instanceof io.grpc.StatusRuntimeException) {
+                        io.grpc.StatusRuntimeException ex = (io.grpc.StatusRuntimeException) t;
+
+                        // Server unavailable
+                        if (ex.getStatus().getCode() == io.grpc.Status.Code.UNAVAILABLE) {
+                            userMessage = "Chat service is unavailable. Please check your connection or try again later.";
+                        } else {
+                            // For other gRPC errors
+                            userMessage = "An error occurred: " + ex.getStatus().getDescription();
+                        }
+                    } else {
+                        // For non-gRPC errors
+                        userMessage = "Unexpected error: " + t.getMessage();
+                    }
+
+                    // Show the error to the user
+                    chatArea.append(userMessage + "\n");
+
+                    // Log the error
+                    System.err.println(logMessage);
                 });
             }
 
@@ -98,18 +122,17 @@ public class TeleDoctorGUI extends javax.swing.JFrame {
     }
 
     private void setupWindowCloseHandler() {
-    // Don't close the window automaticaly 
-    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        // Don't close the window automaticaly 
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                dispose();
+            }
+        });
+    }
 
-    addWindowListener(new java.awt.event.WindowAdapter() {
-        @Override
-        public void windowClosing(java.awt.event.WindowEvent e) {
-            dispose(); 
-        }
-    });
-}
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
