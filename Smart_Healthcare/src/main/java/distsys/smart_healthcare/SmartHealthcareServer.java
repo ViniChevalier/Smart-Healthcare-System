@@ -51,8 +51,9 @@ public class SmartHealthcareServer {
 
         // Method to schedule a new appointment
         @Override
-        public void scheduleAppointment(AppointmentRequest request, StreamObserver<AppointmentResponse> responseObserver) {
-            // Auth  
+        public void scheduleAppointment(AppointmentRequest request,
+                StreamObserver<AppointmentResponse> responseObserver) {
+            // Auth
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
             logger.info("Processing scheduleAppointment request from " + clientId);
 
@@ -83,7 +84,8 @@ public class SmartHealthcareServer {
             if (!foundDoctor.getAvailableSlots().contains(timeSlot)) {
                 AppointmentResponse response = AppointmentResponse.newBuilder()
                         .setSuccess(false)
-                        .setMessage("Error: Requested time slot '" + timeSlot + "' is not available for Doctor " + doctorId)
+                        .setMessage(
+                                "Error: Requested time slot '" + timeSlot + "' is not available for Doctor " + doctorId)
                         .build();
 
                 responseObserver.onNext(response);
@@ -99,8 +101,7 @@ public class SmartHealthcareServer {
                     appointmentId,
                     request.getPatientId(),
                     doctorId,
-                    timeSlot
-            );
+                    timeSlot);
             appointments.add(appointment);
 
             // Remove the booked time slot from availability
@@ -121,7 +122,7 @@ public class SmartHealthcareServer {
         // Method to get an appointment based on ID
         @Override
         public void getAppointment(AppointmentIdRequest request, StreamObserver<AppointmentResponse> responseObserver) {
-            // Auth  
+            // Auth
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
             logger.info("Processing scheduleAppointment request from " + clientId);
 
@@ -158,7 +159,7 @@ public class SmartHealthcareServer {
         // Method to add a new doctor
         @Override
         public void addDoctor(AddDoctorRequest request, StreamObserver<AddDoctorResponse> responseObserver) {
-            // Auth  
+            // Auth
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
             logger.info("Processing scheduleAppointment request from " + clientId);
 
@@ -194,8 +195,9 @@ public class SmartHealthcareServer {
 
         // Method to add availability for a specific doctor
         @Override
-        public void addAvailability(AddAvailabilityRequest request, StreamObserver<AddAvailabilityResponse> responseObserver) {
-            // Auth  
+        public void addAvailability(AddAvailabilityRequest request,
+                StreamObserver<AddAvailabilityResponse> responseObserver) {
+            // Auth
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
             logger.info("Processing scheduleAppointment request from " + clientId);
 
@@ -239,8 +241,9 @@ public class SmartHealthcareServer {
 
         // Method to get the availability of a specific doctor
         @Override
-        public void getAvailability(AvailabilityRequest request, StreamObserver<AvailabilityResponse> responseObserver) {
-            // Auth  
+        public void getAvailability(AvailabilityRequest request,
+                StreamObserver<AvailabilityResponse> responseObserver) {
+            // Auth
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
             logger.info("Processing scheduleAppointment request from " + clientId);
 
@@ -283,8 +286,9 @@ public class SmartHealthcareServer {
 
         // Method to start a telemedicine consultation
         @Override
-        public void startConsultation(ConsultationRequest request, StreamObserver<ConsultationResponse> responseObserver) {
-            // Auth  
+        public void startConsultation(ConsultationRequest request,
+                StreamObserver<ConsultationResponse> responseObserver) {
+            // Auth
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
             logger.info("Processing Telemedicine request from " + clientId);
 
@@ -305,7 +309,7 @@ public class SmartHealthcareServer {
         // Method to handle chat between patients and doctors
         @Override
         public StreamObserver<MessageRequest> chat(StreamObserver<MessageResponse> responseObserver) {
-            // Auth  
+            // Auth
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
             logger.info("Processing Telemedicine request from " + clientId);
 
@@ -346,7 +350,7 @@ public class SmartHealthcareServer {
         // Method to handle incoming health data
         @Override
         public StreamObserver<HealthDataRequest> sendHealthData(StreamObserver<HealthDataResponse> responseObserver) {
-            // Auth  
+            // Auth
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
             logger.info("Processing monitoring request from " + clientId);
 
@@ -388,7 +392,8 @@ public class SmartHealthcareServer {
                         float avgTemperature = totalTemperature / receivedData.size();
 
                         // Prepare the response message
-                        String message = "Received health data entries. Average Heart Rate: " + avgHeartRate + " Average Temperature: " + avgTemperature;
+                        String message = "Received health data entries. Average Heart Rate: " + avgHeartRate
+                                + " Average Temperature: " + avgTemperature;
 
                         HealthDataResponse response = HealthDataResponse.newBuilder()
                                 .setMessage(message)
@@ -397,15 +402,16 @@ public class SmartHealthcareServer {
                         responseObserver.onNext(response);
                     }
 
-                    responseObserver.onCompleted();  // End the stream
+                    responseObserver.onCompleted(); // End the stream
                 }
             };
         }
 
         // Method to handle emergency alert stream
         @Override
-        public StreamObserver<EmergencyAlertRequest> alertEmergency(StreamObserver<EmergencyAlertResponse> responseObserver) {
-            // Auth  
+        public StreamObserver<EmergencyAlertRequest> alertEmergency(
+                StreamObserver<EmergencyAlertResponse> responseObserver) {
+            // Auth
             String clientId = Constants.CLIENT_ID_CONTEXT_KEY.get();
             System.out.println("Processing request from " + clientId);
 
@@ -448,7 +454,7 @@ public class SmartHealthcareServer {
                     // Log when the stream is completed
                     System.out.println("Emergency alert stream completed.");
                     responseObserver.onCompleted();
-                    scheduler.shutdown();  // Shut down the scheduler
+                    scheduler.shutdown(); // Shut down the scheduler
                 }
 
                 // Helper method to generate instructions based on alert type
@@ -467,19 +473,21 @@ public class SmartHealthcareServer {
             };
         }
     }
-    
-    
 
     // Main method to start the healthcare server
-   public static void main(String[] args) throws IOException, InterruptedException {
-        // Define the port 
+    public static void main(String[] args) throws IOException, InterruptedException {
+        // Define the port
         int port = 50051;
 
-        // Build the gRPC server with the services wrapped in an authorization interceptor
+        // Build the gRPC server with the services wrapped in an authorization
+        // interceptor
         Server server = ServerBuilder.forPort(port)
-                .addService(ServerInterceptors.intercept(new AppointmentServiceImpl(), new AuthorizationServerInterceptor()))
-                .addService(ServerInterceptors.intercept(new TelemedicineServiceImpl(), new AuthorizationServerInterceptor()))
-                .addService(ServerInterceptors.intercept(new HealthMonitoringServiceImpl(), new AuthorizationServerInterceptor()))
+                .addService(ServerInterceptors.intercept(new AppointmentServiceImpl(),
+                        new AuthorizationServerInterceptor()))
+                .addService(ServerInterceptors.intercept(new TelemedicineServiceImpl(),
+                        new AuthorizationServerInterceptor()))
+                .addService(ServerInterceptors.intercept(new HealthMonitoringServiceImpl(),
+                        new AuthorizationServerInterceptor()))
                 .build();
 
         // Start the server
@@ -487,7 +495,7 @@ public class SmartHealthcareServer {
         logger.log(Level.INFO, "Server started, listening on {0}", port);
         System.out.println("Healthcare Server started, listening on " + port);
 
-        // Shutdown hook 
+        // Shutdown hook
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.err.println("Shutting down Healthcare Server");
             logger.info("Shutting down...");
